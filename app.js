@@ -141,15 +141,9 @@
         var relMeta = $('#relMeta'); if (relMeta) relMeta.textContent = when ? ('Published ' + when + ' \u00b7 for Firefox') : 'Latest build for Firefox';
         var relDl = $('#relDownload');
         if (relDl && d.assets && d.assets.length) {
-          var xpi = d.assets.filter(function (a) { return /\.(xpi|zip)$/i.test(a.name); })[0];
-          if (xpi) relDl.href = xpi.browser_download_url;
-        }
-        var relHost = $('#relHost');
-        if (relHost && d.assets && d.assets.length) {
-          var host = d.assets.filter(function (a) { return /setup.*\.exe$/i.test(a.name); })[0]
-            || d.assets.filter(function (a) { return /host.*\.exe$/i.test(a.name); })[0]
+          var installer = d.assets.filter(function (a) { return /setup.*\.exe$/i.test(a.name); })[0]
             || d.assets.filter(function (a) { return /\.exe$/i.test(a.name); })[0];
-          if (host) relHost.href = host.browser_download_url;
+          if (installer) relDl.href = installer.browser_download_url;
         }
       })
       .catch(function () { if (footVer) footVer.textContent = 'Latest on GitHub'; });
@@ -246,43 +240,128 @@
   }
 
   /* ----------------------------------------------------------
-     Activities index: live search + category filter.
+     Activities index: live from GitHub + search + category filter.
+     Fetches registry.json, then each activity's metadata.json.
+     Falls back to the static cards already in the HTML if fetch fails.
      ---------------------------------------------------------- */
   var actsGrid = $('#actsGrid');
   if (actsGrid) {
-    var cards = $$('.acard', actsGrid);
     var searchEl = $('#actSearch');
-    var chipsEl = $('#actChips');
-    var emptyEl = $('#actsEmpty');
+    var chipsEl  = $('#actChips');
+    var emptyEl  = $('#actsEmpty');
     var curCat = 'all', curQ = '';
 
+    var RAW = 'https://raw.githubusercontent.com/Clawb1t/Syncr/main/extension/activities/';
+    var BADGE_MAP = { 'LISTENING TO': 'listen', 'LISTENING': 'listen', 'WATCHING': 'watch', 'BROWSING': 'watch' };
+    var BADGE_LABEL = { 'LISTENING TO': 'Listening', 'LISTENING': 'Listening', 'WATCHING': 'Watching', 'BROWSING': 'Browsing' };
+
+    function badgeClass(type) { return BADGE_MAP[(type || '').toUpperCase()] || 'watch'; }
+    function badgeLabel(act) {
+      if (act.privacy) return 'Privacy-first';
+      return BADGE_LABEL[(act.activityType || '').toUpperCase()] || act.activityType || '';
+    }
+
+    function renderCard(act) {
+      var logoUrl = RAW + act.id + '/logo.png';
+      var badge   = badgeClass(act.activityType);
+      var label   = badgeLabel(act);
+      var cat     = act.category || 'Other';
+      var desc    = act.description || '';
+      var slug    = act.id;
+      /* link to static detail page if it exists, else GitHub source */
+      var href    = '/activities/' + slug + '.html';
+      var card    = document.createElement('a');
+      card.className = 'acard reveal in';
+      card.href      = href;
+      card.dataset.name = (act.name || '').toLowerCase();
+      card.dataset.cat  = cat;
+      card.innerHTML =
+        '<div class="acard-head">' +
+          '<div class="acard-logo"><img src="' + esc(logoUrl) + '" alt="' + esc(act.name) + '" onerror="this.style.display=\'none\'" /></div>' +
+          '<span class="act-badge ' + esc(badge) + '">' + esc(label) + '</span>' +
+        '</div>' +
+        '<h3>' + esc(act.name) + '</h3>' +
+        '<p>' + esc(desc) + '</p>' +
+        '<div class="acard-foot"><span class="acard-cat">' + esc(cat) + '</span><span class="acard-go">View activity &rarr;</span></div>';
+      return card;
+    }
+
     function applyFilter() {
+      var cards = $$('.acard', actsGrid);
       var shown = 0;
       cards.forEach(function (c) {
-        var cat = c.dataset.cat || '';
+        var cat  = c.dataset.cat  || '';
         var name = (c.dataset.name || '').toLowerCase();
         var okCat = curCat === 'all' || cat === curCat;
-        var okQ = !curQ || name.indexOf(curQ) > -1 || cat.toLowerCase().indexOf(curQ) > -1;
-        var vis = okCat && okQ;
+        var okQ   = !curQ || name.indexOf(curQ) > -1 || cat.toLowerCase().indexOf(curQ) > -1;
+        var vis   = okCat && okQ;
         c.style.display = vis ? '' : 'none';
         if (vis) shown++;
       });
       if (emptyEl) emptyEl.hidden = shown !== 0;
     }
 
-    if (searchEl) {
-      searchEl.addEventListener('input', function () {
-        curQ = searchEl.value.trim().toLowerCase(); applyFilter();
-      });
+    function wireControls() {
+      if (searchEl) {
+        searchEl.addEventListener('input', function () {
+          curQ = searchEl.value.trim().toLowerCase(); applyFilter();
+        });
+      }
+      if (chipsEl) {
+        chipsEl.addEventListener('click', function (e) {
+          var chip = e.target.closest('.chip'); if (!chip) return;
+          $$('.chip', chipsEl).forEach(function (c) { c.classList.remove('active'); });
+          chip.classList.add('active');
+          curCat = chip.dataset.cat || 'all'; applyFilter();
+        });
+      }
     }
-    if (chipsEl) {
-      chipsEl.addEventListener('click', function (e) {
-        var chip = e.target.closest('.chip'); if (!chip) return;
-        $$('.chip', chipsEl).forEach(function (c) { c.classList.remove('active'); });
-        chip.classList.add('active');
-        curCat = chip.dataset.cat || 'all'; applyFilter();
-      });
+
+    function ensureChip(cat) {
+      if (!chipsEl) return;
+      if ($('.chip[data-cat="' + cat + '"]', chipsEl)) return;
+      var btn = document.createElement('button');
+      btn.className   = 'chip';
+      btn.dataset.cat = cat;
+      btn.textContent = cat;
+      chipsEl.appendChild(btn);
     }
+
+    /* fetch registry + all metadata */
+    fetch(RAW + '../registry.json')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (reg) {
+        if (!reg || !Array.isArray(reg.activities)) throw new Error('no registry');
+        return Promise.all(reg.activities.map(function (id) {
+          return fetch(RAW + id + '/metadata.json')
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .catch(function () { return null; });
+        }));
+      })
+      .then(function (metas) {
+        var valid = metas.filter(Boolean);
+        if (!valid.length) throw new Error('no metas');
+        /* replace static cards */
+        actsGrid.innerHTML = '';
+        valid.forEach(function (act) {
+          ensureChip(act.category || 'Other');
+          actsGrid.appendChild(renderCard(act));
+        });
+        wireControls();
+        applyFilter();
+        /* re-run scroll reveal on new elements */
+        if ('IntersectionObserver' in window) {
+          var io2 = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io2.unobserve(e.target); } });
+          }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+          $$('.acard', actsGrid).forEach(function (el) { el.classList.remove('in'); io2.observe(el); });
+        }
+      })
+      .catch(function () {
+        /* fallback: static cards already in HTML still work */
+        wireControls();
+        applyFilter();
+      });
   }
 
 })();
