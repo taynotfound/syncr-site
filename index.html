@@ -2,382 +2,381 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Syncr, Discord Rich Presence for Firefox</title>
-  <meta name="description" content="Syncr shows what you're doing on the web right on your Discord profile. YouTube, YouTube Music, Reddit and more. No login, no cloud, no paywall. Everything stays on your PC." />
+  <meta name="description" content="Syncr puts what you are doing on the web onto your Discord profile. Free, open source, and fully local. No login, no paywall, no ads." />
+  <meta name="theme-color" content="#0b0c0f" />
   <meta property="og:title" content="Syncr, Discord Rich Presence for Firefox" />
-  <meta property="og:description" content="Show your web activity on Discord. No login, no cloud, no paywall. Fully open source." />
+  <meta property="og:description" content="Your web activity, live on Discord. Free, open source, fully local. No login, no paywall." />
   <meta property="og:type" content="website" />
-  <link rel="icon" type="image/png" href="assets/syncrlogo.png" />
+  <link rel="icon" href="assets/icon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- ── Nav ─────────────────────────────────── -->
-  <nav class="nav" id="nav">
-    <div class="nav-inner">
-      <a class="nav-brand" href="#top">
-        <img src="assets/syncrlogo.png" alt="Syncr logo" />
-        Syncr
-      </a>
-      <div class="nav-links">
+  <!-- Nav -->
+  <header class="nav" id="nav">
+    <div class="nav-in">
+      <a class="brand" href="#top"><img src="assets/syncrlogo.png" alt="" /> Syncr</a>
+      <nav class="nav-links" id="navLinks">
         <a href="#features">Features</a>
-        <a href="#activities">Activities</a>
+        <a href="#gallery">Screenshots</a>
         <a href="#how">How it works</a>
-        <a href="#privacy">Privacy</a>
         <a href="#compare">vs PreMiD</a>
-      </div>
+        <a href="#team">Team</a>
+      </nav>
       <div class="nav-cta">
-        <a class="nav-gh" href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.48v-1.7c-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.49-1.11-1.49-.91-.63.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.36 9.36 0 0112 6.85c.85 0 1.71.12 2.51.34 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9v2.81c0 .27.18.59.69.48A10.02 10.02 0 0022 12.25C22 6.58 17.52 2 12 2z"/></svg>
-          GitHub
+        <a class="nav-gh" href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener" title="Star on GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.34.85 0 1.7.12 2.5.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0022 12c0-5.52-4.48-10-10-10z"/></svg>
+          <span class="nav-star mono" id="navStars">GitHub</span>
         </a>
-        <a class="btn btn-primary" href="#get" style="padding:8px 16px;font-size:14px;">Get Syncr</a>
-      </div>
-      <button class="nav-burger" id="burger" aria-label="Menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/></svg>
-      </button>
-    </div>
-  </nav>
-
-  <span id="top"></span>
-
-  <!-- ── Hero ────────────────────────────────── -->
-  <header class="hero">
-    <div class="wrap">
-      <div class="hero-badge eyebrow">Free &amp; Open Source · No Paywall</div>
-      <h1>Your web activity, <span class="grad">live on Discord</span></h1>
-      <p class="hero-sub">Syncr shows what you're watching, listening to, and browsing right on your Discord profile. The way a desktop app would, straight from Firefox. No Discord login. No cloud servers. Everything stays on your PC.</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="#get">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 2h14v2H5v-2z"/></svg>
-          Get Syncr Free
-        </a>
-        <a class="btn btn-ghost" href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.48v-1.7c-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.49-1.11-1.49-.91-.63.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.36 9.36 0 0112 6.85c.85 0 1.71.12 2.51.34 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9v2.81c0 .27.18.59.69.48A10.02 10.02 0 0022 12.25C22 6.58 17.52 2 12 2z"/></svg>
-          View Source
-        </a>
-      </div>
-      <div class="hero-note">
-        <b>100% local</b><span class="dot"></span><b>No account needed</b><span class="dot"></span><b>MIT-style open source</b>
-      </div>
-
-      <div class="hero-plat">
-        <span class="plat-pill on"><svg viewBox="0 0 24 24" fill="#ff7139"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3a7 7 0 015.5 11.3A6 6 0 0012 13a4 4 0 01-1-7.9A7 7 0 0112 5z"/></svg>Firefox</span>
-        <span class="plat-pill on"><svg viewBox="0 0 24 24" fill="#5865f2"><path d="M20 5.3A17 17 0 0015.7 4l-.2.5a13 13 0 013.8 1.6 12 12 0 00-10.6 0A13 13 0 0112.5 4.5L12.3 4A17 17 0 004 5.3C1.5 9 1 12.6 1.2 16.2A17 17 0 006.4 19l.7-1a11 11 0 01-1.8-.9l.4-.3a12 12 0 0010.6 0l.4.3-1.8.9.7 1a17 17 0 005.2-2.8c.3-4.2-.5-7.8-2.5-10.9zM8.7 14.3c-1 0-1.9-1-1.9-2.1s.8-2.1 1.9-2.1 1.9 1 1.9 2.1-.8 2.1-1.9 2.1zm6.6 0c-1 0-1.9-1-1.9-2.1s.8-2.1 1.9-2.1 1.9 1 1.9 2.1-.9 2.1-1.9 2.1z"/></svg>Discord Desktop</span>
-        <span class="plat-pill"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v12H3zM2 17h20v2H2z"/></svg>Windows</span>
-      </div>
-
-      <!-- Showcase: real demo video of live presence updates -->
-      <div class="showcase reveal">
-        <div class="demo-frame">
-          <video
-            class="demo-video"
-            src="assets/demo.mp4"
-            poster="assets/demo_poster.jpg"
-            autoplay muted loop playsinline preload="metadata"
-            aria-label="Syncr updating a Discord Rich Presence in real time"></video>
-        </div>
+        <a class="btn btn-primary" href="https://github.com/Clawb1t/Syncr/releases" target="_blank" rel="noopener">Get Syncr</a>
+        <button class="burger" id="burger" aria-label="Menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round"/></svg>
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- ── Features ────────────────────────────── -->
-  <section class="section" id="features">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">Why Syncr</span>
-        <h2>Rich presence, done right</h2>
-        <p>Everything you'd expect from a desktop Rich Presence app, running quietly from your browser.</p>
+  <span id="top"></span>
+
+  <!-- Hero -->
+  <section class="hero container">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="hero-badge">
+          <svg class="ff" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 010 18M8 8l3 3-3 3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Firefox extension <b>&middot; v1.0</b>
+        </span>
+        <h1>Your web activity, <span class="accent">live on Discord</span></h1>
+        <p class="hero-sub">Syncr shows what you are watching, listening to, and reading, right on your Discord profile. Free, open, and it never leaves your machine.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="https://github.com/Clawb1t/Syncr/releases" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Get Syncr Free
+          </a>
+          <a class="btn btn-ghost btn-lg" href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener">View source</a>
+        </div>
+        <div class="hero-meta">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg> No Discord login</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg> No paywall, ever</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg> Zero telemetry</span>
+        </div>
       </div>
-      <div class="features">
-        <div class="feature reveal">
-          <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v12H4z" stroke-linejoin="round"/><path d="M2 20h20M9 8l3 3 3-3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <h3>Real-time updates</h3>
-          <p>Titles, artwork, progress bars, and quick links back to what you're doing, updating live as you browse.</p>
-        </div>
-        <div class="feature reveal">
-          <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4" stroke-linecap="round"/></svg></div>
-          <h3>No Discord login</h3>
-          <p>Syncr talks directly to the Discord desktop app on your machine. It never asks for your Discord password or token.</p>
-        </div>
-        <div class="feature reveal">
-          <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <h3>Nothing leaves your PC</h3>
-          <p>No cloud backend. Page data goes Firefox → a small local app → Discord. Nothing is sent to a Syncr server, ever.</p>
-        </div>
-        <div class="feature reveal">
-          <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" stroke-linecap="round"/></svg></div>
-          <h3>You control everything</h3>
-          <p>Open the popup and toggle any site on or off. Only the activities you enable ever show up on your profile.</p>
-        </div>
-        <div class="feature reveal">
-          <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v6m0 0l-2.5-2.5M12 8l2.5-2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0z"/><path d="M8 16h8" stroke-linecap="round"/></svg></div>
-          <h3>Auto-updating activities</h3>
-          <p>New activities appear automatically. Presence files hot-update from GitHub. No full reinstall to get the latest.</p>
-        </div>
-        <div class="feature reveal">
-          <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-3" stroke-linecap="round"/><path d="M16 3h5v5M21 3l-9 9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <h3>Free &amp; open source</h3>
-          <p>No paywalls, no premium tier, no locked features. The whole thing is on GitHub. Add your own sites if you like.</p>
+      <div class="showcase reveal">
+        <div class="showcase-frame">
+          <div class="showcase-bar">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="lbl">Syncr, live</span>
+            <span class="live">Presence active</span>
+          </div>
+          <video src="assets/demo.mp4" poster="assets/demo_poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Activities ──────────────────────────── -->
-  <section class="section" id="activities" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">Supported activities</span>
-        <h2>The sites you already use</h2>
-        <p>Turn each one on or off from the popup. More are added over time, and the list refreshes itself.</p>
+  <!-- Features -->
+  <section class="section container" id="features">
+    <div class="lead">
+      <span class="tag">Why Syncr</span>
+      <h2>Rich presence, done properly</h2>
+      <p>Everything the paid tools gate behind a subscription, given away for free and kept on your own machine.</p>
+    </div>
+    <div class="features">
+      <div class="feature reveal">
+        <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 11-13h-7l0-7z" stroke-linejoin="round"/></svg></div>
+        <h4>Real-time updates</h4>
+        <p>Switch a tab and your profile changes instantly. No polling delay, no stale status hanging around.</p>
       </div>
-      <div class="act-grid">
-        <div class="act-card reveal">
-          <div class="act-logo"><img src="assets/activities/youtube-music.svg" alt="YouTube Music" /></div>
-          <div class="act-body">
-            <div class="act-top"><span class="act-name">YouTube Music</span><span class="act-badge">Listening</span></div>
-            <p class="act-desc">Song title, artist, album art, and a live progress bar. Just like a native music app on your profile.</p>
-            <p class="act-shows"><b>Shows:</b> Now playing · artwork · progress</p>
-          </div>
-        </div>
-        <div class="act-card reveal">
-          <div class="act-logo"><img src="assets/activities/youtube.svg" alt="YouTube" /></div>
-          <div class="act-body">
-            <div class="act-top"><span class="act-name">YouTube</span><span class="act-badge">Watching</span></div>
-            <p class="act-desc">Watching status with the video title and channel name, updated as you move between videos.</p>
-            <p class="act-shows"><b>Shows:</b> Video title · channel</p>
-          </div>
-        </div>
-        <div class="act-card reveal">
-          <div class="act-logo"><img src="assets/activities/reddit.svg" alt="Reddit" /></div>
-          <div class="act-body">
-            <div class="act-top"><span class="act-name">Reddit</span><span class="act-badge">Watching</span></div>
-            <p class="act-desc">Post titles, subreddits, and scores when you're reading, or a general browsing status on feeds and profiles.</p>
-            <p class="act-shows"><b>Shows:</b> Post · subreddit · score, or "Browsing"</p>
-          </div>
-        </div>
-        <div class="act-card reveal">
-          <div class="act-logo"><img src="assets/activities/proton-mail.svg" alt="Proton Mail" /></div>
-          <div class="act-body">
-            <div class="act-top"><span class="act-name">Proton Mail</span><span class="act-badge priv">Privacy-first</span></div>
-            <p class="act-desc">A deliberately generic "checking mail" status. No subjects, no senders, no personal content, ever.</p>
-            <p class="act-shows"><b>Shows:</b> Generic mail status only</p>
-          </div>
-        </div>
+      <div class="feature reveal">
+        <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h4>No Discord login</h4>
+        <p>Syncr talks to the Discord desktop app over local IPC. You never hand a token or password to an extension.</p>
       </div>
-      <div class="act-more reveal">
-        <p>Want another site? Activities are just a content script plus a presence file. <a href="https://github.com/Clawb1t/Syncr#contributing" target="_blank" rel="noopener">Add your own →</a></p>
+      <div class="feature reveal">
+        <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3" stroke-linecap="round"/></svg></div>
+        <h4>Nothing leaves your PC</h4>
+        <p>No accounts, no servers we run, no analytics. The whole pipeline lives between your browser and your desktop.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3m10-10h-3M5 12H2m15.5-6.5l-2 2m-9 9l-2 2m13 0l-2-2m-9-9l-2-2" stroke-linecap="round"/></svg></div>
+        <h4>You control every site</h4>
+        <p>Toggle each activity on or off from the popup. Share only what you want, hide the rest in one tap.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 0114-5m2-3v5h-5M20 12a8 8 0 01-14 5m-2 3v-5h5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h4>Built-in updater</h4>
+        <p>Syncr checks for new versions and updates itself in place. No waiting on a store review queue.</p>
+      </div>
+      <div class="feature reveal">
+        <div class="feature-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6.5 7 .6-5.3 4.6 1.6 6.9L12 17l-6.9 3.6 1.6-6.9L1.4 9.1l7-.6L12 2z" stroke-linejoin="round"/></svg></div>
+        <h4>Free and open source</h4>
+        <p>Every line is on GitHub under a permissive license. Read it, fork it, ship your own activities.</p>
       </div>
     </div>
   </section>
 
-  <!-- ── How it works ────────────────────────── -->
-  <section class="section" id="how">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">How it works</span>
-        <h2>Two small pieces, fully local</h2>
-        <p>Your page never talks to a server we run. The whole chain lives on your machine.</p>
-      </div>
-      <div class="flow">
-        <div class="flow-step reveal">
-          <div class="flow-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v12H4z" stroke-linejoin="round"/><path d="M2 20h20" stroke-linecap="round"/></svg></div>
-          <h4>Firefox tab</h4>
-          <p>You browse a supported site like you normally would.</p>
-        </div>
-        <div class="flow-step reveal">
-          <div class="flow-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3v18M4 8h5M4 14h5" stroke-linecap="round"/><rect x="13" y="4" width="7" height="16" rx="1.5"/></svg></div>
-          <h4>Content script</h4>
-          <p>A tiny script reads just the fields needed for presence, right there in the page.</p>
-        </div>
-        <div class="flow-step reveal">
-          <div class="flow-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M13 15h4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <h4>Local host app</h4>
-          <p>A small native app on your PC maps it to a Discord activity, then hands it to the Discord desktop app over local IPC. No login, no token.</p>
-        </div>
-        <div class="flow-step reveal">
-          <div class="flow-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="12" r="1.4" fill="currentColor"/><circle cx="15" cy="12" r="1.4" fill="currentColor"/><path d="M7 5h10a3 3 0 013 3v11l-4-3H7a3 3 0 01-3-3V8a3 3 0 013-3z" stroke-linejoin="round"/></svg></div>
-          <h4>Discord profile</h4>
-          <p>Your friends see it live, exactly like a desktop app would show it.</p>
-        </div>
-      </div>
+  <!-- Gallery -->
+  <section class="section container" id="gallery">
+    <div class="lead">
+      <span class="tag">See it in action</span>
+      <h2>Real screenshots, no mockups</h2>
+      <p>This is Syncr actually running: the presence on your Discord profile, and the popup you click.</p>
     </div>
-  </section>
 
-  <!-- ── Privacy ─────────────────────────────── -->
-  <section class="section" id="privacy">
-    <div class="wrap">
-      <div class="privacy reveal">
-        <div>
-          <span class="eyebrow privacy-badge">Privacy by design</span>
-          <h2>Built to stay on your machine</h2>
-          <p>Rich presence should not cost you your data. Syncr is local-first from the ground up, and the code is right there for you to check.</p>
-        </div>
-        <ul class="privacy-list">
-          <li>
-            <span class="privacy-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span><span class="lead">No Discord account login</span>Talks straight to the Discord desktop app locally. Never handles your credentials.</span>
-          </li>
-          <li>
-            <span class="privacy-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span><span class="lead">No cloud backend</span>Nothing is uploaded to a Syncr server. There isn't one. The data path is entirely on your PC.</span>
-          </li>
-          <li>
-            <span class="privacy-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span><span class="lead">You choose what to share</span>Disable any activity you don't want on your profile with a single toggle.</span>
-          </li>
-          <li>
-            <span class="privacy-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span><span class="lead">Privacy-conscious activities</span>Sensitive sites like email use deliberately generic labels and never expose details.</span>
-          </li>
+    <div class="gallery-discord reveal">
+      <div class="gd-copy">
+        <span class="gd-kicker">On your profile</span>
+        <h3>What your friends see</h3>
+        <p>The moment a supported tab is open, your Discord profile lights up with what you are doing. Live, with artwork and detail, just like a native desktop app.</p>
+        <ul class="gd-list">
+          <li><span class="tick"></span> Updates the second you switch tabs</li>
+          <li><span class="tick"></span> Real cover art and titles</li>
+          <li><span class="tick"></span> Clears itself when you stop</li>
         </ul>
       </div>
+      <div class="gd-shots">
+        <figure class="shot-phone"><img src="assets/shots/discord-1.png" alt="Syncr presence shown on a Discord profile" loading="lazy" /></figure>
+        <figure class="shot-phone alt"><img src="assets/shots/discord-2.png" alt="A second Syncr presence on a Discord profile" loading="lazy" /></figure>
+      </div>
+    </div>
+
+    <div class="popup-row">
+      <article class="pop-card reveal">
+        <figure class="pop-frame"><img src="assets/shots/sites.png" alt="Syncr popup toggling supported sites" loading="lazy" /></figure>
+        <div class="pop-cap">
+          <h4><span class="pop-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="10" rx="5"/><circle cx="9" cy="12" r="3" fill="currentColor" stroke="none"/></svg></span> Toggle any site</h4>
+          <p>Flip individual activities on or off in one tap. Only share what you want, when you want it.</p>
+        </div>
+      </article>
+      <article class="pop-card reveal">
+        <figure class="pop-frame"><img src="assets/shots/updater.png" alt="Syncr popup built-in updater" loading="lazy" /></figure>
+        <div class="pop-cap">
+          <h4><span class="pop-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 0114-5m2-3v5h-5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12a8 8 0 01-14 5m-2 3v-5h5" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Built-in updater</h4>
+          <p>Syncr checks for new versions itself and updates in place. No store review queue, no waiting around.</p>
+        </div>
+      </article>
+      <article class="pop-card reveal">
+        <figure class="pop-frame"><img src="assets/shots/general.png" alt="Syncr popup main view" loading="lazy" /></figure>
+        <div class="pop-cap">
+          <h4><span class="pop-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9" stroke-linecap="round"/></svg></span> Clean dashboard</h4>
+          <p>One tidy panel for your status, your sites, and your settings. Dark, quiet, out of your way.</p>
+        </div>
+      </article>
     </div>
   </section>
 
-  <!-- ── Comparison ──────────────────────────── -->
-  <section class="section" id="compare" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">The honest comparison</span>
-        <h2>Syncr vs PreMiD</h2>
-        <p>Both talk to the Discord desktop app, so neither makes you paste in a token. The difference is what sits behind a paywall, an ad banner, or a login prompt. Every PreMiD figure below comes straight from their own plans page.</p>
+  <!-- How it works -->
+  <section class="section container" id="how">
+    <div class="lead">
+      <span class="tag">How it works</span>
+      <h2>Two small pieces, fully local</h2>
+      <p>Your page never talks to a server we run. The whole chain lives on your own machine.</p>
+    </div>
+    <div class="flow">
+      <div class="flow-step reveal">
+        <div class="flow-num mono">01</div>
+        <div class="flow-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M3 20h18" stroke-linecap="round"/></svg></div>
+        <h4>Firefox tab</h4>
+        <p>You browse a supported site like you normally would.</p>
       </div>
-      <div class="compare reveal">
-        <div class="compare-row compare-head">
-          <div class="c-feat">Feature</div>
-          <div class="c-syncr"><img src="assets/syncrlogo.png" alt="" /> Syncr</div>
-          <div class="c-other">PreMiD</div>
-        </div>
-
-        <div class="compare-row">
-          <div class="c-feat">Price</div>
-          <div class="c-cell c-syncr-cell"><span class="pill good">Free forever</span></div>
-          <div class="c-cell c-other-cell"><span class="pill warn">Free, or 2,49 € / mo</span></div>
-        </div>
-
-        <div class="compare-row">
-          <div class="c-feat">
-            Status clears instantly
-            <span class="c-note">PreMiD free users wait up to 20 minutes for a stale status to disappear.</span>
-          </div>
-          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-          <div class="c-cell c-other-cell"><span class="pill warn">Premium only</span><span class="c-sub">20 min wait on free</span></div>
-        </div>
-
-        <div class="compare-row">
-          <div class="c-feat">
-            No Discord login prompt
-            <span class="c-note">Syncr speaks to the desktop app over local IPC. PreMiD asks you to sign into Discord inside the extension.</span>
-          </div>
-          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-          <div class="c-cell"><span class="c-no" title="No"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg></span><span class="c-sub">Sign in required</span></div>
-        </div>
-
-        <div class="compare-row">
-          <div class="c-feat">
-            No ads
-            <span class="c-note">PreMiD's free tier is funded with Google AdSense and can record session replays.</span>
-          </div>
-          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-          <div class="c-cell c-other-cell"><span class="pill warn">Ads on free tier</span></div>
-        </div>
-
-        <div class="compare-row">
-          <div class="c-feat">
-            Nothing leaves your PC
-            <span class="c-note">No Syncr server exists. PreMiD routes status clearing and sync through their own infrastructure.</span>
-          </div>
-          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-          <div class="c-cell c-other-cell"><span class="c-sub">Server-side features</span></div>
-        </div>
-
-        <div class="compare-row">
-          <div class="c-feat">Multi-account support</div>
-          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-          <div class="c-cell c-other-cell"><span class="pill warn">Premium only</span></div>
-        </div>
-
-        <div class="compare-row">
-          <div class="c-feat">
-            Self-hosted services
-            <span class="c-note">Point an activity at your own Plex or Jellyfin. PreMiD gates custom domains behind Premium.</span>
-          </div>
-          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-          <div class="c-cell c-other-cell"><span class="pill warn">Premium only</span></div>
-        </div>
-
-        <div class="compare-row">
-          <div class="c-feat">Fully open source</div>
-          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-          <div class="c-cell c-other-cell"><span class="c-sub">Activities only</span></div>
-        </div>
-
-        <div class="compare-row">
-          <div class="c-feat">Add your own sites</div>
-          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-        </div>
-
-        <div class="compare-row">
-          <div class="c-feat">Supported services today</div>
-          <div class="c-cell c-syncr-cell"><span class="c-sub">4 and growing</span></div>
-          <div class="c-cell c-other-cell"><span class="c-sub">1300+</span></div>
-        </div>
+      <div class="flow-step reveal">
+        <div class="flow-num mono">02</div>
+        <div class="flow-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3v18M4 7h4M4 12h4M4 17h4" stroke-linecap="round"/><rect x="12" y="4" width="8" height="16" rx="1.5"/></svg></div>
+        <h4>Content script</h4>
+        <p>A tiny script reads just the fields needed for presence, right there in the page.</p>
+      </div>
+      <div class="flow-step reveal">
+        <div class="flow-num mono">03</div>
+        <div class="flow-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M13 15h4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h4>Local host app</h4>
+        <p>A small native app maps it to a Discord activity, then hands it to the desktop app over IPC. No login, no token.</p>
+      </div>
+      <div class="flow-step reveal">
+        <div class="flow-num mono">04</div>
+        <div class="flow-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 5h10a3 3 0 013 3v11l-4-3H7a3 3 0 01-3-3V8a3 3 0 013-3z" stroke-linejoin="round"/><circle cx="9.5" cy="12" r="1.2" fill="currentColor"/><circle cx="14.5" cy="12" r="1.2" fill="currentColor"/></svg></div>
+        <h4>Discord profile</h4>
+        <p>Your friends see a live, detailed status. That is the whole trip.</p>
       </div>
     </div>
   </section>
 
-  <!-- ── Get / CTA ───────────────────────────── -->
-  <section class="section" id="get">
-    <div class="wrap">
-      <div class="cta-band reveal">
-        <h2>Get Syncr</h2>
-        <p>Install the Firefox extension, run Syncr Setup once, and your profile lights up. Free forever, open source, yours to tinker with.</p>
-        <div class="hero-cta">
-          <a class="btn btn-primary" href="https://github.com/Clawb1t/Syncr/releases" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="#ff7139"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 3a7 7 0 015.5 11.3A6 6 0 0012 13a4 4 0 01-1-7.9A7 7 0 0112 5z"/></svg>
-            Add to Firefox
-          </a>
-          <a class="btn btn-ghost" href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.48v-1.7c-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.49-1.11-1.49-.91-.63.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.36 9.36 0 0112 6.85c.85 0 1.71.12 2.51.34 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9v2.81c0 .27.18.59.69.48A10.02 10.02 0 0022 12.25C22 6.58 17.52 2 12 2z"/></svg>
-            Read the docs
-          </a>
+  <!-- Activities -->
+  <section class="section container" id="activities">
+    <div class="lead">
+      <span class="tag">Supported sites</span>
+      <h2>The sites you already use</h2>
+      <p>Four activities today, each reading only what it needs. More on the way, and anyone can add their own.</p>
+    </div>
+    <div class="acts">
+      <div class="act reveal">
+        <div class="act-logo"><img src="assets/activities/youtube-music.svg" alt="YouTube Music" /></div>
+        <div>
+          <div class="act-top"><span class="act-name">YouTube Music</span><span class="act-badge listen">Listening</span></div>
+          <p class="act-desc">Now playing with track, artist, album art, and a live progress bar.</p>
+          <p class="act-shows"><b>Shows:</b> Track &middot; artist &middot; artwork &middot; progress</p>
+        </div>
+      </div>
+      <div class="act reveal">
+        <div class="act-logo"><img src="assets/activities/youtube.svg" alt="YouTube" /></div>
+        <div>
+          <div class="act-top"><span class="act-name">YouTube</span><span class="act-badge watch">Watching</span></div>
+          <p class="act-desc">The video you are watching, with its title and channel.</p>
+          <p class="act-shows"><b>Shows:</b> Video title &middot; channel</p>
+        </div>
+      </div>
+      <div class="act reveal">
+        <div class="act-logo"><img src="assets/activities/reddit.svg" alt="Reddit" /></div>
+        <div>
+          <div class="act-top"><span class="act-name">Reddit</span><span class="act-badge watch">Browsing</span></div>
+          <p class="act-desc">The post or subreddit you are on, or a simple browsing status.</p>
+          <p class="act-shows"><b>Shows:</b> Post &middot; subreddit, or "Browsing"</p>
+        </div>
+      </div>
+      <div class="act reveal">
+        <div class="act-logo"><img src="assets/activities/proton-mail.svg" alt="Proton Mail" /></div>
+        <div>
+          <div class="act-top"><span class="act-name">Proton Mail</span><span class="act-badge priv">Privacy-first</span></div>
+          <p class="act-desc">A deliberately generic "checking mail" status. No subjects, no senders, ever.</p>
+          <p class="act-shows"><b>Shows:</b> Generic mail status only</p>
+        </div>
+      </div>
+    </div>
+    <p class="act-more reveal">Want another site? An activity is just a content script plus a presence file. <a href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener">Add your own on GitHub &rarr;</a></p>
+  </section>
+
+  <!-- Comparison -->
+  <section class="section container" id="compare">
+    <div class="lead">
+      <span class="tag">Honest comparison</span>
+      <h2>Syncr vs PreMiD</h2>
+      <p>PreMiD is the popular option, and it is genuinely capable. Here is where the two actually differ, no spin.</p>
+    </div>
+    <div class="compare reveal">
+      <div class="crow head">
+        <div>Feature</div>
+        <div class="ccol-syncr"><img src="assets/syncrlogo.png" alt="" /> Syncr</div>
+        <div class="ccol-other">PreMiD</div>
+      </div>
+      <div class="crow">
+        <div class="cfeat"><div class="cf-t">Price</div><div class="cf-n">What you pay to use it</div></div>
+        <div class="ccell syncr"><span class="pill good">Free forever</span></div>
+        <div class="ccell other"><span class="pill warn">Free, or 2,49 &euro;/mo</span></div>
+      </div>
+      <div class="crow">
+        <div class="cfeat"><div class="cf-t">Status clears instantly</div><div class="cf-n">When you close the tab</div></div>
+        <div class="ccell syncr"><span class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="ccell other"><span class="pill bad">Up to 20 min on free</span></div>
+      </div>
+      <div class="crow">
+        <div class="cfeat"><div class="cf-t">No Discord login prompt</div><div class="cf-n">Syncr uses local IPC to the desktop app</div></div>
+        <div class="ccell syncr"><span class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="ccell other"><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg></span></div>
+      </div>
+      <div class="crow">
+        <div class="cfeat"><div class="cf-t">No ads or tracking</div><div class="cf-n">On the free tier</div></div>
+        <div class="ccell syncr"><span class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="ccell other"><span class="pill bad">Ads on free tier</span></div>
+      </div>
+      <div class="crow">
+        <div class="cfeat"><div class="cf-t">Fully local, no servers</div><div class="cf-n">Nothing routed through a company</div></div>
+        <div class="ccell syncr"><span class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="ccell other"><span class="pill warn">Premium for instant</span></div>
+      </div>
+      <div class="crow">
+        <div class="cfeat"><div class="cf-t">Open source</div><div class="cf-n">Read and fork the whole thing</div></div>
+        <div class="ccell syncr"><span class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+        <div class="ccell other"><span class="pill warn">Partly</span></div>
+      </div>
+      <div class="crow">
+        <div class="cfeat"><div class="cf-t">Supported services</div><div class="cf-n">Where PreMiD's head start shows</div></div>
+        <div class="ccell syncr">4, growing</div>
+        <div class="ccell other">1300+</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team / contributors (LIVE from GitHub) -->
+  <section class="section container" id="team">
+    <div class="lead">
+      <span class="tag">The people</span>
+      <h2>Made by humans, in the open</h2>
+      <p>Syncr is built by real contributors on GitHub. This list is pulled live from the repo, right now.</p>
+    </div>
+    <div class="people" id="people" data-repo="Clawb1t/Syncr">
+      <div class="people-load" id="peopleLoad">Loading contributors from GitHub&hellip;</div>
+    </div>
+
+    <div class="made">
+      <div class="made-block">
+        <div class="ml">The extension</div>
+        <div class="made-who">
+          <img src="assets/people/clawb1t.png" alt="ClawB1t" />
+          <div>
+            <div class="mn"><a href="https://github.com/Clawb1t" target="_blank" rel="noopener">ClawB1t</a></div>
+            <div class="ms">Creator and maintainer of Syncr</div>
+          </div>
+        </div>
+      </div>
+      <div class="made-block">
+        <div class="ml">This website</div>
+        <div class="made-who">
+          <img src="assets/people/tay.png" alt="Tay März" />
+          <div>
+            <div class="mn"><a href="https://taymaerz.de" target="_blank" rel="noopener">Tay März</a></div>
+            <div class="ms">Designed and built with &lt;3 &middot; taymaerz.de</div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Footer ──────────────────────────────── -->
+  <!-- CTA -->
+  <section class="section-sm container">
+    <div class="cta reveal">
+      <h2>Put your activity on Discord</h2>
+      <p>Free, open source, and it stays on your machine. Grab the latest release and you are live in a minute.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary btn-lg" href="https://github.com/Clawb1t/Syncr/releases" target="_blank" rel="noopener">Get Syncr for Firefox</a>
+        <a class="btn btn-ghost btn-lg" href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener">Read the docs</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <footer class="footer">
-    <div class="wrap">
-      <div class="footer-inner">
+    <div class="container">
+      <div class="footer-in">
         <div class="footer-brand">
-          <a class="nav-brand" href="#top"><img src="assets/syncrlogo.png" alt="Syncr" /> Syncr</a>
-          <p>Discord Rich Presence for Firefox. Local-first, open source, and free of paywalls. Show what you're doing on the web, on your terms.</p>
+          <a class="brand" href="#top"><img src="assets/syncrlogo.png" alt="" /> Syncr</a>
+          <p>Discord Rich Presence for Firefox. Free, open source, and fully local.</p>
         </div>
-        <div class="footer-cols">
-          <div class="footer-col">
-            <h5>Product</h5>
-            <a href="#features">Features</a>
-            <a href="#activities">Activities</a>
-            <a href="#how">How it works</a>
-            <a href="#privacy">Privacy</a>
-          </div>
-          <div class="footer-col">
-            <h5>Project</h5>
-            <a href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener">GitHub</a>
-            <a href="https://github.com/Clawb1t/Syncr/releases" target="_blank" rel="noopener">Releases</a>
-            <a href="https://github.com/Clawb1t/Syncr#contributing" target="_blank" rel="noopener">Contribute</a>
-            <a href="https://github.com/Clawb1t/Syncr/issues" target="_blank" rel="noopener">Report an issue</a>
-          </div>
+        <div class="fcol">
+          <h5>Product</h5>
+          <a href="#features">Features</a>
+          <a href="#gallery">Screenshots</a>
+          <a href="#how">How it works</a>
+          <a href="#compare">vs PreMiD</a>
+        </div>
+        <div class="fcol">
+          <h5>Project</h5>
+          <a href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/Clawb1t/Syncr/releases" target="_blank" rel="noopener">Releases</a>
+          <a href="https://github.com/Clawb1t/Syncr/graphs/contributors" target="_blank" rel="noopener">Contributors</a>
+          <a href="https://github.com/Clawb1t/Syncr/issues" target="_blank" rel="noopener">Report an issue</a>
+        </div>
+        <div class="fcol">
+          <h5>People</h5>
+          <a href="https://github.com/Clawb1t" target="_blank" rel="noopener">ClawB1t</a>
+          <a href="https://taymaerz.de" target="_blank" rel="noopener">Tay März</a>
         </div>
       </div>
-      <div class="footer-bottom">
-        <span>Syncr is open source. Not affiliated with Discord or Mozilla.</span>
-        <span>Made with <span class="heart">♥</span> for people tired of paywalls</span>
+      <div class="footer-bar">
+        <span>Syncr is built by <a href="https://github.com/Clawb1t" target="_blank" rel="noopener">ClawB1t</a> and contributors.</span>
+        <span>Website by <a href="https://taymaerz.de" target="_blank" rel="noopener">Tay März</a>, with &lt;3</span>
       </div>
     </div>
   </footer>
