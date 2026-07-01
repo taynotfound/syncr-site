@@ -328,7 +328,7 @@
     }
 
     /* fetch registry + all metadata */
-    fetch(RAW + '../registry.json')
+    fetch(RAW + 'registry.json')
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (reg) {
         if (!reg || !Array.isArray(reg.activities)) throw new Error('no registry');
