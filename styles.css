@@ -1,5 +1,5 @@
 /* ============================================================
-   Syncr — landing page
+   Syncr landing page
    Design tokens lifted 1:1 from the extension popup (popup.css)
    ============================================================ */
 :root {
@@ -277,6 +277,28 @@ img, svg { display: block; max-width: 100%; }
 .c-syncr-cell { color: var(--text-1); font-weight: 600; }
 .c-other-cell { color: var(--text-3); }
 
+/* comparison: notes, sub-labels, pills, column emphasis */
+.compare { max-width: 860px; }
+.compare-row { grid-template-columns: 2fr 1fr 1fr; }
+.c-feat { display: flex; flex-direction: column; gap: 3px; }
+.c-note { font-weight: 400; font-size: 12px; line-height: 1.45; color: var(--text-3); max-width: 42ch; }
+.c-cell { flex-direction: column; gap: 5px; }
+.c-sub { font-size: 11.5px; color: var(--text-3); font-weight: 500; }
+.pill {
+  display: inline-block; padding: 4px 10px; border-radius: 999px;
+  font-size: 12px; font-weight: 700; letter-spacing: .1px; white-space: nowrap;
+}
+.pill.good { background: rgba(59,214,140,.12); color: var(--green-br); border: 1px solid rgba(59,214,140,.25); }
+.pill.warn { background: rgba(240,138,90,.10); color: #f0a878; border: 1px solid rgba(240,138,90,.22); }
+/* highlight the Syncr column down the whole table */
+.compare-row > .c-syncr-cell,
+.compare-row > .c-cell:nth-child(2) { background: rgba(86,98,246,.05); }
+.compare-head .c-syncr { background: rgba(86,98,246,.09); border-radius: 0; }
+.compare-foot {
+  max-width: 760px; margin: 22px auto 0; text-align: center;
+  font-size: 13.5px; line-height: 1.6; color: var(--text-3);
+}
+
 /* ── CTA band ────────────────────────────────── */
 .cta-band { text-align: center; background: linear-gradient(135deg, rgba(86,98,246,.16), rgba(86,98,246,.04)); border: 1px solid rgba(86,98,246,.28); border-radius: var(--r-xl); padding: 60px 40px; }
 .cta-band h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 850; letter-spacing: -.6px; margin-bottom: 14px; }
@@ -318,4 +340,46 @@ img, svg { display: block; max-width: 100%; }
   .hero { padding: 120px 0 60px; }
   .footer-inner { flex-direction: column; gap: 30px; }
   .showcase { gap: 40px; }
+}
+
+/* ── Demo video showcase ──────────────────────── */
+.demo-frame {
+  position: relative;
+  max-width: 620px;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #000;
+  border: 1px solid var(--border-2);
+  box-shadow: 0 40px 90px -30px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.02) inset;
+  cursor: pointer;
+  aspect-ratio: 794 / 738;
+}
+.demo-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.demo-frame::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  box-shadow: 0 0 120px 20px rgba(86,98,246,.10) inset;
+  border-radius: 20px;
+}
+.demo-frame.paused::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 2;
+  background: rgba(6,7,10,.42);
+}
+.demo-frame.paused::after {
+  content: "▶";
+  position: absolute; z-index: 3;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  color: #fff; font-size: 34px;
+  width: 74px; height: 74px; line-height: 74px; text-align: center;
+  background: rgba(86,98,246,.9); border-radius: 50%;
+  box-shadow: 0 12px 30px -6px rgba(86,98,246,.7);
+  padding-left: 5px; box-sizing: border-box;
 }

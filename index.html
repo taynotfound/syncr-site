@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Syncr — Discord Rich Presence for Firefox</title>
+  <title>Syncr, Discord Rich Presence for Firefox</title>
   <meta name="description" content="Syncr shows what you're doing on the web right on your Discord profile. YouTube, YouTube Music, Reddit and more. No login, no cloud, no paywall. Everything stays on your PC." />
-  <meta property="og:title" content="Syncr — Discord Rich Presence for Firefox" />
+  <meta property="og:title" content="Syncr, Discord Rich Presence for Firefox" />
   <meta property="og:description" content="Show your web activity on Discord. No login, no cloud, no paywall. Fully open source." />
   <meta property="og:type" content="website" />
   <link rel="icon" type="image/png" href="assets/syncrlogo.png" />
@@ -68,64 +68,15 @@
         <span class="plat-pill"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v12H3zM2 17h20v2H2z"/></svg>Windows</span>
       </div>
 
-      <!-- Showcase: Discord presence card + Syncr popup -->
-      <div class="showcase">
-        <div class="discord-card">
-          <div class="dc-banner"></div>
-          <div class="dc-body">
-            <div class="dc-avatar"><img src="assets/syncrlogo.png" alt="avatar" /></div>
-            <div class="dc-name">you</div>
-            <div class="dc-tag">Listening on Syncr</div>
-            <div class="dc-presence">
-              <div class="dc-presence-h">Listening to YouTube Music</div>
-              <div class="dc-act">
-                <div class="dc-art" id="dc-art">
-                  <img src="assets/activities/youtube-music.svg" alt="art" id="dc-art-img" />
-                  <span class="mini"><img src="assets/activities/youtube-music.svg" alt="" id="dc-mini-img" /></span>
-                </div>
-                <div class="dc-meta">
-                  <span class="t1" id="dc-t1">Midnight City</span>
-                  <span class="t2" id="dc-t2">M83</span>
-                  <span class="t3" id="dc-t3">Hurry Up, We're Dreaming</span>
-                  <div class="dc-bar">
-                    <div class="dc-bar-track"><div class="dc-bar-fill"></div></div>
-                    <div class="dc-bar-time"><span>1:47</span><span>4:03</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="popup-mock">
-          <div class="pm-head">
-            <div class="pm-brand"><img src="assets/icon.svg" alt="" /> Syncr</div>
-            <div class="pm-dots"><i class="live"></i><i></i></div>
-          </div>
-          <div class="pm-live">
-            <div class="pm-logo"><img src="assets/activities/youtube-music.svg" alt="" /></div>
-            <div class="pm-info">
-              <div class="n">YouTube Music</div>
-              <div class="s" id="pm-live-title">Midnight City — M83</div>
-              <div class="l">Transmitting to Discord</div>
-            </div>
-            <div class="live-dot"></div>
-          </div>
-          <div class="pm-row">
-            <div class="pm-logo"><img src="assets/activities/youtube.svg" alt="" /></div>
-            <div class="nm">YouTube</div>
-            <div class="pm-toggle on"></div>
-          </div>
-          <div class="pm-row">
-            <div class="pm-logo"><img src="assets/activities/reddit.svg" alt="" /></div>
-            <div class="nm">Reddit</div>
-            <div class="pm-toggle on"></div>
-          </div>
-          <div class="pm-row">
-            <div class="pm-logo"><img src="assets/activities/proton-mail.svg" alt="" /></div>
-            <div class="nm">Proton Mail</div>
-            <div class="pm-toggle"></div>
-          </div>
+      <!-- Showcase: real demo video of live presence updates -->
+      <div class="showcase reveal">
+        <div class="demo-frame">
+          <video
+            class="demo-video"
+            src="assets/demo.mp4"
+            poster="assets/demo_poster.jpg"
+            autoplay muted loop playsinline preload="metadata"
+            aria-label="Syncr updating a Discord Rich Presence in real time"></video>
         </div>
       </div>
     </div>
@@ -244,7 +195,7 @@
         <div class="flow-step reveal">
           <div class="flow-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M13 15h4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <h4>Local host app</h4>
-          <p>A small native app on your PC formats it into a Discord Rich Presence.</p>
+          <p>A small native app on your PC maps it to a Discord activity, then hands it to the Discord desktop app over local IPC. No login, no token.</p>
         </div>
         <div class="flow-step reveal">
           <div class="flow-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="12" r="1.4" fill="currentColor"/><circle cx="15" cy="12" r="1.4" fill="currentColor"/><path d="M7 5h10a3 3 0 013 3v11l-4-3H7a3 3 0 01-3-3V8a3 3 0 013-3z" stroke-linejoin="round"/></svg></div>
@@ -291,44 +242,89 @@
     <div class="wrap">
       <div class="section-head reveal">
         <span class="eyebrow">The honest comparison</span>
-        <h2>Syncr vs the paywall</h2>
-        <p>Rich presence should be free. Here's how Syncr stacks up against the usual option.</p>
+        <h2>Syncr vs PreMiD</h2>
+        <p>Both talk to the Discord desktop app, so neither makes you paste in a token. The difference is what sits behind a paywall, an ad banner, or a login prompt. Every PreMiD figure below comes straight from their own plans page.</p>
       </div>
       <div class="compare reveal">
         <div class="compare-row compare-head">
-          <div>Feature</div>
+          <div class="c-feat">Feature</div>
           <div class="c-syncr"><img src="assets/syncrlogo.png" alt="" /> Syncr</div>
-          <div class="c-other">Others</div>
+          <div class="c-other">PreMiD</div>
         </div>
+
         <div class="compare-row">
           <div class="c-feat">Price</div>
-          <div class="c-cell c-syncr-cell c-yes">Always free</div>
-          <div class="c-cell c-other-cell">Premium tiers</div>
+          <div class="c-cell c-syncr-cell"><span class="pill good">Free forever</span></div>
+          <div class="c-cell c-other-cell"><span class="pill warn">Free, or 2,49 € / mo</span></div>
         </div>
+
         <div class="compare-row">
-          <div class="c-feat">Open source</div>
-          <div class="c-cell"><span class="c-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-          <div class="c-cell c-other-cell">Partly</div>
+          <div class="c-feat">
+            Status clears instantly
+            <span class="c-note">PreMiD free users wait up to 20 minutes for a stale status to disappear.</span>
+          </div>
+          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          <div class="c-cell c-other-cell"><span class="pill warn">Premium only</span><span class="c-sub">20 min wait on free</span></div>
         </div>
+
         <div class="compare-row">
-          <div class="c-feat">Works without login</div>
-          <div class="c-cell"><span class="c-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-          <div class="c-cell"><span class="c-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          <div class="c-feat">
+            No Discord login prompt
+            <span class="c-note">Syncr speaks to the desktop app over local IPC. PreMiD asks you to sign into Discord inside the extension.</span>
+          </div>
+          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          <div class="c-cell"><span class="c-no" title="No"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg></span><span class="c-sub">Sign in required</span></div>
         </div>
+
         <div class="compare-row">
-          <div class="c-feat">Locked "premium" activities</div>
-          <div class="c-cell c-syncr-cell c-yes">None</div>
-          <div class="c-cell"><span class="c-no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg></span></div>
+          <div class="c-feat">
+            No ads
+            <span class="c-note">PreMiD's free tier is funded with Google AdSense and can record session replays.</span>
+          </div>
+          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          <div class="c-cell c-other-cell"><span class="pill warn">Ads on free tier</span></div>
         </div>
+
+        <div class="compare-row">
+          <div class="c-feat">
+            Nothing leaves your PC
+            <span class="c-note">No Syncr server exists. PreMiD routes status clearing and sync through their own infrastructure.</span>
+          </div>
+          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          <div class="c-cell c-other-cell"><span class="c-sub">Server-side features</span></div>
+        </div>
+
+        <div class="compare-row">
+          <div class="c-feat">Multi-account support</div>
+          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          <div class="c-cell c-other-cell"><span class="pill warn">Premium only</span></div>
+        </div>
+
+        <div class="compare-row">
+          <div class="c-feat">
+            Self-hosted services
+            <span class="c-note">Point an activity at your own Plex or Jellyfin. PreMiD gates custom domains behind Premium.</span>
+          </div>
+          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          <div class="c-cell c-other-cell"><span class="pill warn">Premium only</span></div>
+        </div>
+
+        <div class="compare-row">
+          <div class="c-feat">Fully open source</div>
+          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          <div class="c-cell c-other-cell"><span class="c-sub">Activities only</span></div>
+        </div>
+
         <div class="compare-row">
           <div class="c-feat">Add your own sites</div>
-          <div class="c-cell"><span class="c-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-          <div class="c-cell c-other-cell">Limited</div>
+          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          <div class="c-cell"><span class="c-yes" title="Yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
         </div>
+
         <div class="compare-row">
-          <div class="c-feat">Data stays local</div>
-          <div class="c-cell"><span class="c-yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-          <div class="c-cell c-other-cell">Varies</div>
+          <div class="c-feat">Supported services today</div>
+          <div class="c-cell c-syncr-cell"><span class="c-sub">4 and growing</span></div>
+          <div class="c-cell c-other-cell"><span class="c-sub">1300+</span></div>
         </div>
       </div>
     </div>
