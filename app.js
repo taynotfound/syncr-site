@@ -120,8 +120,169 @@
       }
     });
 
+  /* ----------------------------------------------------------
+     SUBPAGES, all guarded so this stays a no-op on the home page.
+     ---------------------------------------------------------- */
+
+  /* Shared: latest release, feeds #footVersion, #relVersion etc. */
+  var footVer = $('#footVersion');
+  var relVersion = $('#relVersion');
+  if (footVer || relVersion) {
+    fetch(API + '/releases/latest', { headers: { 'Accept': 'application/vnd.github+json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d || !d.tag_name) { if (footVer) footVer.textContent = 'Latest on GitHub'; return; }
+        var tag = d.tag_name;
+        var name = d.name || ('Syncr ' + tag);
+        var when = d.published_at ? new Date(d.published_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '';
+        if (footVer) footVer.textContent = 'Latest release ' + tag + (when ? ' \u00b7 ' + when : '');
+        if (relVersion) relVersion.textContent = tag;
+        var relName = $('#relName'); if (relName) relName.textContent = name;
+        var relMeta = $('#relMeta'); if (relMeta) relMeta.textContent = when ? ('Published ' + when + ' \u00b7 for Firefox') : 'Latest build for Firefox';
+        var relDl = $('#relDownload');
+        if (relDl && d.assets && d.assets.length) {
+          var xpi = d.assets.filter(function (a) { return /\.(xpi|zip)$/i.test(a.name); })[0];
+          if (xpi) relDl.href = xpi.browser_download_url;
+        }
+        var relHost = $('#relHost');
+        if (relHost && d.assets && d.assets.length) {
+          var host = d.assets.filter(function (a) { return /setup.*\.exe$/i.test(a.name); })[0]
+            || d.assets.filter(function (a) { return /host.*\.exe$/i.test(a.name); })[0]
+            || d.assets.filter(function (a) { return /\.exe$/i.test(a.name); })[0];
+          if (host) relHost.href = host.browser_download_url;
+        }
+      })
+      .catch(function () { if (footVer) footVer.textContent = 'Latest on GitHub'; });
+  }
+
   /* -- Year in footer, if present -- */
   var y = $('#year');
   if (y) y.textContent = new Date().getFullYear();
+
+  /* ----------------------------------------------------------
+     Changelog page: tabbed, live markdown from the repo docs.
+     ---------------------------------------------------------- */
+  var clTabs = $$('.cl-tab');
+  if (clTabs.length) {
+    var loaded = {};
+
+    function mdInline(s) {
+      s = esc(s);
+      s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+      s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function (m, t, u) {
+        return '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + t + '</a>';
+      });
+      return s;
+    }
+
+    function renderMd(md) {
+      var lines = md.split('\n');
+      var out = [], list = null, inEntry = false, started = false;
+      function closeList() { if (list) { out.push('<ul>' + list.join('') + '</ul>'); list = null; } }
+      function closeEntry() { closeList(); if (inEntry) { out.push('</div>'); inEntry = false; } }
+      for (var i = 0; i < lines.length; i++) {
+        var ln = lines[i];
+        var h3 = ln.match(/^###\s+(.+)/);
+        if (h3) {
+          started = true; closeEntry();
+          var ver = h3[1].replace(/\s*\(current\)\s*/i, '');
+          var isCur = /\(current\)/i.test(h3[1]);
+          out.push('<div class="cl-entry"><h2><span class="cl-ver">' + esc(ver) + '</span>' +
+            (isCur ? '<span class="act-badge listen">Current</span>' : '') + '</h2>');
+          inEntry = true; continue;
+        }
+        if (!started) continue;
+        var h4 = ln.match(/^####?\s+(.+)/);
+        if (h4) { closeList(); out.push('<h3>' + mdInline(h4[1]) + '</h3>'); continue; }
+        var bold = ln.match(/^\*\*(.+)\*\*\s*$/);
+        if (bold) { closeList(); out.push('<h3>' + mdInline(bold[1]) + '</h3>'); continue; }
+        var li = ln.match(/^\s*[-*]\s+(.+)/);
+        if (li) { list = list || []; list.push('<li>' + mdInline(li[1]) + '</li>'); continue; }
+        if (/^\s*---\s*$/.test(ln)) { continue; }
+        if (ln.trim() === '') { closeList(); continue; }
+        closeList();
+        out.push('<p style="color:var(--t2);font-size:.93rem">' + mdInline(ln.trim()) + '</p>');
+      }
+      closeEntry();
+      return out.join('');
+    }
+
+    function loadPanel(key) {
+      var panel = $('#cl' + key.charAt(0).toUpperCase() + key.slice(1));
+      if (!panel || loaded[key]) return;
+      loaded[key] = true;
+      var src = panel.dataset.src;
+      fetch(src)
+        .then(function (r) { if (!r.ok) throw new Error('http'); return r.text(); })
+        .then(function (md) {
+          var html = renderMd(md);
+          panel.innerHTML = html || '<p class="cl-fallback">No entries found.</p>';
+        })
+        .catch(function () {
+          loaded[key] = false;
+          var fb = $('#clFallback');
+          panel.innerHTML = '';
+          if (fb) fb.hidden = false;
+        });
+    }
+
+    function activate(key) {
+      clTabs.forEach(function (t) {
+        var on = t.dataset.log === key;
+        t.classList.toggle('active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      $$('.cl-panel').forEach(function (p) {
+        p.hidden = p.id !== ('cl' + key.charAt(0).toUpperCase() + key.slice(1));
+      });
+      loadPanel(key);
+    }
+
+    clTabs.forEach(function (t) {
+      t.addEventListener('click', function () { activate(t.dataset.log); });
+    });
+    activate('extension');
+  }
+
+  /* ----------------------------------------------------------
+     Activities index: live search + category filter.
+     ---------------------------------------------------------- */
+  var actsGrid = $('#actsGrid');
+  if (actsGrid) {
+    var cards = $$('.acard', actsGrid);
+    var searchEl = $('#actSearch');
+    var chipsEl = $('#actChips');
+    var emptyEl = $('#actsEmpty');
+    var curCat = 'all', curQ = '';
+
+    function applyFilter() {
+      var shown = 0;
+      cards.forEach(function (c) {
+        var cat = c.dataset.cat || '';
+        var name = (c.dataset.name || '').toLowerCase();
+        var okCat = curCat === 'all' || cat === curCat;
+        var okQ = !curQ || name.indexOf(curQ) > -1 || cat.toLowerCase().indexOf(curQ) > -1;
+        var vis = okCat && okQ;
+        c.style.display = vis ? '' : 'none';
+        if (vis) shown++;
+      });
+      if (emptyEl) emptyEl.hidden = shown !== 0;
+    }
+
+    if (searchEl) {
+      searchEl.addEventListener('input', function () {
+        curQ = searchEl.value.trim().toLowerCase(); applyFilter();
+      });
+    }
+    if (chipsEl) {
+      chipsEl.addEventListener('click', function (e) {
+        var chip = e.target.closest('.chip'); if (!chip) return;
+        $$('.chip', chipsEl).forEach(function (c) { c.classList.remove('active'); });
+        chip.classList.add('active');
+        curCat = chip.dataset.cat || 'all'; applyFilter();
+      });
+    }
+  }
 
 })();

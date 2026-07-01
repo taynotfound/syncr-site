@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+{{HEAD}}
+<body>
+{{NAV}}
+  <span id="top"></span>
+{{CONTENT}}
+{{FOOTER}}
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Screenshot viewer">
+    <button class="lb-close" id="lbClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
+    </button>
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <figure class="lb-stage">
+      <img id="lbImg" src="" alt="" />
+      <figcaption id="lbCap" class="lb-cap"></figcaption>
+    </figure>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+  <script src="{{DEPTH}}app.js" defer></script>
+</body>
+</html>

@@ -1,63 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Syncr, Discord Rich Presence for Firefox</title>
-  <meta name="description" content="Syncr puts what you are doing on the web onto your Discord profile. Free, open source, and fully local. No login, no paywall, no ads." />
-  <meta name="theme-color" content="#0b0c0f" />
-  <meta property="og:title" content="Syncr, Discord Rich Presence for Firefox" />
-  <meta property="og:description" content="Your web activity, live on Discord. Free, open source, fully local. No login, no paywall." />
-  <meta property="og:type" content="website" />
-  <link rel="icon" href="assets/icon.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-
-  <!-- Nav -->
-  <header class="nav" id="nav">
-    <div class="nav-in">
-      <a class="brand" href="#top"><img src="assets/syncrlogo.png" alt="" /> Syncr</a>
-      <nav class="nav-links" id="navLinks">
-        <a href="/" class="active">Home</a>
-        <a href="/activities/">Activities</a>
-        <a href="/download.html">Download</a>
-        <a href="/changelog.html">Changelog</a>
-        <a href="/faq.html">FAQ</a>
-      </nav>
-      <div class="nav-cta">
-        <a class="nav-gh" href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener" title="Star on GitHub">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.34.85 0 1.7.12 2.5.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0022 12c0-5.52-4.48-10-10-10z"/></svg>
-          <span class="nav-star mono" id="navStars">GitHub</span>
-        </a>
-        <a class="btn btn-primary" href="https://github.com/Clawb1t/Syncr/releases" target="_blank" rel="noopener">Get Syncr</a>
-        <button class="burger" id="burger" aria-label="Menu">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round"/></svg>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <span id="top"></span>
-
   <!-- Hero -->
   <section class="hero container">
     <div class="hero-grid">
       <div class="hero-copy">
         <span class="hero-badge">
           <svg class="ff" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 010 18M8 8l3 3-3 3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Firefox extension <b>&middot; v1.0</b>
+          Firefox extension <b>&middot; <span id="heroVersion">v1.0</span></b>
         </span>
         <h1>Your web activity, <span class="accent">live on Discord</span></h1>
         <p class="hero-sub">Syncr shows what you are watching, listening to, and reading, right on your Discord profile. Free, open, and it never leaves your machine.</p>
         <div class="hero-cta">
-          <a class="btn btn-primary btn-lg" href="https://github.com/Clawb1t/Syncr/releases" target="_blank" rel="noopener">
+          <a class="btn btn-primary btn-lg" href="/download.html">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Get Syncr Free
           </a>
-          <a class="btn btn-ghost btn-lg" href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener">View source</a>
+          <a class="btn btn-ghost btn-lg" href="/activities/">See supported sites</a>
         </div>
         <div class="hero-meta">
           <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5 9-11" stroke-linecap="round" stroke-linejoin="round"/></svg> No Discord login</span>
@@ -67,9 +23,19 @@
       </div>
       <div class="showcase reveal">
         <div class="showcase-frame">
-          <video src="assets/demo.mp4" poster="assets/demo_poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
+          <video src="{{DEPTH}}assets/demo.mp4" poster="{{DEPTH}}assets/demo_poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Trust strip -->
+  <section class="container">
+    <div class="trust reveal">
+      <div class="trust-item"><span class="trust-n mono" id="statStars">&mdash;</span><span class="trust-l">GitHub stars</span></div>
+      <div class="trust-item"><span class="trust-n mono">5</span><span class="trust-l">Supported sites</span></div>
+      <div class="trust-item"><span class="trust-n mono" id="statVersion">v1.0</span><span class="trust-l">Latest release</span></div>
+      <div class="trust-item"><span class="trust-n mono">0&euro;</span><span class="trust-l">Forever</span></div>
     </div>
   </section>
 
@@ -119,7 +85,7 @@
     <div class="lead">
       <span class="tag">See it in action</span>
       <h2>Real screenshots, no mockups</h2>
-      <p>This is Syncr actually running: the presence on your Discord profile, and the popup you click.</p>
+      <p>This is Syncr actually running: the presence on your Discord profile, and the popup you click. Tap any shot to view it full size.</p>
     </div>
 
     <div class="gallery-discord reveal">
@@ -134,31 +100,31 @@
         </ul>
       </div>
       <div class="gd-shots">
-        <figure class="shot-phone"><img src="assets/shots/discord-1.png" alt="Syncr presence shown on a Discord profile" loading="lazy" /></figure>
-        <figure class="shot-phone alt"><img src="assets/shots/discord-2.png" alt="A second Syncr presence on a Discord profile" loading="lazy" /></figure>
+        <figure class="shot-phone"><img src="{{DEPTH}}assets/shots/discord-1.png" alt="Syncr presence shown on a Discord profile" loading="lazy" data-lb="Syncr presence on a Discord profile" /></figure>
+        <figure class="shot-phone alt"><img src="{{DEPTH}}assets/shots/discord-2.png" alt="A second Syncr presence on a Discord profile" loading="lazy" data-lb="Another Syncr presence on a Discord profile" /></figure>
       </div>
     </div>
 
     <div class="popup-row">
       <article class="pop-card reveal">
-        <figure class="pop-frame"><img src="assets/shots/sites.png" alt="Syncr popup toggling supported sites" loading="lazy" /></figure>
+        <figure class="pop-frame"><img src="{{DEPTH}}assets/shots/popup-overview.png" alt="Syncr popup main overview" loading="lazy" data-lb="The Syncr popup overview: current activity and quick status" /></figure>
         <div class="pop-cap">
-          <h4><span class="pop-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="10" rx="5"/><circle cx="9" cy="12" r="3" fill="currentColor" stroke="none"/></svg></span> Toggle any site</h4>
-          <p>Flip individual activities on or off in one tap. Only share what you want, when you want it.</p>
-        </div>
-      </article>
-      <article class="pop-card reveal">
-        <figure class="pop-frame"><img src="assets/shots/updater.png" alt="Syncr popup built-in updater" loading="lazy" /></figure>
-        <div class="pop-cap">
-          <h4><span class="pop-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 0114-5m2-3v5h-5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12a8 8 0 01-14 5m-2 3v-5h5" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Built-in updater</h4>
-          <p>Syncr checks for new versions itself and updates in place. No store review queue, no waiting around.</p>
-        </div>
-      </article>
-      <article class="pop-card reveal">
-        <figure class="pop-frame"><img src="assets/shots/general.png" alt="Syncr popup main view" loading="lazy" /></figure>
-        <div class="pop-cap">
-          <h4><span class="pop-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9" stroke-linecap="round"/></svg></span> Clean dashboard</h4>
+          <h4><span class="pop-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9" stroke-linecap="round"/></svg></span> Clean overview</h4>
           <p>One tidy panel for your status, your sites, and your settings. Dark, quiet, out of your way.</p>
+        </div>
+      </article>
+      <article class="pop-card reveal">
+        <figure class="pop-frame"><img src="{{DEPTH}}assets/shots/popup-toggle.png" alt="Syncr popup toggling an activity on or off" loading="lazy" data-lb="Enable or disable any activity in one tap" /></figure>
+        <div class="pop-cap">
+          <h4><span class="pop-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="10" rx="5"/><circle cx="9" cy="12" r="3" fill="currentColor" stroke="none"/></svg></span> Enable or disable</h4>
+          <p>Flip individual activities on or off with a single switch. Only share what you want, when you want it.</p>
+        </div>
+      </article>
+      <article class="pop-card reveal">
+        <figure class="pop-frame"><img src="{{DEPTH}}assets/shots/popup-autoupdate.png" alt="Syncr popup automatic updater panel" loading="lazy" data-lb="Auto-update: Syncr keeps itself current" /></figure>
+        <div class="pop-cap">
+          <h4><span class="pop-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 0114-5m2-3v5h-5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12a8 8 0 01-14 5m-2 3v-5h5" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Auto update</h4>
+          <p>Syncr checks for new versions itself and updates in place. No store review queue, no waiting around.</p>
         </div>
       </article>
     </div>
@@ -199,48 +165,63 @@
     </div>
   </section>
 
-  <!-- Activities -->
+  <!-- Activities preview -->
   <section class="section container" id="activities">
     <div class="lead">
       <span class="tag">Supported sites</span>
       <h2>The sites you already use</h2>
-      <p>Four activities today, each reading only what it needs. More on the way, and anyone can add their own.</p>
+      <p>Five activities today, each reading only what it needs. More on the way, and anyone can add their own.</p>
     </div>
     <div class="acts">
-      <div class="act reveal">
-        <div class="act-logo"><img src="assets/activities/youtube-music.svg" alt="YouTube Music" /></div>
-        <div>
+      <a class="act reveal" href="/activities/youtube-music.html">
+        <div class="act-logo"><img src="{{DEPTH}}assets/activities/youtube-music.svg" alt="YouTube Music" /></div>
+        <div class="act-body">
           <div class="act-top"><span class="act-name">YouTube Music</span><span class="act-badge listen">Listening</span></div>
           <p class="act-desc">Now playing with track, artist, album art, and a live progress bar.</p>
-          <p class="act-shows"><b>Shows:</b> Track &middot; artist &middot; artwork &middot; progress</p>
         </div>
-      </div>
-      <div class="act reveal">
-        <div class="act-logo"><img src="assets/activities/youtube.svg" alt="YouTube" /></div>
-        <div>
+        <span class="act-go" aria-hidden="true">&rarr;</span>
+      </a>
+      <a class="act reveal" href="/activities/youtube.html">
+        <div class="act-logo"><img src="{{DEPTH}}assets/activities/youtube.svg" alt="YouTube" /></div>
+        <div class="act-body">
           <div class="act-top"><span class="act-name">YouTube</span><span class="act-badge watch">Watching</span></div>
           <p class="act-desc">The video you are watching, with its title and channel.</p>
-          <p class="act-shows"><b>Shows:</b> Video title &middot; channel</p>
         </div>
-      </div>
-      <div class="act reveal">
-        <div class="act-logo"><img src="assets/activities/reddit.svg" alt="Reddit" /></div>
-        <div>
+        <span class="act-go" aria-hidden="true">&rarr;</span>
+      </a>
+      <a class="act reveal" href="/activities/reddit.html">
+        <div class="act-logo"><img src="{{DEPTH}}assets/activities/reddit.svg" alt="Reddit" /></div>
+        <div class="act-body">
           <div class="act-top"><span class="act-name">Reddit</span><span class="act-badge watch">Browsing</span></div>
           <p class="act-desc">The post or subreddit you are on, or a simple browsing status.</p>
-          <p class="act-shows"><b>Shows:</b> Post &middot; subreddit, or "Browsing"</p>
         </div>
-      </div>
-      <div class="act reveal">
-        <div class="act-logo"><img src="assets/activities/proton-mail.svg" alt="Proton Mail" /></div>
-        <div>
+        <span class="act-go" aria-hidden="true">&rarr;</span>
+      </a>
+      <a class="act reveal" href="/activities/proton-mail.html">
+        <div class="act-logo"><img src="{{DEPTH}}assets/activities/proton-mail.svg" alt="Proton Mail" /></div>
+        <div class="act-body">
           <div class="act-top"><span class="act-name">Proton Mail</span><span class="act-badge priv">Privacy-first</span></div>
-          <p class="act-desc">A deliberately generic "checking mail" status. No subjects, no senders, ever.</p>
-          <p class="act-shows"><b>Shows:</b> Generic mail status only</p>
+          <p class="act-desc">A deliberately generic mail status. No subjects, no senders, ever.</p>
         </div>
-      </div>
+        <span class="act-go" aria-hidden="true">&rarr;</span>
+      </a>
+      <a class="act reveal" href="/activities/netflix.html">
+        <div class="act-logo"><img src="{{DEPTH}}assets/activities/netflix.png" alt="Netflix" /></div>
+        <div class="act-body">
+          <div class="act-top"><span class="act-name">Netflix</span><span class="act-badge watch">Watching</span></div>
+          <p class="act-desc">What you are watching, with season, episode, artwork, and progress.</p>
+        </div>
+        <span class="act-go" aria-hidden="true">&rarr;</span>
+      </a>
+      <a class="act act-cta reveal" href="/activities/">
+        <div class="act-logo act-plus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg></div>
+        <div class="act-body">
+          <div class="act-top"><span class="act-name">Browse all activities</span></div>
+          <p class="act-desc">See exactly what each one shows, and how to add your own.</p>
+        </div>
+        <span class="act-go" aria-hidden="true">&rarr;</span>
+      </a>
     </div>
-    <p class="act-more reveal">Want another site? An activity is just a content script plus a presence file. <a href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener">Add your own on GitHub &rarr;</a></p>
   </section>
 
   <!-- Comparison -->
@@ -253,7 +234,7 @@
     <div class="compare reveal">
       <div class="crow head">
         <div>Feature</div>
-        <div class="ccol-syncr"><img src="assets/syncrlogo.png" alt="" /> Syncr</div>
+        <div class="ccol-syncr"><img src="{{DEPTH}}assets/syncrlogo.png" alt="" /> Syncr</div>
         <div class="ccol-other">PreMiD</div>
       </div>
       <div class="crow">
@@ -288,13 +269,14 @@
       </div>
       <div class="crow">
         <div class="cfeat"><div class="cf-t">Supported services</div><div class="cf-n">Where PreMiD's head start shows</div></div>
-        <div class="ccell syncr">4, growing</div>
+        <div class="ccell syncr">5, growing</div>
         <div class="ccell other">1300+</div>
       </div>
     </div>
+    <p class="compare-note reveal">Numbers on PreMiD reflect its public pricing and free-tier limits at time of writing. Syncr is younger and has fewer sites. We would rather be honest about that than pretend otherwise.</p>
   </section>
 
-  <!-- Team / contributors (LIVE from GitHub) -->
+  <!-- Team -->
   <section class="section container" id="team">
     <div class="lead">
       <span class="tag">The people</span>
@@ -304,12 +286,11 @@
     <div class="people" id="people" data-repo="Clawb1t/Syncr">
       <div class="people-load" id="peopleLoad">Loading contributors from GitHub&hellip;</div>
     </div>
-
     <div class="made">
       <div class="made-block">
         <div class="ml">The extension</div>
         <div class="made-who">
-          <img src="assets/people/clawb1t.png" alt="ClawB1t" />
+          <img src="{{DEPTH}}assets/people/clawb1t.png" alt="ClawB1t" />
           <div>
             <div class="mn"><a href="https://github.com/Clawb1t" target="_blank" rel="noopener">ClawB1t</a></div>
             <div class="ms">Creator and maintainer of Syncr</div>
@@ -319,9 +300,9 @@
       <div class="made-block">
         <div class="ml">This website</div>
         <div class="made-who">
-          <img src="assets/people/tay.png" alt="Tay März" />
+          <img src="{{DEPTH}}assets/people/tay.png" alt="Tay M&auml;rz" />
           <div>
-            <div class="mn"><a href="https://taymaerz.de" target="_blank" rel="noopener">Tay März</a></div>
+            <div class="mn"><a href="https://taymaerz.de" target="_blank" rel="noopener">Tay M&auml;rz</a></div>
             <div class="ms">Designed and built with &lt;3 &middot; taymaerz.de</div>
           </div>
         </div>
@@ -335,48 +316,8 @@
       <h2>Put your activity on Discord</h2>
       <p>Free, open source, and it stays on your machine. Grab the latest release and you are live in a minute.</p>
       <div class="cta-row">
-        <a class="btn btn-primary btn-lg" href="https://github.com/Clawb1t/Syncr/releases" target="_blank" rel="noopener">Get Syncr for Firefox</a>
+        <a class="btn btn-primary btn-lg" href="/download.html">Get Syncr for Firefox</a>
         <a class="btn btn-ghost btn-lg" href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener">Read the docs</a>
       </div>
     </div>
   </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-in">
-        <div class="footer-brand">
-          <a class="brand" href="#top"><img src="assets/syncrlogo.png" alt="" /> Syncr</a>
-          <p>Discord Rich Presence for Firefox. Free, open source, and fully local.</p>
-        </div>
-        <div class="fcol">
-          <h5>Product</h5>
-          <a href="/">Home</a>
-          <a href="/activities/">Activities</a>
-          <a href="/download.html">Download</a>
-          <a href="/changelog.html">Changelog</a>
-          <a href="/faq.html">FAQ</a>
-        </div>
-        <div class="fcol">
-          <h5>Project</h5>
-          <a href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://github.com/Clawb1t/Syncr/releases" target="_blank" rel="noopener">Releases</a>
-          <a href="https://github.com/Clawb1t/Syncr/graphs/contributors" target="_blank" rel="noopener">Contributors</a>
-          <a href="https://github.com/Clawb1t/Syncr/issues" target="_blank" rel="noopener">Report an issue</a>
-        </div>
-        <div class="fcol">
-          <h5>People</h5>
-          <a href="https://github.com/Clawb1t" target="_blank" rel="noopener">ClawB1t</a>
-          <a href="https://taymaerz.de" target="_blank" rel="noopener">Tay März</a>
-        </div>
-      </div>
-      <div class="footer-bar">
-        <span>Syncr is built by <a href="https://github.com/Clawb1t" target="_blank" rel="noopener">ClawB1t</a> and contributors.</span>
-        <span>Website by <a href="https://taymaerz.de" target="_blank" rel="noopener">Tay März</a>, with &lt;3</span>
-      </div>
-    </div>
-  </footer>
-
-  <script src="app.js" defer></script>
-</body>
-</html>

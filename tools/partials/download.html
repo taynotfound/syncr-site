@@ -1,0 +1,111 @@
+  <!-- Breadcrumb -->
+  <nav class="crumbs container" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><span aria-current="page">Download</span>
+  </nav>
+
+  <!-- Hero -->
+  <section class="page-hero container">
+    <span class="tag">Download</span>
+    <h1>Get Syncr for Firefox</h1>
+    <p class="page-sub">Free, open source, and updated in place. Two small parts to install once, then Syncr keeps itself current. This takes about a minute.</p>
+  </section>
+
+  <!-- Release panel -->
+  <section class="container section-top">
+    <div class="release reveal" id="release">
+      <div class="release-main">
+        <div class="release-top">
+          <span class="release-live"><span class="live-dot"></span> Latest release</span>
+          <span class="release-ver mono" id="relVersion">v1.0</span>
+        </div>
+        <h2 id="relName">Syncr, latest build</h2>
+        <p class="release-meta mono" id="relMeta">Fetching release details from GitHub&hellip;</p>
+        <div class="release-cta">
+          <a class="btn btn-primary btn-lg" id="relDownload" href="https://github.com/Clawb1t/Syncr/releases/latest" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Download latest
+          </a>
+          <a class="btn btn-ghost btn-lg" href="https://github.com/Clawb1t/Syncr/releases" target="_blank" rel="noopener">All releases</a>
+        </div>
+      </div>
+      <div class="release-side">
+        <div class="rq"><span class="rq-k">Browser</span><span class="rq-v">Firefox</span></div>
+        <div class="rq"><span class="rq-k">Needs</span><span class="rq-v">Discord desktop app</span></div>
+        <div class="rq"><span class="rq-k">Platform</span><span class="rq-v">Windows</span></div>
+        <div class="rq"><span class="rq-k">Price</span><span class="rq-v good">Free</span></div>
+        <div class="rq"><span class="rq-k">License</span><span class="rq-v">Open source</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Steps -->
+  <section class="section container">
+    <div class="lead lead-left">
+      <span class="tag">Setup</span>
+      <h2>Install in four steps</h2>
+      <p>Syncr has two parts: the Firefox extension and a small native host that talks to Discord. You install both once.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-n mono">1</div>
+        <div class="step-body">
+          <h3>Grab the latest release</h3>
+          <p>Download the release bundle from GitHub. It contains the Firefox extension and the native host installer for Windows.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-n mono">2</div>
+        <div class="step-body">
+          <h3>Install the native host</h3>
+          <p>Run the host installer. This is the small local app that hands your activity to the Discord desktop app over native messaging. Nothing is sent to any server.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-n mono">3</div>
+        <div class="step-body">
+          <h3>Add the extension to Firefox</h3>
+          <p>Load the Syncr extension in Firefox. Make sure the Discord desktop app is running, not the browser version, so Syncr can reach it locally.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <div class="step-n mono">4</div>
+        <div class="step-body">
+          <h3>Open the popup and go live</h3>
+          <p>Click the Syncr icon, switch on the activities you want, and open a supported site. Your Discord profile updates straight away.</p>
+        </div>
+      </div>
+    </div>
+    <div class="dl-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01" stroke-linecap="round"/></svg>
+      <p>Full setup instructions live in the GitHub readme, including the exact host install steps for your system. If anything looks off, the repo issues page is the fastest way to get help.</p>
+    </div>
+  </section>
+
+  <!-- After install -->
+  <section class="section-sm container">
+    <div class="after reveal">
+      <div class="after-item">
+        <div class="after-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12a8 8 0 0114-5m2-3v5h-5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12a8 8 0 01-14 5m-2 3v-5h5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h4>Updates itself</h4>
+        <p>Syncr checks for new versions and updates in place. Activity rules refresh from GitHub without a reinstall.</p>
+      </div>
+      <div class="after-item">
+        <div class="after-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3" stroke-linecap="round"/></svg></div>
+        <h4>See what is live</h4>
+        <p>The popup shows exactly what is being transmitted right now, so you are never guessing what your profile says.</p>
+      </div>
+      <div class="after-item">
+        <div class="after-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z" stroke-linejoin="round"/></svg></div>
+        <h4>Private by default</h4>
+        <p>Turn any activity off and it never touches your profile. Nothing leaves your machine at any point.</p>
+      </div>
+    </div>
+    <div class="cta reveal">
+      <h2>Not sure yet?</h2>
+      <p>See exactly what each site puts on your profile before you install a thing.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary btn-lg" href="/activities/">Browse activities</a>
+        <a class="btn btn-ghost btn-lg" href="/faq.html">Read the FAQ</a>
+      </div>
+    </div>
+  </section>

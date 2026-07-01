@@ -1,0 +1,93 @@
+  <!-- Breadcrumb -->
+  <nav class="crumbs container" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><a href="/activities/">Activities</a><span class="sep">/</span><span aria-current="page">{{NAME}}</span>
+  </nav>
+
+  <!-- Activity hero -->
+  <section class="act-hero container">
+    <div class="act-hero-grid">
+      <div class="act-hero-copy">
+        <div class="act-hero-top">
+          <div class="act-hero-logo"><img src="/assets/activities/{{LOGO}}" alt="{{NAME}} logo" /></div>
+          <div>
+            <span class="act-badge {{BADGE_CLASS}}">{{BADGE}}</span>
+            <span class="act-cat-inline mono">{{CATEGORY}}</span>
+          </div>
+        </div>
+        <h1>{{NAME}} on Discord</h1>
+        <p class="act-hero-tag">{{TAGLINE}}</p>
+        <p class="act-hero-desc">{{DESC}}</p>
+        <div class="act-hero-cta">
+          <a class="btn btn-primary" href="/download.html">Get Syncr</a>
+          <a class="btn btn-ghost" href="https://{{SITE}}" target="_blank" rel="noopener">Open {{SITE}}</a>
+        </div>
+      </div>
+
+      <!-- Discord presence preview -->
+      <div class="presence reveal">
+        <div class="presence-card">
+          <div class="presence-head">
+            <span class="presence-kicker">On your Discord profile</span>
+          </div>
+          <div class="presence-body">
+            <div class="presence-verb">{{VERB}}</div>
+            <div class="presence-main">
+              <div class="presence-art">
+                <img src="/assets/activities/{{LOGO}}" alt="" />
+                <span class="presence-badge"><img src="/assets/activities/{{LOGO}}" alt="" /></span>
+              </div>
+              <div class="presence-lines">
+                <div class="p-app">Syncr</div>
+                <div class="p-l1">Your current title</div>
+                <div class="p-l2">Artist, channel, or detail</div>
+                <div class="p-bar"><span class="p-bar-fill"></span></div>
+                <div class="p-time mono"><span>01:12</span><span>03:40</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="presence-note">Live preview. Real titles and artwork appear once you are on {{SITE}}.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- What it shows -->
+  <section class="section container">
+    <div class="act-cols">
+      <div class="act-col">
+        <h2>What shows up</h2>
+        <p class="act-col-sub">The exact fields {{NAME}} puts on your profile.</p>
+        <ul class="shows-list">
+{{SHOWS}}
+        </ul>
+      </div>
+      <div class="act-col">
+        <h2>What it reads</h2>
+        <p class="act-col-sub">Syncr only touches what it needs to build the status.</p>
+        <div class="reads-box">
+          <div class="reads-row"><span class="reads-k">Site</span><span class="reads-v mono">{{SITE}}</span></div>
+          <div class="reads-row"><span class="reads-k">Reads from</span><span class="reads-v">The open tab, in your browser</span></div>
+          <div class="reads-row"><span class="reads-k">Sent to</span><span class="reads-v">Your local Discord app only</span></div>
+          <div class="reads-row"><span class="reads-k">Leaves your PC</span><span class="reads-v good">No, never</span></div>
+        </div>
+        <div class="priv-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Toggle {{NAME}} off any time from the popup. You are always in control.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related -->
+  <section class="section-sm container">
+    <div class="lead lead-left">
+      <span class="tag">More activities</span>
+      <h2>Also supported</h2>
+    </div>
+    <div class="related">
+{{RELATED}}
+    </div>
+    <div class="act-back">
+      <a class="btn btn-ghost" href="/activities/">&larr; All activities</a>
+    </div>
+  </section>

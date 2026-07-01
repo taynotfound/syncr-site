@@ -1,0 +1,28 @@
+{
+  "name": "Syncr, Discord Rich Presence for Firefox",
+  "short_name": "Syncr",
+  "description": "Syncr puts what you are doing on the web onto your Discord profile. Free, open source, and fully local. No login, no paywall, no ads.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b0c10",
+  "theme_color": "#0b0c0f",
+  "categories": ["utilities", "social", "productivity"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
