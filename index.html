@@ -158,12 +158,16 @@
           <li><span class="tick"></span> Clears itself when you stop</li>
         </ul>
       </div>
-      <div class="gd-shots">
-        <figure class="shot-phone"><img src="assets/shots/discord-1.png" alt="Syncr presence shown on a Discord profile" loading="lazy" /></figure>
-        <figure class="shot-phone alt"><img src="assets/shots/discord-2.png" alt="A second Syncr presence on a Discord profile" loading="lazy" /></figure>
-        <figure class="shot-phone"><img src="assets/shots/discord-3.png" alt="Syncr presence on a Discord profile" loading="lazy" /></figure>
-        <figure class="shot-phone alt"><img src="assets/shots/discord-4.png" alt="Syncr presence on a Discord profile" loading="lazy" /></figure>
-        <figure class="shot-phone"><img src="assets/shots/discord-5.png" alt="Syncr presence on a Discord profile" loading="lazy" /></figure>
+      <div class="gd-shots" id="gdShots">
+        <figure class="shot-phone" id="shotMain"><img src="assets/shots/discord-1.png" alt="Syncr presence shown on a Discord profile" loading="lazy" /></figure>
+        <figure class="shot-phone alt" id="shotAlt"><img src="assets/shots/discord-2.png" alt="A second Syncr presence on a Discord profile" loading="lazy" /></figure>
+        <div class="shot-dots" id="shotDots">
+          <button class="shot-dot active" data-i="0" aria-label="Screenshot 1"></button>
+          <button class="shot-dot" data-i="1" aria-label="Screenshot 2"></button>
+          <button class="shot-dot" data-i="2" aria-label="Screenshot 3"></button>
+          <button class="shot-dot" data-i="3" aria-label="Screenshot 4"></button>
+          <button class="shot-dot" data-i="4" aria-label="Screenshot 5"></button>
+        </div>
       </div>
     </div>
 

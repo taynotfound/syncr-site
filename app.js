@@ -364,4 +364,38 @@
       });
   }
 
+  /* -- Screenshot carousel -- */
+  var SHOTS = [
+    'assets/shots/discord-1.png',
+    'assets/shots/discord-2.png',
+    'assets/shots/discord-3.png',
+    'assets/shots/discord-4.png',
+    'assets/shots/discord-5.png',
+  ];
+  var shotIdx = 0;
+  var shotMain = document.getElementById('shotMain');
+  var shotAlt  = document.getElementById('shotAlt');
+  var shotDots = $$('.shot-dot', document.getElementById('shotDots'));
+
+  function goToShot(i) {
+    var next = (i + 1) % SHOTS.length;
+    shotMain.classList.add('is-fading');
+    shotAlt.classList.add('is-fading');
+    setTimeout(function () {
+      shotMain.querySelector('img').src = SHOTS[i];
+      shotAlt.querySelector('img').src  = SHOTS[next];
+      shotMain.classList.remove('is-fading');
+      shotAlt.classList.remove('is-fading');
+      shotDots.forEach(function (d, di) { d.classList.toggle('active', di === i); });
+      shotIdx = i;
+    }, 220);
+  }
+
+  shotDots.forEach(function (dot) {
+    dot.addEventListener('click', function () { goToShot(+this.dataset.i); });
+  });
+
+  /* auto-advance every 4s */
+  setInterval(function () { goToShot((shotIdx + 1) % SHOTS.length); }, 4000);
+
 })();
