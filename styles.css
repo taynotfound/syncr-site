@@ -109,6 +109,15 @@ p  { color: var(--t2); }
 .btn-lg { padding: 14px 24px; font-size: 1rem; }
 
 /* -- Nav -- */
+/* Platform banner */
+.platform-banner { background: color-mix(in srgb, var(--accent) 12%, var(--bg)); border-bottom: 1px solid color-mix(in srgb, var(--accent) 25%, transparent); }
+.platform-banner-in { max-width: var(--mw); margin: 0 auto; padding: .6rem var(--px); display: flex; align-items: center; gap: .75rem; justify-content: center; flex-wrap: wrap; }
+.platform-banner-pill { background: var(--accent); color: #fff; font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: .15rem .55rem; border-radius: 99px; flex-shrink: 0; }
+.platform-banner-text { font-size: .9rem; color: var(--t1); }
+.platform-banner-text strong { color: #fff; }
+.platform-banner-link { font-size: .85rem; color: var(--accent); font-weight: 600; white-space: nowrap; text-decoration: none; }
+.platform-banner-link:hover { text-decoration: underline; }
+
 .nav {
   position: sticky; top: 0; z-index: 100;
   background: rgba(11,12,15,.82);
