@@ -269,7 +269,7 @@
       var desc    = act.description || '';
       var slug    = act.id;
       /* link to static detail page if it exists, else GitHub source */
-      var href    = '/activities/' + slug + '.html';
+      var href    = '/activities/activity.html?id=' + slug;
       var card    = document.createElement('a');
       card.className = 'acard reveal in';
       card.href      = href;
