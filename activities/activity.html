@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Filled in by JS -->
+  <title>Syncr</title>
+  <meta name="description" content="" />
+  <link rel="canonical" href="" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="googlebot" content="index, follow" />
+  <meta name="author" content="ClawB1t and contributors" />
+  <meta name="theme-color" content="#0b0c0f" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="application-name" content="Syncr" />
+  <meta name="apple-mobile-web-app-title" content="Syncr" />
+
+  <!-- OG / Twitter — filled by JS via meta updates -->
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://www.dsyncr.com/assets/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Syncr, Discord Rich Presence for Firefox" />
+  <meta property="og:site_name" content="Syncr" />
+  <meta property="og:locale" content="en_US" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://www.dsyncr.com/assets/og.png" />
+  <meta name="twitter:image:alt" content="Syncr, Discord Rich Presence for Firefox" />
+
+  <link rel="icon" href="../assets/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="../assets/syncrlogo.png" />
+  <link rel="manifest" href="../site.webmanifest" />
+  <link rel="dns-prefetch" href="https://api.github.com" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+
+<body>
+  <!-- Nav -->
+  <header class="nav" id="nav">
+    <div class="nav-in">
+      <a class="brand" href="/"><img src="../assets/syncrlogo.png" alt="" /> Syncr</a>
+      <nav class="nav-links" id="navLinks">
+        <a href="/">Home</a>
+        <a href="/activities/" class="active">Activities</a>
+        <a href="/download.html">Download</a>
+        <a href="/changelog.html">Changelog</a>
+        <a href="/faq.html">FAQ</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="nav-gh" href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener" title="Star on GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.34.85 0 1.7.12 2.5.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0022 12c0-5.52-4.48-10-10-10z"/></svg>
+          <span class="nav-star mono" id="navStars">GitHub</span>
+        </a>
+        <a class="btn btn-primary" href="/download.html">Get Syncr</a>
+        <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <span id="top"></span>
+
+  <!-- Breadcrumb -->
+  <nav class="crumbs container" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><a href="/activities/">Activities</a><span class="sep">/</span><span id="crumbName" aria-current="page">Loading&hellip;</span>
+  </nav>
+
+  <!-- Loading / error states -->
+  <div id="actLoading" class="container" style="padding:4rem 0;text-align:center;color:var(--t2)">Loading activity&hellip;</div>
+  <div id="actError" class="container" style="padding:4rem 0;text-align:center;display:none">
+    <h2 style="margin-bottom:1rem">Activity not found</h2>
+    <p style="color:var(--t2);margin-bottom:2rem">That activity doesn't exist yet, or the URL is wrong.</p>
+    <a class="btn btn-ghost" href="/activities/">&larr; All activities</a>
+  </div>
+
+  <!-- Activity hero — hidden until loaded -->
+  <section class="act-hero container" id="actHero" style="display:none">
+    <div class="act-hero-grid">
+      <div class="act-hero-copy">
+        <div class="act-hero-top">
+          <div class="act-hero-logo"><img id="actLogo" src="" alt="" /></div>
+          <div>
+            <span id="actBadge" class="act-badge"></span>
+            <span id="actCat" class="act-cat-inline mono"></span>
+          </div>
+        </div>
+        <h1 id="actTitle"></h1>
+        <p class="act-hero-tag" id="actTagline"></p>
+        <p class="act-hero-desc" id="actDesc"></p>
+        <div class="act-hero-cta">
+          <a class="btn btn-primary" href="/download.html">Get Syncr</a>
+          <a class="btn btn-ghost" id="actSiteBtn" href="#" target="_blank" rel="noopener">Visit site</a>
+        </div>
+      </div>
+
+      <!-- Discord presence preview -->
+      <div class="presence reveal">
+        <div class="presence-card">
+          <div class="presence-head">
+            <span class="presence-kicker">On your Discord profile</span>
+          </div>
+          <div class="presence-body">
+            <div class="presence-verb" id="presVerb">Watching</div>
+            <div class="presence-main">
+              <div class="presence-art">
+                <img id="presLogo" src="" alt="" />
+                <span class="presence-badge"><img id="presLogoBadge" src="" alt="" /></span>
+              </div>
+              <div class="presence-lines">
+                <div class="p-app">Syncr</div>
+                <div class="p-l1">Your current title</div>
+                <div class="p-l2">Artist, channel, or detail</div>
+                <div class="p-bar"><span class="p-bar-fill"></span></div>
+                <div class="p-time mono"><span>01:12</span><span>03:40</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="presence-note" id="presNote"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- What it shows -->
+  <section class="section container" id="actDetails" style="display:none">
+    <div class="act-cols">
+      <div class="act-col">
+        <h2>What shows up</h2>
+        <p class="act-col-sub">The exact fields shown on your profile.</p>
+        <ul class="shows-list" id="actShowsList"></ul>
+      </div>
+      <div class="act-col">
+        <h2>What it reads</h2>
+        <p class="act-col-sub">Syncr only touches what it needs to build the status.</p>
+        <div class="reads-box">
+          <div class="reads-row"><span class="reads-k">Site</span><span class="reads-v mono" id="readsSite"></span></div>
+          <div class="reads-row"><span class="reads-k">Reads from</span><span class="reads-v">The open tab, in your browser</span></div>
+          <div class="reads-row"><span class="reads-k">Sent to</span><span class="reads-v">Your local Discord app only</span></div>
+          <div class="reads-row"><span class="reads-k">Leaves your PC</span><span class="reads-v good">No, never</span></div>
+        </div>
+        <div class="priv-badge" id="privBadge" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span id="privBadgeText"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related activities -->
+  <section class="section-sm container" id="actRelated" style="display:none">
+    <div class="lead lead-left">
+      <span class="tag">More activities</span>
+      <h2>Also supported</h2>
+    </div>
+    <div class="related" id="relatedGrid"></div>
+    <div class="act-back">
+      <a class="btn btn-ghost" href="/activities/">&larr; All activities</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-in">
+        <div class="footer-brand">
+          <a class="brand" href="/"><img src="../assets/syncrlogo.png" alt="" /> Syncr</a>
+          <p>Discord Rich Presence for Firefox. Free, open source, and fully local.</p>
+          <p class="foot-ver mono" id="footVersion">Loading latest release&hellip;</p>
+        </div>
+        <div class="fcol">
+          <h5>Product</h5>
+          <a href="/">Home</a>
+          <a href="/activities/">Activities</a>
+          <a href="/download.html">Download</a>
+          <a href="/changelog.html">Changelog</a>
+          <a href="/faq.html">FAQ</a>
+        </div>
+        <div class="fcol" id="footActivities">
+          <h5>Activities</h5>
+        </div>
+        <div class="fcol">
+          <h5>Project</h5>
+          <a href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/Clawb1t/Syncr/releases" target="_blank" rel="noopener">Releases</a>
+          <a href="https://github.com/Clawb1t/Syncr/graphs/contributors" target="_blank" rel="noopener">Contributors</a>
+          <a href="https://github.com/Clawb1t/Syncr/issues" target="_blank" rel="noopener">Report an issue</a>
+        </div>
+      </div>
+      <div class="footer-bar">
+        <span>Syncr is built by <a href="https://github.com/Clawb1t" target="_blank" rel="noopener">ClawB1t</a> and contributors.</span>
+        <span>Website by <a href="https://taymaerz.de" target="_blank" rel="noopener">Tay M&auml;rz</a>, with &lt;3 &middot; &copy; <span id="year">2026</span></span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Screenshot viewer">
+    <button class="lb-close" id="lbClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
+    </button>
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <figure class="lb-stage">
+      <img id="lbImg" src="" alt="" />
+      <figcaption id="lbCap" class="lb-cap"></figcaption>
+    </figure>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+  <script src="../app.js" defer></script>
+  <script>
+  (function () {
+    var RAW = 'https://raw.githubusercontent.com/Clawb1t/Syncr/main/extension/activities/';
+    var BASE_URL = 'https://www.dsyncr.com';
+
+    // Derive slug: support ?id=reddit AND /activities/reddit.html style
+    var slug = (new URLSearchParams(location.search)).get('id');
+    if (!slug) {
+      // e.g. /activities/reddit.html → reddit
+      slug = location.pathname.split('/').pop().replace(/\.html?$/, '');
+    }
+    if (!slug || slug === 'activity') {
+      showError(); return;
+    }
+
+    var BADGE_MAP = { 'LISTENING TO': 'listen', 'LISTENING': 'listen', 'WATCHING': 'watch', 'BROWSING': 'watch' };
+    var VERB_MAP  = { 'LISTENING TO': 'Listening to', 'LISTENING': 'Listening to', 'WATCHING': 'Watching', 'BROWSING': 'Browsing' };
+
+    var SHOWS_MAP = {
+      'youtube-music': ['Song title', 'Artist', 'Album artwork', 'Play progress'],
+      'youtube':       ['Video title', 'Channel name', 'Thumbnail', 'Watch progress'],
+      'reddit':        ['Post title', 'Subreddit', 'Author, score, comments', 'Or a browsing status'],
+      'proton-mail':   ['Generic mail activity', 'No subjects or senders', 'No personal data ever'],
+      'netflix':       ['Title you are watching', 'Series and episode info', 'Or a browsing status'],
+      'github':        ['Repo name', 'Page context (issues, PR, file)', 'Or a browsing status'],
+    };
+
+    function siteFromPattern(pat) {
+      if (!pat) return '';
+      return pat.replace(/\*:\/\/\*?\.?([^/]+)\/\*.*/, '$1').replace(/^\*\./, '');
+    }
+
+    function setMeta(sel, attr, val) {
+      var el = document.querySelector(sel);
+      if (el) el.setAttribute(attr, val);
+    }
+
+    function showError() {
+      document.getElementById('actLoading').style.display = 'none';
+      document.getElementById('actError').style.display = '';
+    }
+
+    function render(act, allActs) {
+      var logoUrl  = RAW + act.id + '/logo.png';
+      var badgeCls = BADGE_MAP[(act.activityType || '').toUpperCase()] || 'watch';
+      var verb     = VERB_MAP[(act.activityType || '').toUpperCase()] || 'Using';
+      var site     = siteFromPattern(act.urlPattern);
+      var pageUrl  = BASE_URL + '/activities/' + act.id + '.html';
+      var title    = act.name + ' on Discord with Syncr';
+      var desc     = act.description;
+
+      // <title> + meta
+      document.title = title + ' — Firefox Rich Presence';
+      setMeta('meta[name="description"]',    'content', desc);
+      setMeta('link[rel="canonical"]',       'href',    pageUrl);
+      setMeta('meta[property="og:title"]',   'content', title);
+      setMeta('meta[property="og:description"]', 'content', desc);
+      setMeta('meta[property="og:url"]',     'content', pageUrl);
+      setMeta('meta[name="twitter:title"]',  'content', title);
+      setMeta('meta[name="twitter:description"]', 'content', desc);
+
+      // Breadcrumb
+      document.getElementById('crumbName').textContent = act.name;
+
+      // Hero
+      document.getElementById('actLogo').src = logoUrl;
+      document.getElementById('actLogo').alt = act.name + ' logo';
+      var badge = document.getElementById('actBadge');
+      badge.textContent = verb;
+      badge.className = 'act-badge ' + badgeCls;
+      document.getElementById('actCat').textContent = act.category || '';
+      document.getElementById('actTitle').textContent = act.name + ' on Discord';
+      document.getElementById('actTagline').textContent = 'What you are ' + verb.toLowerCase() + ' on ' + act.name + '.';
+      document.getElementById('actDesc').textContent = desc;
+
+      // Site button
+      var siteBtn = document.getElementById('actSiteBtn');
+      if (site) {
+        siteBtn.href = 'https://' + site;
+        siteBtn.textContent = 'Visit ' + site;
+      } else {
+        siteBtn.style.display = 'none';
+      }
+
+      // Presence preview
+      document.getElementById('presVerb').textContent = verb;
+      document.getElementById('presLogo').src = logoUrl;
+      document.getElementById('presLogoBadge').src = logoUrl;
+      document.getElementById('presNote').textContent =
+        'Live preview. Real titles and artwork appear once you are on ' + (site || act.name) + '.';
+
+      // Privacy badge
+      if (act.privacy) {
+        var pb = document.getElementById('privBadge');
+        pb.style.display = '';
+        document.getElementById('privBadgeText').textContent =
+          'Toggle ' + act.name + ' off any time from the popup. No personal data is ever read.';
+      }
+
+      // Reads box site
+      document.getElementById('readsSite').textContent = site || act.name;
+
+      // Shows list
+      var shows = SHOWS_MAP[act.id] || ['Current page', 'Activity status'];
+      var ul = document.getElementById('actShowsList');
+      shows.forEach(function (s) {
+        var li = document.createElement('li');
+        li.textContent = s;
+        ul.appendChild(li);
+      });
+
+      // Related — all other acts
+      var relGrid = document.getElementById('relatedGrid');
+      allActs.filter(function (a) { return a.id !== act.id; }).forEach(function (a) {
+        var aLogo = RAW + a.id + '/logo.png';
+        var el = document.createElement('a');
+        el.className = 'rel-card';
+        el.href = '/activities/' + a.id + '.html';
+        el.innerHTML =
+          '<span class="rel-logo"><img src="' + aLogo + '" alt="' + a.name + '" loading="lazy" /></span>' +
+          '<span><span class="rel-name">' + a.name + '</span><span class="rel-cat">' + (a.category || '') + '</span></span>';
+        relGrid.appendChild(el);
+      });
+
+      // Footer activities list
+      var footActs = document.getElementById('footActivities');
+      allActs.forEach(function (a) {
+        var link = document.createElement('a');
+        link.href = '/activities/' + a.id + '.html';
+        link.textContent = a.name;
+        footActs.appendChild(link);
+      });
+
+      // Show sections
+      document.getElementById('actLoading').style.display = 'none';
+      document.getElementById('actHero').style.display = '';
+      document.getElementById('actDetails').style.display = '';
+      document.getElementById('actRelated').style.display = '';
+    }
+
+    // Fetch registry + this activity's metadata in parallel
+    var registryUrl = RAW + '../registry.json';
+    Promise.all([
+      fetch(registryUrl).then(function (r) { return r.json(); }),
+      fetch(RAW + slug + '/metadata.json').then(function (r) {
+        if (!r.ok) throw new Error('not found');
+        return r.json();
+      })
+    ]).then(function (results) {
+      var registry = results[0];
+      var act      = results[1];
+      var ids = registry.activities || [];
+      // Fetch all metadata for related + footer (best effort)
+      Promise.all(ids.map(function (id) {
+        return fetch(RAW + id + '/metadata.json').then(function (r) { return r.json(); }).catch(function () { return { id: id, name: id }; });
+      })).then(function (allActs) {
+        render(act, allActs);
+      });
+    }).catch(function () {
+      showError();
+    });
+  })();
+  </script>
+</body>
+</html>
