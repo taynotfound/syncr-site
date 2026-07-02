@@ -111,7 +111,7 @@ p  { color: var(--t2); }
 /* -- Nav -- */
 /* Platform banner */
 .platform-banner { background: linear-gradient(90deg, #2a1a6e 0%, #1a2460 50%, #1a3a2a 100%); border-bottom: 1px solid rgba(120,100,255,.25); }
-.platform-banner-in { max-width: var(--mw); margin: 0 auto; padding: .65rem var(--px); display: flex; align-items: center; gap: .75rem; justify-content: center; flex-wrap: wrap; }
+.platform-banner-in { max-width: var(--mw); margin: 0 auto; padding: 1.1rem var(--px); display: flex; align-items: center; gap: .75rem; justify-content: center; flex-wrap: wrap; }
 .platform-banner-pill { background: linear-gradient(135deg, #7b85f9, #3bd68c); color: #000; font-size: .68rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: .18rem .6rem; border-radius: 99px; flex-shrink: 0; }
 .platform-banner-text { font-size: .9rem; color: rgba(255,255,255,.8); }
 .platform-banner-text strong { color: #fff; font-weight: 700; }
