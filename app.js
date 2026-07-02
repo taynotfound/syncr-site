@@ -371,6 +371,7 @@
     'assets/shots/discord-3.png',
     'assets/shots/discord-4.png',
     'assets/shots/discord-5.png',
+    'assets/shots/popup-autoupdate.png',
   ];
   var shotIdx = 0;
   var shotMain = document.getElementById('shotMain');
