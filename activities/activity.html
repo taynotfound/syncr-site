@@ -353,7 +353,7 @@
     }
 
     // Fetch registry + this activity's metadata in parallel
-    var registryUrl = RAW + '../registry.json';
+    var registryUrl = RAW + 'registry.json';
     Promise.all([
       fetch(registryUrl).then(function (r) { return r.json(); }),
       fetch(RAW + slug + '/metadata.json').then(function (r) {
