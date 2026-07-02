@@ -259,7 +259,7 @@
       var badgeCls = BADGE_MAP[(act.activityType || '').toUpperCase()] || 'watch';
       var verb     = VERB_MAP[(act.activityType || '').toUpperCase()] || 'Using';
       var site     = siteFromPattern(act.urlPattern);
-      var pageUrl  = BASE_URL + '/activities/' + act.id + '.html';
+      var pageUrl  = BASE_URL + '/activities/activity.html?id=' + act.id;
       var title    = act.name + ' on Discord with Syncr';
       var desc     = act.description;
 
@@ -329,7 +329,7 @@
         var aLogo = RAW + a.id + '/logo.png';
         var el = document.createElement('a');
         el.className = 'rel-card';
-        el.href = '/activities/' + a.id + '.html';
+        el.href = '/activities/activity.html?id=' + a.id;
         el.innerHTML =
           '<span class="rel-logo"><img src="' + aLogo + '" alt="' + a.name + '" loading="lazy" /></span>' +
           '<span><span class="rel-name">' + a.name + '</span><span class="rel-cat">' + (a.category || '') + '</span></span>';
@@ -340,7 +340,7 @@
       var footActs = document.getElementById('footActivities');
       allActs.forEach(function (a) {
         var link = document.createElement('a');
-        link.href = '/activities/' + a.id + '.html';
+        link.href = '/activities/activity.html?id=' + a.id;
         link.textContent = a.name;
         footActs.appendChild(link);
       });
