@@ -111,12 +111,17 @@ p  { color: var(--t2); }
 /* -- Nav -- */
 /* Platform banner */
 .platform-banner { background: var(--indigo); }
-.platform-banner-in { max-width: var(--mw); margin: 0 auto; padding: 1.1rem var(--px); display: flex; align-items: center; gap: .875rem; justify-content: center; flex-wrap: wrap; }
+.platform-banner-in { max-width: var(--container); margin: 0 auto; padding: .6rem 2rem; display: flex; align-items: center; gap: .875rem; justify-content: center; flex-wrap: nowrap; overflow: hidden; }
 .platform-banner-pill { background: rgba(255,255,255,.2); color: #fff; font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: .15rem .55rem; border-radius: 99px; flex-shrink: 0; }
-.platform-banner-text { font-size: .9rem; color: rgba(255,255,255,.9); }
+.platform-banner-text { font-size: .875rem; color: rgba(255,255,255,.9); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .platform-banner-text strong { color: #fff; font-weight: 700; }
 .platform-banner-link { font-size: .875rem; color: #fff; font-weight: 700; white-space: nowrap; text-decoration: none; opacity: .85; transition: opacity .15s; flex-shrink: 0; }
 .platform-banner-link:hover { opacity: 1; text-decoration: underline; }
+@media (max-width: 620px) {
+  .platform-banner-in { padding: .6rem 1.25rem; gap: .6rem; }
+  .platform-banner-text { font-size: .8rem; }
+  .platform-banner-link { display: none; }
+}
 
 .nav {
   position: sticky; top: 0; z-index: 100;
