@@ -106,6 +106,7 @@
     .then(function (data) {
       if (!Array.isArray(data) || !data.length) throw new Error('empty');
       data.sort(function (a, b) { return (b.contributions || 0) - (a.contributions || 0); });
+      data = data.filter(function (c) { return c.type !== 'Bot' && !/\[bot\]$/i.test(c.login); });
       renderPeople(data);
     })
     .catch(function (err) {
