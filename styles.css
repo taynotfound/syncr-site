@@ -111,7 +111,7 @@ p  { color: var(--t2); }
 /* -- Nav -- */
 /* Platform banner */
 .platform-banner { background: var(--indigo); }
-.platform-banner-in { max-width: var(--mw); margin: 0 auto; padding: .75rem var(--px); display: flex; align-items: center; gap: .875rem; justify-content: center; flex-wrap: wrap; }
+.platform-banner-in { max-width: var(--mw); margin: 0 auto; padding: 1.1rem var(--px); display: flex; align-items: center; gap: .875rem; justify-content: center; flex-wrap: wrap; }
 .platform-banner-pill { background: rgba(255,255,255,.2); color: #fff; font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: .15rem .55rem; border-radius: 99px; flex-shrink: 0; }
 .platform-banner-text { font-size: .9rem; color: rgba(255,255,255,.9); }
 .platform-banner-text strong { color: #fff; font-weight: 700; }
