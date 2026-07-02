@@ -398,4 +398,17 @@
   /* auto-advance every 4s */
   setInterval(function () { goToShot((shotIdx + 1) % SHOTS.length); }, 4000);
 
+  /* -- Live activity count -- */
+  var countEl = document.getElementById('actCount');
+  if (countEl) {
+    fetch(RAW + 'registry.json')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.activities && data.activities.length) {
+          countEl.textContent = data.activities.length;
+        }
+      })
+      .catch(function () { /* leave default text */ });
+  }
+
 })();
