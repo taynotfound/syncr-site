@@ -63,14 +63,16 @@
     });
   }
 
-  /* stars in the nav */
+  /* stars in the nav + proof strip */
   fetch(API, { headers: { 'Accept': 'application/vnd.github+json' } })
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (d) {
-      var el = $('#navStars');
-      if (el && d && typeof d.stargazers_count === 'number') {
-        el.textContent = d.stargazers_count.toLocaleString();
-        el.title = d.stargazers_count + ' stars on GitHub';
+      var navEl   = $('#navStars');
+      var proofEl = $('#statStars');
+      if (d && typeof d.stargazers_count === 'number') {
+        var n = d.stargazers_count.toLocaleString();
+        if (navEl)   { navEl.textContent   = n; navEl.title = n + ' stars on GitHub'; }
+        if (proofEl) { proofEl.textContent = n; }
       }
     })
     .catch(function () { /* keep the "GitHub" label */ });
@@ -407,14 +409,15 @@
   /* auto-advance every 4s */
   setInterval(function () { goToShot((shotIdx + 1) % SHOTS.length); }, 4000);
 
-  /* -- Live activity count -- */
-  var countEl = document.getElementById('actCount');
-  if (countEl) {
-    fetch(RAW + 'registry.json')
+  /* -- Live activity count (proof strip + activities page) -- */
+  var RAW_REG = 'https://raw.githubusercontent.com/Clawb1t/Syncr/main/extension/activities/';
+  var actCountEls = document.querySelectorAll('#actCount');
+  if (actCountEls.length) {
+    fetch(RAW_REG + 'registry.json')
       .then(function (r) { return r.json(); })
       .then(function (data) {
         if (data.activities && data.activities.length) {
-          countEl.textContent = data.activities.length;
+          actCountEls.forEach(function (el) { el.textContent = data.activities.length; });
         }
       })
       .catch(function () { /* leave default text */ });

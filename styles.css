@@ -32,9 +32,9 @@
   --amber:     #f0a35e;
   --red:       #f2617a;
 
-  /* spacing scale: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 */
+  /* spacing scale: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 / 128 */
   --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px;
-  --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px; --s9: 96px;
+  --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px; --s9: 96px; --s10: 128px;
 
   /* radii, deliberately restrained */
   --r1: 6px; --r2: 8px; --r3: 10px; --r4: 12px;
@@ -75,9 +75,9 @@ h4 { font-size: 1.06rem; font-weight: 600; }
 p  { color: var(--t2); }
 
 /* -- Layout -- */
-.container { max-width: var(--container); margin: 0 auto; padding-inline: var(--s5); }
-.section { padding-block: var(--s9); position: relative; }
-.section-sm { padding-block: var(--s8); }
+.container { max-width: var(--container); margin: 0 auto; padding-inline: var(--s6); }
+.section { padding-block: var(--s10); position: relative; }
+.section-sm { padding-block: var(--s9); }
 .lead {
   max-width: 620px; margin-bottom: var(--s7);
 }
@@ -199,14 +199,25 @@ p  { color: var(--t2); }
 /* -- Proof strip -- */
 .proof-strip { padding-bottom: var(--s9); }
 .proof-strip-in {
-  display: flex; align-items: center; justify-content: center;
+  display: flex; align-items: stretch; justify-content: center;
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--r4);
-  padding: var(--s4) 0; flex-wrap: wrap;
+  overflow: hidden;
 }
-.proof-item { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: var(--s3) var(--s7); }
-.proof-n { font-size: 1.85rem; font-weight: 700; letter-spacing: -.04em; color: var(--t1); font-variant-numeric: tabular-nums; line-height: 1; }
-.proof-l { font-size: .74rem; color: var(--t3); text-transform: uppercase; letter-spacing: .08em; font-weight: 600; }
-.proof-div { width: 1px; height: 40px; background: var(--line); flex: none; align-self: center; }
+.proof-item {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; padding: var(--s6) var(--s8);
+  flex: 1; min-width: 160px;
+}
+.proof-item + .proof-item { border-left: 1px solid var(--line); }
+.proof-n {
+  font-size: 2.2rem; font-weight: 700; letter-spacing: -.05em;
+  color: var(--t1); font-variant-numeric: tabular-nums; line-height: 1;
+}
+.proof-l {
+  font-size: .75rem; color: var(--t3);
+  text-transform: uppercase; letter-spacing: .08em; font-weight: 600;
+}
+.proof-div { display: none; } /* no longer needed — borders handle dividers */
 
 
 /* -- Video showcase -- */
