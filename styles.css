@@ -496,9 +496,11 @@ p  { color: var(--t2); }
 
 /* -- Footer -- */
 .footer { border-top: 1px solid var(--line); padding-block: var(--s9) var(--s7); }
-.footer-blahaj-thumb { display: inline-flex; margin-left: auto; flex-shrink: 0; }
-.footer-blahaj-thumb img { width: 48px; height: 48px; border-radius: var(--r3); object-fit: cover; object-position: center 20%; opacity: .7; transition: opacity .2s ease, transform .2s ease; }
-.footer-blahaj-thumb:hover img { opacity: 1; transform: scale(1.08) rotate(-3deg); }
+.footer-blahaj-thumb { display: inline-flex; align-items: center; gap: var(--s3); margin-top: var(--s4); text-decoration: none; }
+.footer-blahaj-thumb img { width: 40px; height: 40px; border-radius: var(--r3); object-fit: cover; object-position: center 20%; opacity: .75; transition: opacity .2s ease, transform .2s ease; flex-shrink: 0; }
+.footer-blahaj-thumb span { font-size: .8rem; color: var(--t3); transition: color .2s ease; }
+.footer-blahaj-thumb:hover img { opacity: 1; transform: rotate(-4deg) scale(1.08); }
+.footer-blahaj-thumb:hover span { color: var(--t2); }
 .footer-in { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: var(--s8); margin-bottom: var(--s7); }
 .footer-brand .brand { margin-bottom: var(--s3); }
 .footer-brand p { font-size: .88rem; color: var(--t3); max-width: 30ch; }
