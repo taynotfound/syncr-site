@@ -291,12 +291,57 @@ def head_html(page):
     return tmpl
 
 
+def score_related(a, candidate):
+    """Score how related `candidate` is to activity `a`. Higher = more related."""
+    score = 0
+    # Same category is the strongest signal
+    if candidate['category'] == a['category']:
+        score += 4
+    # Same presence type (listening/watching/browsing)
+    if candidate.get('badge_class') == a.get('badge_class'):
+        score += 2
+    # Semantic clusters — activities that belong to the same real-world domain
+    CLUSTERS = {
+        'music':       {'youtube-music', 'spotify', 'soundcloud', 'youtube', 'deezer',
+                        'tidal', 'apple-music', 'bandcamp', 'reboot-radio'},
+        'streaming':   {'netflix', 'disney-plus', 'max', 'hulu', 'crunchyroll', 'plex',
+                        'mubi', 'vimeo', 'twitch', 'kick', 'youtube', 'amazon'},
+        'social':      {'reddit', 'x', 'bluesky', 'threads', 'tumblr', 'mastodon',
+                        'instagram', 'facebook', 'linkedin', 'pinterest', 'deviantart',
+                        'pixiv', 'artstation', 'behance', 'dribbble', 'letterboxd',
+                        'goodreads', 'ao3', 'medium', 'substack', 'hackernews', 'tiktok'},
+        'coding':      {'github', 'gitlab', 'codeberg', 'forgejo', 'bitbucket', 'replit',
+                        'codepen', 'stackoverflow', 'npm', 'linear', 'jira', 'trello',
+                        'miro', 'excalidraw', 'monday', 'dsyncr'},
+        'ai':          {'chatgpt', 'claude', 'grok', 'perplexity', 'gemini', 'ms-copilot',
+                        'mistral', 'character-ai', 'poe', 'mapify'},
+        'productivity':{'proton-mail', 'gmail', 'outlook', 'm365', 'notion', 'figma',
+                        'canva', 'google-drive', 'google-docs', 'google-meet', 'slack',
+                        'teams', 'dropbox', 'patreon'},
+        'messaging':   {'discord', 'whatsapp', 'telegram', 'snapchat', 'element',
+                        'revolt', 'guilded', 'rocket-chat', 'wamellow'},
+        'gaming':      {'steam', 'chess-com', 'lichess', 'itch-io', 'roblox', 'geforcenow',
+                        'twitch', 'kick'},
+        'search':      {'google', 'duckduckgo', 'startpage', 'wikipedia', 'hackernews'},
+        'learning':    {'duolingo', 'khanacademy', 'coursera', 'freecodecamp',
+                        'stackoverflow', 'wikipedia'},
+    }
+    a_clusters   = {k for k, ids in CLUSTERS.items() if a['id']         in ids}
+    cand_clusters = {k for k, ids in CLUSTERS.items() if candidate['id'] in ids}
+    shared = a_clusters & cand_clusters
+    score += len(shared) * 3
+    return score
+
+
 def render_activity(page):
     a = page["activity"]
     body = read_partial("_activity.html")
     shows = "\n".join(
         '          <li>{}</li>'.format(esc(s)) for s in a["shows"])
     others = [x for x in ACTIVITIES if x["id"] != a["id"]]
+    # Score and sort by relevance — same category, same presence type, shared cluster
+    others.sort(key=lambda x: score_related(a, x), reverse=True)
+    others = others[:6]  # top 6 most related
     rel = "\n".join(
         '        <a class="rel-card" href="/activities/{id}.html">'
         '<span class="rel-logo"><img src="/assets/activities/{logo}" alt="{name}" loading="lazy" /></span>'
