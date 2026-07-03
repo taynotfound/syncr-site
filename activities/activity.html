@@ -178,9 +178,6 @@
           <a href="/changelog.html">Changelog</a>
           <a href="/faq.html">FAQ</a>
         </div>
-        <div class="fcol" id="footActivities">
-          <h5>Activities</h5>
-        </div>
         <div class="fcol">
           <h5>Project</h5>
           <a href="https://github.com/Clawb1t/Syncr" target="_blank" rel="noopener">GitHub</a>
@@ -325,9 +322,33 @@
         ul.appendChild(li);
       });
 
-      // Related — all other acts
+      // Related — scored by category, presence type, semantic cluster; top 6
+      var CLUSTERS = {
+        music:       ['youtube-music','spotify','soundcloud','youtube','deezer','tidal','apple-music','bandcamp','reboot-radio'],
+        streaming:   ['netflix','disney-plus','max','hulu','crunchyroll','plex','mubi','vimeo','twitch','kick','youtube','amazon'],
+        social:      ['reddit','x','bluesky','threads','tumblr','mastodon','instagram','facebook','linkedin','pinterest','deviantart','pixiv','artstation','behance','dribbble','letterboxd','goodreads','ao3','medium','substack','hackernews','tiktok'],
+        coding:      ['github','gitlab','codeberg','forgejo','bitbucket','replit','codepen','stackoverflow','npm','linear','jira','trello','miro','excalidraw','monday','dsyncr'],
+        ai:          ['chatgpt','claude','grok','perplexity','gemini','ms-copilot','mistral','character-ai','poe','mapify'],
+        productivity:['proton-mail','gmail','outlook','m365','notion','figma','canva','google-drive','google-docs','google-meet','slack','teams','dropbox','patreon'],
+        messaging:   ['discord','whatsapp','telegram','snapchat','element','revolt','guilded','rocket-chat','wamellow'],
+        gaming:      ['steam','chess-com','lichess','itch-io','roblox','geforcenow','twitch','kick'],
+        search:      ['google','duckduckgo','startpage','wikipedia','hackernews'],
+        learning:    ['duolingo','khanacademy','coursera','freecodecamp','stackoverflow','wikipedia'],
+      };
+      function scoreRelated(current, candidate) {
+        var score = 0;
+        if (candidate.category && candidate.category === current.category) score += 4;
+        if (candidate.activityType && candidate.activityType === current.activityType) score += 2;
+        var curClusters  = Object.keys(CLUSTERS).filter(function (k) { return CLUSTERS[k].indexOf(current.id)   !== -1; });
+        var candClusters = Object.keys(CLUSTERS).filter(function (k) { return CLUSTERS[k].indexOf(candidate.id) !== -1; });
+        curClusters.forEach(function (k) { if (candClusters.indexOf(k) !== -1) score += 3; });
+        return score;
+      }
+      var candidates = allActs.filter(function (a) { return a.id !== act.id; });
+      candidates.sort(function (a, b) { return scoreRelated(act, b) - scoreRelated(act, a); });
+      var top = candidates.slice(0, 6);
       var relGrid = document.getElementById('relatedGrid');
-      allActs.filter(function (a) { return a.id !== act.id; }).forEach(function (a) {
+      top.forEach(function (a) {
         var aLogo = RAW + a.id + '/logo.png';
         var el = document.createElement('a');
         el.className = 'rel-card';
@@ -336,15 +357,6 @@
           '<span class="rel-logo"><img src="' + aLogo + '" alt="' + a.name + '" loading="lazy" /></span>' +
           '<span><span class="rel-name">' + a.name + '</span><span class="rel-cat">' + (a.category || '') + '</span></span>';
         relGrid.appendChild(el);
-      });
-
-      // Footer activities list
-      var footActs = document.getElementById('footActivities');
-      allActs.forEach(function (a) {
-        var link = document.createElement('a');
-        link.href = '/activities/activity.html?id=' + a.id;
-        link.textContent = a.name;
-        footActs.appendChild(link);
       });
 
       // Show sections
