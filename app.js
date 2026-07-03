@@ -280,7 +280,7 @@
       card.dataset.cat  = cat;
       card.innerHTML =
         '<div class="acard-head">' +
-          '<div class="acard-logo"><img src="' + esc(logoUrl) + '" alt="' + esc(act.name) + '" onerror="this.style.display=\'none\'" /></div>' +
+          '<img class="acard-logo" src="' + esc(logoUrl) + '" alt="' + esc(act.name) + '" onerror="this.style.display=\'none\'" /> ' +
           '<div class="acard-badges">' +
             '<span class="act-badge ' + esc(badge) + '">' + esc(label) + '</span>' +
             (isNew ? '<span class="act-badge-new">New</span>' : '') +

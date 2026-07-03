@@ -344,7 +344,7 @@ def render_activity(page):
     others = others[:6]  # top 6 most related
     rel = "\n".join(
         '        <a class="rel-card" href="/activities/{id}.html">'
-        '<span class="rel-logo"><img src="/assets/activities/{logo}" alt="{name}" loading="lazy" /></span>'
+        '<img class="rel-logo" src="/assets/activities/{logo}" alt="{name}" loading="lazy" />'
         '<span><span class="rel-name">{name}</span><span class="rel-cat">{cat}</span></span></a>'.format(
             id=x["id"], logo=x["logo"], name=esc(x["name"]), cat=esc(x["category"]))
         for x in others)

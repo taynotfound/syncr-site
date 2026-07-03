@@ -354,7 +354,7 @@
         el.className = 'rel-card';
         el.href = '/activities/activity.html?id=' + a.id;
         el.innerHTML =
-          '<span class="rel-logo"><img src="' + aLogo + '" alt="' + a.name + '" loading="lazy" /></span>' +
+          '<img class="rel-logo" src="' + aLogo + '" alt="' + a.name + '" loading="lazy" />' +
           '<span><span class="rel-name">' + a.name + '</span><span class="rel-cat">' + (a.category || '') + '</span></span>';
         relGrid.appendChild(el);
       });
