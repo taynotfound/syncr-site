@@ -256,7 +256,7 @@ p  { color: var(--t2); }
 .gd-list li { display: flex; align-items: center; gap: var(--s3); color: var(--t1); font-size: .95rem; font-weight: 500; }
 .gd-list .tick { flex: none; width: 20px; height: 20px; border-radius: 50%; background: rgba(59,214,140,.13); border: 1px solid rgba(59,214,140,.28); position: relative; }
 .gd-list .tick::after { content: ""; position: absolute; left: 6px; top: 4px; width: 5px; height: 9px; border: solid var(--green); border-width: 0 2px 2px 0; transform: rotate(42deg); }
-.gd-shots { position: relative; display: flex; justify-content: center; align-items: center; min-height: 440px; }
+.gd-shots { position: relative; display: flex; justify-content: center; align-items: center; min-height: 480px; padding-bottom: 40px; }
 .shot-phone { border-radius: var(--r4); overflow: hidden; border: 1px solid var(--line-2); box-shadow: var(--sh3); background: #000; width: 214px; transition: transform .5s var(--ease), opacity .35s ease; }
 .shot-phone img { width: 100%; height: auto; display: block; }
 .shot-phone:first-child { transform: rotate(-5deg) translateX(26px); position: relative; z-index: 2; }
@@ -264,7 +264,7 @@ p  { color: var(--t2); }
 .gd-shots:hover .shot-phone:first-child { transform: rotate(-3deg) translateX(10px); }
 .gd-shots:hover .shot-phone.alt { transform: rotate(3deg) translateX(-10px) translateY(14px) scale(.99); filter: brightness(1); }
 .gd-shots::before { content: ""; position: absolute; width: 320px; height: 320px; background: radial-gradient(circle, rgba(86,98,246,.2), transparent 68%); filter: blur(20px); z-index: 0; }
-.shot-dots { position: absolute; bottom: -32px; left: 50%; transform: translateX(-50%); display: flex; gap: 7px; z-index: 10; }
+.shot-dots { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 7px; z-index: 10; }
 .shot-dot { width: 8px; height: 8px; border-radius: 50%; border: none; background: var(--line-2); cursor: pointer; padding: 0; transition: background .2s, transform .2s; }
 .shot-dot.active { background: var(--indigo); transform: scale(1.25); }
 .shot-phone.is-fading { opacity: 0; }
