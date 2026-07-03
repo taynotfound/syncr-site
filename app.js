@@ -373,6 +373,9 @@
     'assets/shots/discord-4.png',
     'assets/shots/discord-5.png',
     'assets/shots/discord-6.png',
+    'assets/shots/discord-7.png',
+    'assets/shots/discord-8.png',
+    'assets/shots/discord-9.png',
   ];
   var shotIdx = 0;
   var shotMain = document.getElementById('shotMain');
