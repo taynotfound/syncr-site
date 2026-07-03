@@ -255,6 +255,7 @@
     var RAW = 'https://raw.githubusercontent.com/Clawb1t/Syncr/main/extension/activities/';
     var BADGE_MAP = { 'LISTENING TO': 'listen', 'LISTENING': 'listen', 'WATCHING': 'watch', 'BROWSING': 'watch' };
     var BADGE_LABEL = { 'LISTENING TO': 'Listening', 'LISTENING': 'Listening', 'WATCHING': 'Watching', 'BROWSING': 'Browsing' };
+    var NEW_COUNT = 5; /* last N activities in registry get a "New" badge */
 
     function badgeClass(type) { return BADGE_MAP[(type || '').toUpperCase()] || 'watch'; }
     function badgeLabel(act) {
@@ -262,14 +263,13 @@
       return BADGE_LABEL[(act.activityType || '').toUpperCase()] || act.activityType || '';
     }
 
-    function renderCard(act) {
+    function renderCard(act, isNew) {
       var logoUrl = RAW + act.id + '/logo.png';
       var badge   = badgeClass(act.activityType);
       var label   = badgeLabel(act);
       var cat     = act.category || 'Other';
       var desc    = act.description || '';
       var slug    = act.id;
-      /* link to static detail page if it exists, else GitHub source */
       var href    = '/activities/activity.html?id=' + slug;
       var card    = document.createElement('a');
       card.className = 'acard reveal in';
@@ -279,7 +279,10 @@
       card.innerHTML =
         '<div class="acard-head">' +
           '<div class="acard-logo"><img src="' + esc(logoUrl) + '" alt="' + esc(act.name) + '" onerror="this.style.display=\'none\'" /></div>' +
-          '<span class="act-badge ' + esc(badge) + '">' + esc(label) + '</span>' +
+          '<div class="acard-badges">' +
+            '<span class="act-badge ' + esc(badge) + '">' + esc(label) + '</span>' +
+            (isNew ? '<span class="act-badge-new">New</span>' : '') +
+          '</div>' +
         '</div>' +
         '<h3>' + esc(act.name) + '</h3>' +
         '<p>' + esc(desc) + '</p>' +
@@ -342,11 +345,15 @@
       .then(function (metas) {
         var valid = metas.filter(Boolean);
         if (!valid.length) throw new Error('no metas');
+        /* update counter */
+        var totalEl = document.getElementById('actsTotal');
+        if (totalEl) totalEl.textContent = valid.length;
         /* replace static cards */
         actsGrid.innerHTML = '';
+        var newIds = new Set(valid.slice(-NEW_COUNT).map(function (a) { return a.id; }));
         valid.forEach(function (act) {
           ensureChip(act.category || 'Other');
-          actsGrid.appendChild(renderCard(act));
+          actsGrid.appendChild(renderCard(act, newIds.has(act.id)));
         });
         wireControls();
         applyFilter();

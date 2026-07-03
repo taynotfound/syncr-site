@@ -285,6 +285,9 @@ p  { color: var(--t2); }
   flex-direction: column;
   transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
 }
+.feat-card--solo {
+  grid-column: 1 / -1;
+}
 .feat-card:hover {
   border-color: rgba(86,98,246,.4);
   transform: translateY(-3px);
@@ -304,6 +307,14 @@ p  { color: var(--t2); }
   max-width: 100%;
   height: auto;
   border-radius: var(--r2);
+}
+.feat-card-img--solo {
+  min-height: 120px;
+  padding: var(--s6) var(--s8);
+}
+.feat-card-img--solo img {
+  max-width: 640px;
+  width: 100%;
 }
 .feat-card-img--wide {
   min-height: 120px;
@@ -727,6 +738,17 @@ p  { color: var(--t2); }
 .faq-help p { color: var(--t2); margin-bottom: var(--s5); max-width: 52ch; }
 
 /* -- Activities index: tools -- */
+.acts-counter {
+  display: inline-flex; align-items: baseline; gap: .4em;
+  margin-bottom: var(--s5);
+}
+.acts-counter-n {
+  font-size: 2.4rem; font-weight: 700; letter-spacing: -.04em;
+  color: var(--indigo-hi); font-variant-numeric: tabular-nums; line-height: 1;
+}
+.acts-counter-l {
+  font-size: 1rem; color: var(--t3); font-weight: 500;
+}
 .acts-tools { display: flex; align-items: center; gap: var(--s4); margin-top: var(--s5); flex-wrap: wrap; }
 .search-wrap { position: relative; display: flex; align-items: center; min-width: 240px; flex: 1; max-width: 320px; }
 .search-wrap svg { position: absolute; left: 12px; width: 17px; height: 17px; color: var(--t3); pointer-events: none; }
@@ -751,6 +773,7 @@ p  { color: var(--t2); }
 .acard { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r4); padding: var(--s5); transition: border-color .18s ease, background .18s ease, transform .18s ease; }
 .acard:hover { border-color: var(--line-2); background: var(--surface-2); transform: translateY(-2px); }
 .acard-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s4); }
+.acard-badges { display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap; justify-content: flex-end; }
 .acard-logo { width: 44px; height: 44px; border-radius: var(--r2); background: var(--elevated); border: 1px solid var(--line-2); display: grid; place-items: center; }
 .acard-logo img { width: 26px; height: 26px; }
 .acard h3 { font-size: 1.12rem; margin-bottom: var(--s2); }
@@ -760,6 +783,11 @@ p  { color: var(--t2); }
 .acard-go { font-size: .82rem; font-weight: 600; color: var(--indigo-hi); transition: transform .15s ease; }
 .acard:hover .acard-go { transform: translateX(3px); }
 .acts-empty { color: var(--t3); font-size: .95rem; padding: var(--s6) 0; text-align: center; }
+.act-badge-new {
+  font-size: .62rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  padding: 2px 7px; border-radius: var(--r1);
+  color: var(--green); background: rgba(59,214,140,.12); border: 1px solid rgba(59,214,140,.28);
+}
 
 /* -- Activities index: add your own -- */
 .addyours { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s7); align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r4); padding: var(--s7); }
