@@ -49,8 +49,16 @@
 </head>
 
 <body>
-  <!-- Nav -->
-  <header class="nav" id="nav">
+  <!-- Platform banner -->
+<div class="platform-banner">
+  <div class="platform-banner-in">
+    <span class="platform-banner-pill">v1.0</span>
+    <span class="platform-banner-text">Syncr is out — open-source Discord rich presence, <strong>free forever</strong>.</span>
+    <a class="platform-banner-link" href="/download.html">Download →</a>
+  </div>
+</div>
+<!-- Nav -->
+<header class="nav" id="nav">
     <div class="nav-in">
       <a class="brand" href="/"><img src="assets/syncrlogo.png" alt="" /> Syncr</a>
       <nav class="nav-links" id="navLinks">
@@ -102,16 +110,6 @@
           <video src="assets/demo.mp4" poster="assets/demo_poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- Trust strip -->
-  <section class="container">
-    <div class="trust reveal">
-      <div class="trust-item"><span class="trust-n mono" id="statStars">&mdash;</span><span class="trust-l">GitHub stars</span></div>
-      <div class="trust-item"><span class="trust-n mono">5</span><span class="trust-l">Supported sites</span></div>
-      <div class="trust-item"><span class="trust-n mono" id="statVersion">v1.0</span><span class="trust-l">Latest release</span></div>
-      <div class="trust-item"><span class="trust-n mono">0&euro;</span><span class="trust-l">Forever</span></div>
     </div>
   </section>
 
@@ -189,60 +187,60 @@
       </div>
     </div>
 
-    <!-- Popup feature screenshots -->
-    <div class="feat-shots">
-      <div class="feat-shot reveal">
-        <figure class="feat-shot-img feat-shot-img--wide">
+    <!-- Popup screenshots: horizontal scroll row -->
+    <div class="feat-row">
+      <div class="feat-card reveal">
+        <div class="feat-card-img feat-card-img--wide">
           <img src="assets/shots/sharing-toast.png" alt="Syncr sharing notification banner" loading="lazy" />
-        </figure>
-        <div class="feat-shot-cap">
+        </div>
+        <div class="feat-card-cap">
           <h4>Share start notification</h4>
-          <p>A brief banner confirms the moment Syncr starts sharing a tab. Shows once, then clears itself.</p>
+          <p>A brief banner confirms when Syncr starts sharing. Shows once, clears itself.</p>
         </div>
       </div>
-      <div class="feat-shot reveal">
-        <figure class="feat-shot-img">
+      <div class="feat-card reveal">
+        <div class="feat-card-img">
           <img src="assets/shots/feature-sites.png" alt="Syncr site toggle popup" loading="lazy" />
-        </figure>
-        <div class="feat-shot-cap">
+        </div>
+        <div class="feat-card-cap">
           <h4>Enable sharing per site</h4>
-          <p>Flip any activity on or off in one tap. Only share what you want, hide the rest.</p>
+          <p>Flip any activity on or off in one tap. Only share what you want.</p>
         </div>
       </div>
-      <div class="feat-shot reveal">
-        <figure class="feat-shot-img">
+      <div class="feat-card reveal">
+        <div class="feat-card-img">
           <img src="assets/shots/feature-updater.png" alt="Syncr built-in updater" loading="lazy" />
-        </figure>
-        <div class="feat-shot-cap">
+        </div>
+        <div class="feat-card-cap">
           <h4>Built-in updater</h4>
-          <p>Checks for new versions and updates in place. No store queue, no manual installs.</p>
+          <p>Checks for new versions and updates in place. No store queue.</p>
         </div>
       </div>
-      <div class="feat-shot reveal">
-        <figure class="feat-shot-img">
+      <div class="feat-card reveal">
+        <div class="feat-card-img">
           <img src="assets/shots/discord-7.png" alt="Syncr presence settings" loading="lazy" />
-        </figure>
-        <div class="feat-shot-cap">
+        </div>
+        <div class="feat-card-cap">
           <h4>Presence settings</h4>
-          <p>Control priority, pinning, and thumbnails. Decide exactly what gets shared and how.</p>
+          <p>Priority, pinning, thumbnails. Decide exactly what shows and how.</p>
         </div>
       </div>
-      <div class="feat-shot reveal">
-        <figure class="feat-shot-img">
+      <div class="feat-card reveal">
+        <div class="feat-card-img">
           <img src="assets/shots/discord-8.png" alt="Syncr presence details" loading="lazy" />
-        </figure>
-        <div class="feat-shot-cap">
+        </div>
+        <div class="feat-card-cap">
           <h4>Presence details</h4>
-          <p>See exactly what Discord is showing — title, state, elapsed time, and artwork.</p>
+          <p>See exactly what Discord is showing — title, state, artwork, elapsed time.</p>
         </div>
       </div>
-      <div class="feat-shot reveal">
-        <figure class="feat-shot-img">
+      <div class="feat-card reveal">
+        <div class="feat-card-img">
           <img src="assets/shots/discord-9.png" alt="Syncr popup overview" loading="lazy" />
-        </figure>
-        <div class="feat-shot-cap">
+        </div>
+        <div class="feat-card-cap">
           <h4>Clean overview</h4>
-          <p>All your active sites at a glance. One panel, no clutter, always current.</p>
+          <p>All active sites at a glance. One panel, no clutter, always current.</p>
         </div>
       </div>
     </div>
