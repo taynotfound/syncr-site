@@ -296,11 +296,12 @@ p  { color: var(--t2); }
 /* -- Feature screenshots row -- */
 .feat-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: var(--s4);
   margin-top: var(--s7);
 }
 .feat-card {
+  grid-column: span 2;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--r4);
@@ -311,6 +312,9 @@ p  { color: var(--t2); }
 }
 .feat-card--solo {
   grid-column: 1 / -1;
+}
+.feat-card--half {
+  grid-column: span 3;
 }
 .feat-card:hover {
   border-color: rgba(86,98,246,.4);
@@ -603,13 +607,17 @@ p  { color: var(--t2); }
   .hero-sub { max-width: none; }
   .features { grid-template-columns: repeat(2, 1fr); }
   .flow { grid-template-columns: repeat(2, 1fr); gap: 0; }
-  .feat-row { grid-template-columns: repeat(2, 1fr); }
+  .feat-row { grid-template-columns: repeat(4, 1fr); }
+  .feat-card { grid-column: span 2; }
+  .feat-card--half { grid-column: span 2; }
   .flow::before { display: none; }
   .gallery-discord { grid-template-columns: 1fr; gap: var(--s6); }
   .gd-shots { min-height: 400px; }
   .popup-row { grid-template-columns: 1fr; }
   .pop-card--wide { grid-column: auto; }
   .feat-row { grid-template-columns: 1fr; }
+  .feat-card { grid-column: span 1; }
+  .feat-card--half { grid-column: span 1; }
   .footer-in { grid-template-columns: 1fr 1fr; }
   .nav-links { display: none; }
   .nav-cta { margin-left: auto; }
