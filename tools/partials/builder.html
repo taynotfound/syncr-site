@@ -1,0 +1,447 @@
+  <!-- Builder hero -->
+  <section class="section container builder-hero">
+    <div class="lead">
+      <span class="tag">No code needed</span>
+      <h1>Activity Builder</h1>
+      <p class="lead-sub">
+        Pick a site, describe what happens on each page, and Syncr writes the
+        files for you. Test it in one click from your extension.
+      </p>
+    </div>
+  </section>
+
+  <!-- Builder body -->
+  <section class="section container builder-wrap">
+    <div class="builder-grid">
+      <!-- FORM COLUMN -->
+      <form class="builder-form reveal" id="builderForm" novalidate>
+        <!-- Basics -->
+        <fieldset class="builder-card">
+          <legend>The basics</legend>
+          <div class="builder-row">
+            <label for="bName">Activity name</label>
+            <input id="bName" name="name" type="text" required maxlength="60" placeholder="e.g. My Cool Site" autocomplete="off" />
+            <span class="builder-hint">Shown on your Discord profile and inside the popup.</span>
+          </div>
+          <div class="builder-row builder-row--split">
+            <div>
+              <label for="bId">Activity ID</label>
+              <input id="bId" name="id" type="text" required maxlength="40" placeholder="my-cool-site" pattern="[a-z0-9-]+" autocomplete="off" />
+              <span class="builder-hint">Lowercase, hyphens only. Used as the folder name.</span>
+            </div>
+            <div>
+              <label for="bCategory">Category</label>
+              <select id="bCategory" name="category">
+                <option value="Social">Social</option>
+                <option value="Video">Video</option>
+                <option value="Music">Music</option>
+                <option value="Streaming">Streaming</option>
+                <option value="Productivity">Productivity</option>
+                <option value="Coding">Coding</option>
+                <option value="AI">AI</option>
+                <option value="Gaming">Gaming</option>
+                <option value="Reading">Reading</option>
+                <option value="Other" selected>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="builder-row">
+            <label for="bDesc">Short description</label>
+            <textarea id="bDesc" name="description" rows="2" required maxlength="200" placeholder="What does this activity show?"></textarea>
+            <span class="builder-hint">One or two sentences. Shown on the activity page.</span>
+          </div>
+        </fieldset>
+
+        <!-- Site + presence -->
+        <fieldset class="builder-card">
+          <legend>The site</legend>
+          <div class="builder-row">
+            <label for="bUrl">Website URL</label>
+            <input id="bUrl" name="url" type="url" required placeholder="https://example.com" autocomplete="off" />
+            <span class="builder-hint">Any URL on the site. We convert it to a match pattern.</span>
+          </div>
+          <div class="builder-row builder-row--split">
+            <div>
+              <label for="bType">Presence type</label>
+              <select id="bType" name="activityType">
+                <option value="WATCHING">Watching</option>
+                <option value="LISTENING TO">Listening to</option>
+                <option value="PLAYING">Playing</option>
+                <option value="BROWSING" selected>Browsing</option>
+              </select>
+              <span class="builder-hint">Discord label shown above the status.</span>
+            </div>
+            <div>
+              <label for="bButton">Button label</label>
+              <input id="bButton" name="buttonLabel" type="text" maxlength="32" placeholder="Open site" autocomplete="off" />
+              <span class="builder-hint">Optional link button on your profile.</span>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Page rules -->
+        <fieldset class="builder-card">
+          <legend>What shows on each page</legend>
+          <p class="builder-fieldnote">
+            Match by URL path. Syncr walks the rules top to bottom and picks the
+            first one that fits.
+          </p>
+          <div id="bRules" class="builder-rules"></div>
+          <button type="button" class="btn btn-ghost btn-sm" id="bAddRule">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+            Add another page
+          </button>
+        </fieldset>
+
+        <!-- Logo -->
+        <fieldset class="builder-card">
+          <legend>Logo</legend>
+          <div class="builder-row builder-logo-row">
+            <label class="builder-logo-drop" id="bLogoDrop">
+              <input type="file" id="bLogo" accept="image/png,image/jpeg,image/webp,image/svg+xml" hidden />
+              <div class="builder-logo-preview" id="bLogoPreview">
+                <span class="builder-logo-placeholder">
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-4-6 7"/></svg>
+                </span>
+              </div>
+              <div class="builder-logo-text">
+                <strong>Drop a logo</strong>
+                <span>PNG, JPG, WebP, or SVG. Square works best. Optional.</span>
+              </div>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- Actions -->
+        <div class="builder-actions">
+          <button type="button" class="btn btn-primary" id="bDownload">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Download files (.zip)
+          </button>
+          <button type="button" class="btn btn-ghost" id="bTest">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z" stroke-linejoin="round"/></svg>
+            Test in Syncr
+          </button>
+          <button type="button" class="btn btn-ghost btn-danger" id="bReset">Reset</button>
+        </div>
+        <p class="builder-status" id="bStatus" role="status" aria-live="polite"></p>
+      </form>
+
+      <!-- PREVIEW COLUMN -->
+      <aside class="builder-preview reveal">
+        <div class="builder-preview-sticky">
+          <div class="presence">
+            <div class="presence-card">
+              <div class="presence-head">
+                <span class="presence-kicker">Live preview</span>
+              </div>
+              <div class="presence-body">
+                <div class="presence-verb" id="bPvVerb">Browsing</div>
+                <div class="presence-main">
+                  <div class="presence-art">
+                    <img id="bPvLogo" src="" alt="" style="display:none" />
+                    <span class="presence-art-fallback" id="bPvLogoFallback">?</span>
+                  </div>
+                  <div class="presence-lines">
+                    <div class="p-app">Syncr</div>
+                    <div class="p-l1" id="bPvL1">Activity name</div>
+                    <div class="p-l2" id="bPvL2">What's shown on this page</div>
+                    <div class="p-bar"><span class="p-bar-fill"></span></div>
+                    <div class="p-time mono"><span>00:12</span><span>&mdash;&mdash;</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="presence-note">
+              Preview updates as you type. The real status appears on Discord when
+              you enable this activity in Syncr.
+            </p>
+          </div>
+
+          <div class="builder-info">
+            <h3>How Test Mode works</h3>
+            <ol>
+              <li>Click <strong>Test in Syncr</strong> to open the extension's Test Mode.</li>
+              <li>Drop the downloaded folder in, or the .zip.</li>
+              <li>Open your site &mdash; the activity fires exactly like a shipped one.</li>
+            </ol>
+            <p class="builder-info-note">
+              Files exported: <code>metadata.json</code>, <code>scraper.json</code>, and your logo if provided.
+              These match the exact format Syncr's real activities use.
+            </p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- JSZip: tiny, permissive, CDN'd. Used only for the .zip export. -->
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" defer></script>
+
+  <script>
+  (function () {
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+    // ---- Rule templates -----------------------------------------------------
+    const PRESET_RULES = [
+      { path: '/', context: 'Visiting the site' },
+    ];
+
+    function makeRule(rule) {
+      const row = document.createElement('div');
+      row.className = 'builder-rule';
+      row.innerHTML = `
+        <div class="builder-rule-grip" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="6" r="1.3"/><circle cx="9" cy="12" r="1.3"/><circle cx="9" cy="18" r="1.3"/>
+            <circle cx="15" cy="6" r="1.3"/><circle cx="15" cy="12" r="1.3"/><circle cx="15" cy="18" r="1.3"/>
+          </svg>
+        </div>
+        <div class="builder-rule-body">
+          <div class="builder-rule-row">
+            <label>When path contains
+              <input type="text" class="rule-path" value="${escapeAttr(rule.path || '')}" placeholder="/watch" />
+            </label>
+            <label>Show as
+              <input type="text" class="rule-ctx" value="${escapeAttr(rule.context || '')}" placeholder="Watching video" maxlength="100" />
+            </label>
+          </div>
+        </div>
+        <button type="button" class="builder-rule-remove" aria-label="Remove rule">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
+        </button>`;
+      row.querySelector('.builder-rule-remove').addEventListener('click', () => {
+        if ($$('#bRules .builder-rule').length <= 1) {
+          setStatus('Keep at least one rule.', 'warn');
+          return;
+        }
+        row.remove();
+        rebuildPreview();
+      });
+      row.querySelectorAll('input').forEach((i) => i.addEventListener('input', rebuildPreview));
+      return row;
+    }
+    function escapeAttr(s) { return String(s).replace(/[&"<>]/g, (c) => ({ '&':'&amp;','"':'&quot;','<':'&lt;','>':'&gt;' }[c])); }
+
+    // ---- Form → activity data ----------------------------------------------
+    function slugify(s) {
+      return String(s || '').toLowerCase().trim()
+        .replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-')
+        .replace(/-+/g, '-').replace(/^-|-$/g, '').slice(0, 40);
+    }
+    function urlToPattern(url) {
+      try {
+        const u = new URL(url);
+        const host = u.hostname.replace(/^www\./, '');
+        return { pattern: `*://*.${host}/*`, host };
+      } catch { return { pattern: '', host: '' }; }
+    }
+    function readForm() {
+      const rules = $$('#bRules .builder-rule').map((row) => ({
+        path: row.querySelector('.rule-path').value.trim(),
+        context: row.querySelector('.rule-ctx').value.trim(),
+      })).filter((r) => r.context);
+      const url = $('#bUrl').value.trim();
+      const parsed = urlToPattern(url);
+      return {
+        id: slugify($('#bId').value || $('#bName').value),
+        name: $('#bName').value.trim(),
+        description: $('#bDesc').value.trim(),
+        category: $('#bCategory').value,
+        activityType: $('#bType').value,
+        buttonLabel: $('#bButton').value.trim(),
+        urlPattern: parsed.pattern,
+        host: parsed.host,
+        rules,
+      };
+    }
+
+    // ---- File generators (real Syncr contract) -----------------------------
+    // Test Mode's parseUploadedFiles() requires metadata.json. scraper.json
+    // and logo.* are optional but recommended. presence.js is skipped — this
+    // builder is deliberately no-code, so we stick to remote-scraper only.
+    function buildMetadata(a, logoName) {
+      const meta = {
+        id: a.id,
+        name: a.name,
+        description: a.description,
+        category: a.category,
+        icon: '🌐',
+        logo: logoName || 'logo.png',
+        version: '1.0.0',
+        author: 'Built with Syncr Activity Builder',
+        urlPattern: a.urlPattern,
+        origins: [a.urlPattern],
+        scraper: 'remote',
+        minEngineVersion: '2.0.0',
+        activityType: a.activityType,
+      };
+      if (a.buttonLabel) meta.buttonLabel = a.buttonLabel;
+      return JSON.stringify(meta, null, 2) + '\n';
+    }
+    function buildScraper(a) {
+      // Longest-path-first — same order the extension walks rules
+      const sorted = [...a.rules].sort((x, y) => (y.path || '').length - (x.path || '').length);
+      const scraper = {
+        version: 2,
+        pollMs: 3000,
+        changeDetection: { compareFields: ['mode', 'context'] },
+        rules: sorted.map((r) => {
+          const when = { hostnameIncludes: a.host };
+          if (r.path && r.path !== '/') when.pathIncludes = r.path;
+          return {
+            when,
+            emit: {
+              mode: 'browsing',
+              context: r.context,
+              pageUrl: '{url}',
+            },
+          };
+        }),
+      };
+      return JSON.stringify(scraper, null, 2) + '\n';
+    }
+
+    // ---- Preview -----------------------------------------------------------
+    const VERB_LABEL = { 'WATCHING':'Watching','LISTENING TO':'Listening to','PLAYING':'Playing','BROWSING':'Browsing' };
+    function rebuildPreview() {
+      const a = readForm();
+      $('#bPvVerb').textContent = VERB_LABEL[a.activityType] || 'Browsing';
+      $('#bPvL1').textContent = a.name || 'Activity name';
+      $('#bPvL2').textContent = (a.rules[0] && a.rules[0].context) || 'Visiting the site';
+      const fb = $('#bPvLogoFallback');
+      fb.textContent = (a.name || '?').charAt(0).toUpperCase() || '?';
+    }
+
+    // ---- Logo handling -----------------------------------------------------
+    let logoBlob = null;
+    let logoName = '';
+    function setLogo(file) {
+      if (!file) { logoBlob = null; logoName = ''; $('#bPvLogo').style.display = 'none'; $('#bPvLogoFallback').style.display = ''; return; }
+      const ext = (file.name.split('.').pop() || 'png').toLowerCase();
+      const safeExt = ['png','jpg','jpeg','webp','svg'].includes(ext) ? ext : 'png';
+      logoBlob = file;
+      logoName = 'logo.' + safeExt;
+      const url = URL.createObjectURL(file);
+      const img = $('#bPvLogo');
+      img.src = url; img.style.display = ''; $('#bPvLogoFallback').style.display = 'none';
+      // Preview thumb in the drop zone too
+      $('#bLogoPreview').innerHTML = `<img src="${url}" alt="" />`;
+    }
+    $('#bLogo').addEventListener('change', (e) => setLogo(e.target.files[0]));
+    const drop = $('#bLogoDrop');
+    ['dragenter','dragover'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('is-drop'); }));
+    ['dragleave','drop'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove('is-drop'); }));
+    drop.addEventListener('drop', (e) => {
+      const f = e.dataTransfer.files && e.dataTransfer.files[0];
+      if (f && f.type.startsWith('image/')) setLogo(f);
+    });
+
+    // ---- Validation --------------------------------------------------------
+    function validate() {
+      const a = readForm();
+      const errors = [];
+      if (!a.name) errors.push('Give the activity a name.');
+      if (!a.id) errors.push('An ID is needed (lowercase letters, numbers, hyphens).');
+      else if (!/^[a-z0-9-]+$/.test(a.id)) errors.push('ID may only contain lowercase letters, numbers, and hyphens.');
+      if (!a.description) errors.push('Add a short description.');
+      if (!a.host) errors.push('Enter a valid URL.');
+      if (!a.rules.length) errors.push('Add at least one page rule with a "shows as" label.');
+      return { activity: a, errors };
+    }
+
+    // ---- Export ------------------------------------------------------------
+    async function makeZip(a) {
+      if (typeof JSZip === 'undefined') throw new Error('Zip library is still loading. Try again in a second.');
+      const zip = new JSZip();
+      const folder = zip.folder(a.id);
+      folder.file('metadata.json', buildMetadata(a, logoName));
+      folder.file('scraper.json', buildScraper(a));
+      if (logoBlob) folder.file(logoName, logoBlob);
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = a.id + '.zip';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+    }
+
+    function setStatus(msg, kind) {
+      const el = $('#bStatus');
+      el.textContent = msg;
+      el.dataset.kind = kind || '';
+      if (msg) { el.classList.add('is-visible'); }
+      else { el.classList.remove('is-visible'); }
+    }
+
+    // ---- Wiring ------------------------------------------------------------
+    $('#bAddRule').addEventListener('click', () => {
+      $('#bRules').appendChild(makeRule({ path: '', context: '' }));
+      rebuildPreview();
+    });
+    $('#bReset').addEventListener('click', () => {
+      if (!confirm('Clear everything?')) return;
+      $('#builderForm').reset();
+      $('#bRules').innerHTML = '';
+      PRESET_RULES.forEach((r) => $('#bRules').appendChild(makeRule(r)));
+      setLogo(null);
+      $('#bLogoPreview').innerHTML = `<span class="builder-logo-placeholder">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-4-6 7"/></svg>
+      </span>`;
+      setStatus('');
+      rebuildPreview();
+    });
+    $('#bName').addEventListener('input', () => {
+      const idField = $('#bId');
+      if (!idField.dataset.touched) idField.value = slugify($('#bName').value);
+      rebuildPreview();
+    });
+    $('#bId').addEventListener('input', () => { $('#bId').dataset.touched = '1'; });
+    ['input','change'].forEach((ev) => $('#builderForm').addEventListener(ev, rebuildPreview));
+
+    $('#bDownload').addEventListener('click', async () => {
+      const { activity, errors } = validate();
+      if (errors.length) { setStatus(errors[0], 'warn'); return; }
+      try {
+        setStatus('Building zip…');
+        await makeZip(activity);
+        setStatus('Downloaded ' + activity.id + '.zip. Drop it into Syncr Test Mode.', 'ok');
+      } catch (err) {
+        setStatus(err.message || 'Zip failed.', 'warn');
+      }
+    });
+
+    $('#bTest').addEventListener('click', async () => {
+      const { activity, errors } = validate();
+      if (errors.length) { setStatus(errors[0], 'warn'); return; }
+      if (typeof SyncrWeb === 'undefined' || !SyncrWeb.isInstalled()) {
+        setStatus('Install Syncr first, then click Test in Syncr to jump into Test Mode.', 'warn');
+        return;
+      }
+      try {
+        setStatus('Building zip and opening Test Mode…');
+        await makeZip(activity);
+        await SyncrWeb.openTestMode();
+        setStatus('Test Mode opened in the extension. Drop the downloaded folder in.', 'ok');
+      } catch (err) {
+        setStatus(err.message || 'Could not open Test Mode.', 'warn');
+      }
+    });
+
+    // ---- Init --------------------------------------------------------------
+    PRESET_RULES.forEach((r) => $('#bRules').appendChild(makeRule(r)));
+    rebuildPreview();
+
+    // Installed-user badge: swap CTA copy when Syncr is present
+    if (typeof SyncrWeb !== 'undefined') {
+      SyncrWeb.whenReady().then((res) => {
+        if (!res.installed) return;
+        $('#bTest').classList.add('is-ready');
+      });
+    }
+  })();
+  </script>

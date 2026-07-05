@@ -181,6 +181,20 @@ PAGES = [
                 "supported sites, and troubleshooting.",
         "prio": "0.7", "freq": "monthly", "nav": "faq", "kind": "FAQPage",
     },
+    {
+        "out": "activities/activity.html", "partial": "activity-dynamic.html", "url": "/activities/activity.html",
+        "title": "Activity — Syncr Discord Rich Presence",
+        "desc": "Details for a Syncr activity: what shows up on Discord, what it reads, "
+                "settings, and related integrations.",
+        "prio": "0.5", "freq": "weekly", "nav": "activities", "kind": "WebPage",
+    },
+    {
+        "out": "builder.html", "partial": "builder.html", "url": "/builder.html",
+        "title": "Activity Builder — no-code Syncr integrations",
+        "desc": "Build a custom Syncr activity without writing code. Point at a URL, describe "
+                "what shows on each page, and export files ready for the Test Mode importer.",
+        "prio": "0.7", "freq": "monthly", "nav": "builder", "kind": "WebPage",
+    },
 ]
 for a in ACTIVITIES:
     pass  # Dynamic pages served via activity.html?id=<slug> — no static per-activity HTML needed
@@ -223,6 +237,7 @@ def nav_html(active):
     items = [
         ("home", "/", "Home"),
         ("activities", "/activities/", "Activities"),
+        ("builder", "/builder.html", "Builder"),
         ("download", "/download.html", "Download"),
         ("changelog", "/changelog.html", "Changelog"),
         ("faq", "/faq.html", "FAQ"),

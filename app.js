@@ -29,17 +29,27 @@
   }
 
   /* -- Scroll reveal -- */
-  var reveal = $$('.reveal');
-  if ('IntersectionObserver' in window && reveal.length) {
-    var io = new IntersectionObserver(function (entries) {
+  var io = null;
+  if ('IntersectionObserver' in window) {
+    io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    reveal.forEach(function (el) { io.observe(el); });
-  } else {
-    reveal.forEach(function (el) { el.classList.add('in'); });
   }
+  function observeReveal(root) {
+    var reveal = $$('.reveal', root || document);
+    if (io) {
+      reveal.forEach(function (el) {
+        if (!el.classList.contains('in')) io.observe(el);
+      });
+    } else {
+      reveal.forEach(function (el) { el.classList.add('in'); });
+    }
+  }
+  observeReveal();
+  // Dynamic pages (activity page, builder) call this after injecting content
+  window.__syncrRevealObserve = observeReveal;
 
   /* -- Click to play/pause the demo video -- */
   var vid = $('.showcase-frame video');
