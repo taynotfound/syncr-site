@@ -91,8 +91,19 @@
         <p class="act-hero-tag" id="actTagline"></p>
         <p class="act-hero-desc" id="actDesc"></p>
         <div class="act-hero-cta">
-          <a class="btn btn-primary" href="/download.html">Get Syncr</a>
+          <a class="btn btn-primary" id="actGetSyncr" href="/download.html">Get Syncr</a>
+          <button class="btn act-enable-btn act-enable-btn--off" id="actEnableBtn" type="button" aria-pressed="false" hidden>
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path class="icon-on" d="M7 10l2 2 4-4"/><path class="icon-off" d="M7 7l6 6M13 7l-6 6"/></svg>
+            <span id="actEnableLabel">Enable on Discord</span>
+          </button>
           <a class="btn btn-ghost" id="actSiteBtn" href="#" target="_blank" rel="noopener">Visit site</a>
+        </div>
+        <!-- Meta strip: version / engine / type -->
+        <div class="act-meta-strip" id="actMetaStrip" style="display:none">
+          <span class="act-meta-pill" id="metaVersion"></span>
+          <span class="act-meta-pill act-meta-pill--engine" id="metaEngine"></span>
+          <span class="act-meta-pill act-meta-pill--scraper" id="metaScraper"></span>
+          <span class="act-meta-pill act-meta-pill--type" id="metaType"></span>
         </div>
       </div>
 
@@ -147,6 +158,16 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- Settings section (rendered by JS from metadata.settings) -->
+  <section class="section container" id="actSettings" style="display:none">
+    <div class="lead lead-left">
+      <span class="tag">Customise</span>
+      <h2>Settings</h2>
+      <p class="lead-sub">Default values shown. Change these in the Syncr popup after enabling.</p>
+    </div>
+    <div class="act-settings-grid" id="actSettingsGrid"></div>
   </section>
 
   <!-- Related activities -->
@@ -211,6 +232,7 @@
   </div>
 
   <script src="../app.js" defer></script>
+  <script src="/js/dsyncr-web-sdk.js"></script>
   <script>
   (function () {
     var RAW = 'https://raw.githubusercontent.com/Clawb1t/Syncr/main/extension/activities/';
@@ -358,6 +380,124 @@
           '<span><span class="rel-name">' + a.name + '</span><span class="rel-cat">' + (a.category || '') + '</span></span>';
         relGrid.appendChild(el);
       });
+
+      // Meta strip
+      var strip = document.getElementById('actMetaStrip');
+      if (act.version || act.minEngineVersion || act.scraper || act.activityType) {
+        if (act.version)           document.getElementById('metaVersion').textContent  = 'v' + act.version;
+        if (act.minEngineVersion)  document.getElementById('metaEngine').textContent   = 'Engine ≥ ' + act.minEngineVersion;
+        if (act.scraper)           document.getElementById('metaScraper').textContent  = act.scraper + ' scraper';
+        if (act.activityType)      document.getElementById('metaType').textContent     = act.activityType;
+        strip.style.display = '';
+      }
+
+      // Settings section
+      if (act.settings && act.settings.length) {
+        var grid = document.getElementById('actSettingsGrid');
+        var groups = [];
+        var currentGroup = null;
+        act.settings.forEach(function(s) {
+          if (s.type === 'header') {
+            currentGroup = { label: s.label, items: [] };
+            groups.push(currentGroup);
+          } else if (currentGroup) {
+            currentGroup.items.push(s);
+          }
+        });
+        groups.forEach(function(g) {
+          if (!g.items.length) return;
+          var groupEl = document.createElement('div');
+          groupEl.className = 'act-settings-group';
+          var labelEl = document.createElement('p');
+          labelEl.className = 'act-settings-group-label';
+          labelEl.textContent = g.label;
+          groupEl.appendChild(labelEl);
+          var itemsEl = document.createElement('div');
+          itemsEl.className = 'act-settings-items';
+          g.items.forEach(function(item) {
+            var row = document.createElement('div');
+            row.className = 'setting-row';
+            var info = document.createElement('div');
+            info.className = 'setting-info';
+            var lbl = document.createElement('span');
+            lbl.className = 'setting-label';
+            lbl.textContent = item.label;
+            info.appendChild(lbl);
+            if (item.description) {
+              var desc = document.createElement('span');
+              desc.className = 'setting-desc';
+              desc.textContent = item.description;
+              info.appendChild(desc);
+            }
+            row.appendChild(info);
+            var right = document.createElement('div');
+            right.className = 'setting-right';
+            if (item.type === 'toggle') {
+              var def = document.createElement('span');
+              def.className = 'setting-default ' + (item.default ? 'setting-default--on' : 'setting-default--off');
+              def.textContent = item.default ? 'On by default' : 'Off by default';
+              right.appendChild(def);
+            } else if (item.type === 'select' && item.options) {
+              var def2 = document.createElement('span');
+              def2.className = 'setting-default setting-default--select';
+              var defOpt = item.options.find(function(o) { return o.value === item.default; });
+              def2.textContent = 'Default: ' + (defOpt ? defOpt.label : item.default);
+              right.appendChild(def2);
+              var opts = document.createElement('div');
+              opts.className = 'setting-opts';
+              item.options.forEach(function(o) {
+                var pip = document.createElement('span');
+                pip.className = 'setting-opt' + (o.value === item.default ? ' setting-opt--active' : '');
+                pip.textContent = o.label;
+                opts.appendChild(pip);
+              });
+              right.appendChild(opts);
+            }
+            row.appendChild(right);
+            itemsEl.appendChild(row);
+          });
+          groupEl.appendChild(itemsEl);
+          grid.appendChild(groupEl);
+        });
+        document.getElementById('actSettings').style.display = '';
+      }
+
+      // Web bridge: enable/disable toggle
+      var getBtn  = document.getElementById('actGetSyncr');
+      var enBtn   = document.getElementById('actEnableBtn');
+      var enLabel = document.getElementById('actEnableLabel');
+
+      function applyEnableState(enabled) {
+        enBtn.setAttribute('aria-pressed', String(enabled));
+        enBtn.classList.toggle('act-enable-btn--on', enabled);
+        enBtn.classList.toggle('act-enable-btn--off', !enabled);
+        enLabel.textContent = enabled ? 'Enabled on Discord' : 'Enable on Discord';
+      }
+
+      function refreshEnableState() {
+        SyncrWeb.getActivity(act.id).then(function(detail) {
+          applyEnableState(!!detail.enabled);
+        }).catch(function() {});
+      }
+
+      enBtn.addEventListener('click', function() {
+        var next = enBtn.getAttribute('aria-pressed') !== 'true';
+        SyncrWeb.setActivityEnabled(act.id, next).then(function() {
+          applyEnableState(next);
+        }).catch(function() {});
+      });
+
+      if (typeof SyncrWeb !== 'undefined') {
+        SyncrWeb.whenReady().then(function(res) {
+          if (!res.installed) return;
+          getBtn.hidden = true;
+          enBtn.hidden = false;
+          refreshEnableState();
+          SyncrWeb.onActivitiesChanged(function(detail) {
+            if (!detail.activityId || detail.activityId === act.id) refreshEnableState();
+          });
+        });
+      }
 
       // Show sections
       document.getElementById('actLoading').style.display = 'none';

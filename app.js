@@ -385,29 +385,31 @@
   ];
   var shotIdx = 0;
   var shotMain = document.getElementById('shotMain');
-  var shotAlt  = document.getElementById('shotAlt');
-  var shotDots = $$('.shot-dot', document.getElementById('shotDots'));
+  if (shotMain) {
+    var shotAlt  = document.getElementById('shotAlt');
+    var shotDots = $$('.shot-dot', document.getElementById('shotDots'));
 
-  function goToShot(i) {
-    var next = (i + 1) % SHOTS.length;
-    shotMain.classList.add('is-fading');
-    shotAlt.classList.add('is-fading');
-    setTimeout(function () {
-      shotMain.querySelector('img').src = SHOTS[i];
-      shotAlt.querySelector('img').src  = SHOTS[next];
-      shotMain.classList.remove('is-fading');
-      shotAlt.classList.remove('is-fading');
-      shotDots.forEach(function (d, di) { d.classList.toggle('active', di === i); });
-      shotIdx = i;
-    }, 220);
+    function goToShot(i) {
+      var next = (i + 1) % SHOTS.length;
+      shotMain.classList.add('is-fading');
+      shotAlt.classList.add('is-fading');
+      setTimeout(function () {
+        shotMain.querySelector('img').src = SHOTS[i];
+        shotAlt.querySelector('img').src  = SHOTS[next];
+        shotMain.classList.remove('is-fading');
+        shotAlt.classList.remove('is-fading');
+        shotDots.forEach(function (d, di) { d.classList.toggle('active', di === i); });
+        shotIdx = i;
+      }, 220);
+    }
+
+    shotDots.forEach(function (dot) {
+      dot.addEventListener('click', function () { goToShot(+this.dataset.i); });
+    });
+
+    /* auto-advance every 4s */
+    setInterval(function () { goToShot((shotIdx + 1) % SHOTS.length); }, 4000);
   }
-
-  shotDots.forEach(function (dot) {
-    dot.addEventListener('click', function () { goToShot(+this.dataset.i); });
-  });
-
-  /* auto-advance every 4s */
-  setInterval(function () { goToShot((shotIdx + 1) % SHOTS.length); }, 4000);
 
   /* -- Live activity count (proof strip + activities page) -- */
   var RAW_REG = 'https://raw.githubusercontent.com/Clawb1t/Syncr/main/extension/activities/';
