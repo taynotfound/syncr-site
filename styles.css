@@ -1259,3 +1259,13 @@ p  { color: var(--t2); }
   .sd-grid { grid-template-columns: 1fr; }
   .sd-header { flex-direction: column; }
 }
+
+/* ── Extension-installed gates (CSS-driven, zero flash) ───── */
+/* Default: hide installed-only content */
+.syncr-installed-gate { display: none !important; }
+
+/* Extension injects data-syncr-extension="true" on <html> before DOMContentLoaded */
+html[data-syncr-extension="true"] .get-syncr-gate       { display: none !important; }
+html[data-syncr-extension="true"] .syncr-installed-gate { display: revert !important; }
+html[data-syncr-extension="true"] #syncrDashboard       { display: block !important; }
+html[data-syncr-extension="true"] .syncr-toggle-wrap    { display: inline-flex !important; }
