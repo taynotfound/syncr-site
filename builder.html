@@ -43,7 +43,7 @@
 
   <!-- Perf hints -->
   <link rel="dns-prefetch" href="https://api.github.com" />
-  <link rel="stylesheet" href="styles.css?v=202607050230" />
+  <link rel="stylesheet" href="styles.css?v=202607051352" />
 
   <!-- Web-bridge gates, inlined so a stale cached stylesheet can never leak the
        wrong UI. The extension sets data-syncr-extension="true" on <html> before
@@ -363,9 +363,21 @@
     }
     function urlToPattern(url) {
       try {
-        const u = new URL(url);
-        const host = u.hostname.replace(/^www\./, '');
-        return { pattern: `*://*.${host}/*`, host };
+        const parts = new URL(url).hostname.split('.');
+        // bare domain (test.com) or www → no wildcard prefix
+        // real subdomain (music.youtube.com) → wildcard the root domain
+        let pattern, host;
+        if (parts.length <= 2) {
+          pattern = `*://${parts.join('.')}/*`;
+          host = parts.join('.');
+        } else if (parts[0] === 'www') {
+          pattern = `*://${parts.slice(1).join('.')}/*`;
+          host = parts.slice(1).join('.');
+        } else {
+          pattern = `*://*.${parts.slice(-2).join('.')}/*`;
+          host = parts.slice(-2).join('.');
+        }
+        return { pattern, host };
       } catch { return { pattern: '', host: '' }; }
     }
     // Syncr's shared default Discord Application. Used when the author
