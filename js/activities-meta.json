@@ -1,0 +1,394 @@
+{
+  "youtube": {
+    "id": "youtube",
+    "name": "YouTube",
+    "description": "Rich video presence \u2014 title, channel, artwork, progress, playlists, live streams, and browsing",
+    "category": "Video",
+    "icon": "\u25b6\ufe0f",
+    "logo": "logo.png",
+    "version": "1.1.2",
+    "author": "Syncr Contributors",
+    "urlPattern": "*://www.youtube.com/*",
+    "origins": [
+      "*://www.youtube.com/*",
+      "*://www.youtube.com"
+    ],
+    "scraper": "remote",
+    "minEngineVersion": "2.2.0",
+    "buttonLabel": "Watch on YouTube",
+    "activityType": "WATCHING",
+    "settings": [
+      {
+        "type": "header",
+        "label": "Artwork"
+      },
+      {
+        "key": "showArtwork",
+        "type": "toggle",
+        "label": "Show artwork",
+        "description": "Display a large image on Discord (thumbnail, channel avatar, or YouTube logo)",
+        "default": true
+      },
+      {
+        "key": "artworkSource",
+        "type": "select",
+        "label": "Artwork source",
+        "description": "Which image to use when watching a video",
+        "default": "thumbnail",
+        "options": [
+          {
+            "value": "thumbnail",
+            "label": "Video thumbnail"
+          },
+          {
+            "value": "channel",
+            "label": "Channel avatar"
+          },
+          {
+            "value": "logo",
+            "label": "YouTube logo"
+          }
+        ]
+      },
+      {
+        "key": "thumbnailQuality",
+        "type": "select",
+        "label": "Thumbnail quality",
+        "description": "Resolution of the video thumbnail sent to Discord",
+        "default": "hq",
+        "options": [
+          {
+            "value": "mq",
+            "label": "Medium (mqdefault)"
+          },
+          {
+            "value": "hq",
+            "label": "High (hqdefault)"
+          },
+          {
+            "value": "maxres",
+            "label": "Max (maxresdefault)"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "label": "Playback"
+      },
+      {
+        "key": "showProgress",
+        "type": "toggle",
+        "label": "Show playback progress",
+        "description": "Show elapsed time on Discord (not shown for live streams)",
+        "default": true
+      },
+      {
+        "key": "showSmallStatus",
+        "type": "toggle",
+        "label": "Show play/pause icon",
+        "description": "Small status icon for playing, paused, or live",
+        "default": true
+      },
+      {
+        "key": "hideWhenPaused",
+        "type": "toggle",
+        "label": "Hide when paused",
+        "description": "Clear Discord presence while the video is paused",
+        "default": false
+      },
+      {
+        "type": "header",
+        "label": "Layout"
+      },
+      {
+        "key": "titleFirstLayout",
+        "type": "toggle",
+        "label": "Title-first layout",
+        "description": "Show video title as the primary line and channel as the secondary line",
+        "default": true
+      },
+      {
+        "key": "showPlaylist",
+        "type": "toggle",
+        "label": "Show playlist name",
+        "description": "Include the current playlist in the status line when watching from a playlist",
+        "default": true
+      },
+      {
+        "key": "showChapter",
+        "type": "toggle",
+        "label": "Show chapter name",
+        "description": "Include the active video chapter when available",
+        "default": true
+      },
+      {
+        "key": "showViewCount",
+        "type": "toggle",
+        "label": "Show view count",
+        "description": "Append view count to the status line",
+        "default": false
+      },
+      {
+        "key": "showVideoButton",
+        "type": "toggle",
+        "label": "Show video button",
+        "description": "Add a link button to the video or stream",
+        "default": true
+      },
+      {
+        "key": "showChannelButton",
+        "type": "toggle",
+        "label": "Show channel button",
+        "description": "Add a \"View Channel\" button on Discord",
+        "default": true
+      },
+      {
+        "type": "header",
+        "label": "Browsing"
+      },
+      {
+        "key": "shareBrowsing",
+        "type": "toggle",
+        "label": "Share browsing activity",
+        "description": "Show presence when browsing YouTube outside of a watch page",
+        "default": true
+      },
+      {
+        "key": "detailedBrowsing",
+        "type": "toggle",
+        "label": "Detailed browsing labels",
+        "description": "Show specific pages like Home, Search, Subscriptions instead of generic \"Browsing\"",
+        "default": true
+      }
+    ]
+  },
+  "youtube-music": {
+    "id": "youtube-music",
+    "name": "YouTube Music",
+    "description": "Shows song title, artist, album art, album name, and playback progress",
+    "category": "Music",
+    "icon": "\ud83c\udfb5",
+    "logo": "logo.png",
+    "version": "1.1.3",
+    "author": "Syncr Contributors",
+    "urlPattern": "*://music.youtube.com/*",
+    "origins": [
+      "*://music.youtube.com/*",
+      "*://music.youtube.com"
+    ],
+    "scraper": "remote",
+    "minEngineVersion": "2.2.0",
+    "buttonLabel": "Listen on YouTube Music",
+    "activityType": "LISTENING TO",
+    "settings": [
+      {
+        "type": "header",
+        "label": "Artwork"
+      },
+      {
+        "key": "showArtwork",
+        "type": "toggle",
+        "label": "Show artwork",
+        "description": "Display album art on Discord (or the YouTube Music logo)",
+        "default": true
+      },
+      {
+        "key": "artworkSource",
+        "type": "select",
+        "label": "Artwork source",
+        "description": "Which image to use while a track is playing",
+        "default": "album",
+        "options": [
+          {
+            "value": "album",
+            "label": "Album art"
+          },
+          {
+            "value": "logo",
+            "label": "YouTube Music logo"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "label": "Playback"
+      },
+      {
+        "key": "showProgress",
+        "type": "toggle",
+        "label": "Show playback progress",
+        "description": "Show elapsed time on Discord",
+        "default": true
+      },
+      {
+        "key": "showSmallStatus",
+        "type": "toggle",
+        "label": "Show play/pause icon",
+        "description": "Small status icon for playing or paused",
+        "default": true
+      },
+      {
+        "key": "hideWhenPaused",
+        "type": "toggle",
+        "label": "Hide when paused",
+        "description": "Clear Discord presence while playback is paused",
+        "default": false
+      },
+      {
+        "type": "header",
+        "label": "Layout"
+      },
+      {
+        "key": "titleFirstLayout",
+        "type": "toggle",
+        "label": "Song-first layout",
+        "description": "Show the song title as the primary line and artist as the secondary line",
+        "default": true
+      },
+      {
+        "key": "showAlbum",
+        "type": "toggle",
+        "label": "Show album name",
+        "description": "Include the album or single name in the status line",
+        "default": true
+      },
+      {
+        "key": "showRichMetadata",
+        "type": "toggle",
+        "label": "Rich listening metadata",
+        "description": "Send album, artist, and artwork metadata to Discord's listening UI",
+        "default": true
+      },
+      {
+        "key": "showButton",
+        "type": "toggle",
+        "label": "Show listen button",
+        "description": "Add a \"Listen on YouTube Music\" button on Discord",
+        "default": true
+      },
+      {
+        "type": "header",
+        "label": "Browsing"
+      },
+      {
+        "key": "shareBrowsing",
+        "type": "toggle",
+        "label": "Share browsing activity",
+        "description": "Show presence when browsing YouTube Music without a track playing",
+        "default": true
+      },
+      {
+        "key": "detailedBrowsing",
+        "type": "toggle",
+        "label": "Detailed browsing label",
+        "description": "Show \"Browsing YouTube Music\" instead of a generic browsing message",
+        "default": true
+      }
+    ]
+  },
+  "reddit": {
+    "id": "reddit",
+    "name": "Reddit",
+    "description": "Shows post title, subreddit, author, score, comment count, and thumbnail",
+    "category": "Social",
+    "icon": "\ud83d\udd34",
+    "logo": "logo.png",
+    "version": "1.0.0",
+    "author": "Syncr Contributors",
+    "urlPattern": "*://www.reddit.com/*",
+    "origins": [
+      "*://www.reddit.com/*",
+      "*://old.reddit.com/*"
+    ],
+    "scraper": "remote",
+    "minEngineVersion": "2.0.0",
+    "buttonLabel": "View on Reddit",
+    "activityType": "WATCHING"
+  },
+  "netflix": {
+    "id": "netflix",
+    "name": "Netflix",
+    "description": "Shows title, season and episode, synopsis, thumbnail, and playback progress",
+    "category": "Streaming",
+    "icon": "\ud83c\udfac",
+    "logo": "logo.png",
+    "version": "1.0.0",
+    "author": "Syncr Contributors",
+    "urlPattern": "*://www.netflix.com/*",
+    "origins": [
+      "*://www.netflix.com/*",
+      "*://www.netflix.com"
+    ],
+    "fetchOrigins": [
+      "https://www.netflix.com"
+    ],
+    "scraper": "remote",
+    "minEngineVersion": "2.0.0",
+    "buttonLabel": "Watch on Netflix",
+    "activityType": "WATCHING"
+  },
+  "proton-mail": {
+    "id": "proton-mail",
+    "name": "Proton Mail",
+    "description": "Shows composing, reading, or browsing inbox \u2014 not subjects or senders",
+    "category": "Productivity",
+    "icon": "\u2709\ufe0f",
+    "logo": "logo.png",
+    "version": "1.0.0",
+    "author": "Syncr Contributors",
+    "urlPattern": "*://mail.proton.me/*",
+    "origins": [
+      "*://mail.proton.me/*",
+      "*://mail.proton.me",
+      "*://mail.protonmail.com/*",
+      "*://mail.protonmail.com"
+    ],
+    "scraper": "remote",
+    "minEngineVersion": "2.0.0",
+    "minExtensionVersion": "1.0.17",
+    "buttonLabel": "Open Proton Mail",
+    "activityType": "WATCHING"
+  },
+  "spotify": {
+    "id": "spotify",
+    "name": "Spotify",
+    "description": "Shows track, artist, and album when listening, plus playlist and podcast modes",
+    "category": "Music",
+    "icon": "\ud83c\udfb5",
+    "logo": "logo.png",
+    "version": "1.0.0",
+    "author": "Syncr Contributors",
+    "urlPattern": "*://open.spotify.com/*",
+    "origins": [
+      "*://open.spotify.com/*",
+      "*://open.spotify.com"
+    ],
+    "scraper": "remote",
+    "minEngineVersion": "2.0.0",
+    "buttonLabel": "Open Spotify",
+    "activityType": "PLAYING"
+  },
+  "twitch": {
+    "id": "twitch",
+    "name": "Twitch",
+    "description": "Shows stream, VOD, or clip title, channel, game, thumbnail, and playback progress",
+    "category": "Streaming",
+    "icon": "\ud83d\udcfa",
+    "logo": "logo.png",
+    "version": "1.0.0",
+    "author": "Syncr Contributors",
+    "urlPattern": "*://www.twitch.tv/*",
+    "origins": [
+      "*://www.twitch.tv/*",
+      "*://www.twitch.tv",
+      "*://twitch.tv/*",
+      "*://twitch.tv",
+      "*://clips.twitch.tv/*",
+      "*://clips.twitch.tv"
+    ],
+    "scraper": "remote",
+    "minEngineVersion": "2.0.0",
+    "buttonLabel": "Watch on Twitch",
+    "activityType": "WATCHING"
+  }
+}

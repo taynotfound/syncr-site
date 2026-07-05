@@ -49,7 +49,25 @@ ACTIVITIES = [
         "desc": "Syncr shows the track you are playing on YouTube Music with artist, album "
                 "artwork, and a live progress bar, right on your Discord profile.",
         "shows": ["Track title", "Artist", "Album artwork", "Live progress bar"],
-        "shipped": "1.0.3 era", "scraper": "remote",
+        "shipped": "1.0.3 era", "scraper": "remote", "version": "1.1.3",
+        "min_engine_version": "2.2.0", "activity_type": "LISTENING TO",
+        "settings": [
+            {"type": "header", "label": "Artwork"},
+            {"key": "showArtwork", "type": "toggle", "label": "Show artwork", "description": "Display a large image on Discord (album art or YouTube Music logo)", "default": True},
+            {"key": "artworkSource", "type": "select", "label": "Artwork source", "description": "Which image to use when listening", "default": "album", "options": [{"value": "album", "label": "Album art"}, {"value": "logo", "label": "YouTube Music logo"}]},
+            {"type": "header", "label": "Playback"},
+            {"key": "showProgress", "type": "toggle", "label": "Show playback progress", "description": "Show elapsed time on Discord (not shown for live streams)", "default": True},
+            {"key": "showSmallStatus", "type": "toggle", "label": "Show play/pause icon", "description": "Small status icon for playing, paused, or live", "default": True},
+            {"key": "hideWhenPaused", "type": "toggle", "label": "Hide when paused", "description": "Clear Discord presence while the track is paused", "default": False},
+            {"type": "header", "label": "Layout"},
+            {"key": "titleFirstLayout", "type": "toggle", "label": "Title-first layout", "description": "Show track title as the primary line and artist as the secondary line", "default": True},
+            {"key": "showAlbum", "type": "toggle", "label": "Show album name", "description": "Include the album name in the status line", "default": True},
+            {"key": "showRichMetadata", "type": "toggle", "label": "Show rich metadata", "description": "Show extra metadata like genre or year when available", "default": True},
+            {"key": "showButton", "type": "toggle", "label": "Show track button", "description": "Add a link button to the track on YouTube Music", "default": True},
+            {"type": "header", "label": "Browsing"},
+            {"key": "shareBrowsing", "type": "toggle", "label": "Share browsing activity", "description": "Show presence when browsing YouTube Music outside of a track", "default": True},
+            {"key": "detailedBrowsing", "type": "toggle", "label": "Detailed browsing labels", "description": "Show specific pages like Home, Search instead of generic Browsing", "default": True},
+        ],
     },
     {
         "id": "youtube", "name": "YouTube", "logo": "youtube.svg",
@@ -59,7 +77,28 @@ ACTIVITIES = [
         "desc": "Syncr shows the YouTube video you are watching, with its title and channel, "
                 "on your Discord profile. It clears the moment you close the tab.",
         "shows": ["Video title", "Channel name"],
-        "shipped": "1.0.3 era", "scraper": "remote",
+        "shipped": "1.0.3 era", "scraper": "remote", "version": "1.1.2",
+        "min_engine_version": "2.2.0", "activity_type": "WATCHING",
+        "settings": [
+            {"type": "header", "label": "Artwork"},
+            {"key": "showArtwork", "type": "toggle", "label": "Show artwork", "description": "Display a large image on Discord (thumbnail, channel avatar, or YouTube logo)", "default": True},
+            {"key": "artworkSource", "type": "select", "label": "Artwork source", "description": "Which image to use when watching a video", "default": "thumbnail", "options": [{"value": "thumbnail", "label": "Video thumbnail"}, {"value": "channel", "label": "Channel avatar"}, {"value": "logo", "label": "YouTube logo"}]},
+            {"key": "thumbnailQuality", "type": "select", "label": "Thumbnail quality", "description": "Resolution of the video thumbnail sent to Discord", "default": "hq", "options": [{"value": "mq", "label": "Medium (mqdefault)"}, {"value": "hq", "label": "High (hqdefault)"}, {"value": "maxres", "label": "Max (maxresdefault)"}]},
+            {"type": "header", "label": "Playback"},
+            {"key": "showProgress", "type": "toggle", "label": "Show playback progress", "description": "Show elapsed time on Discord (not shown for live streams)", "default": True},
+            {"key": "showSmallStatus", "type": "toggle", "label": "Show play/pause icon", "description": "Small status icon for playing, paused, or live", "default": True},
+            {"key": "hideWhenPaused", "type": "toggle", "label": "Hide when paused", "description": "Clear Discord presence while the video is paused", "default": False},
+            {"type": "header", "label": "Layout"},
+            {"key": "titleFirstLayout", "type": "toggle", "label": "Title-first layout", "description": "Show video title as the primary line and channel as the secondary line", "default": True},
+            {"key": "showPlaylist", "type": "toggle", "label": "Show playlist name", "description": "Include the current playlist in the status line when watching from a playlist", "default": True},
+            {"key": "showChapter", "type": "toggle", "label": "Show chapter name", "description": "Include the active video chapter when available", "default": True},
+            {"key": "showViewCount", "type": "toggle", "label": "Show view count", "description": "Append view count to the status line", "default": False},
+            {"key": "showVideoButton", "type": "toggle", "label": "Show video button", "description": "Add a link button to the video or stream", "default": True},
+            {"key": "showChannelButton", "type": "toggle", "label": "Show channel button", "description": "Add a View Channel button on Discord", "default": True},
+            {"type": "header", "label": "Browsing"},
+            {"key": "shareBrowsing", "type": "toggle", "label": "Share browsing activity", "description": "Show presence when browsing YouTube outside of a watch page", "default": True},
+            {"key": "detailedBrowsing", "type": "toggle", "label": "Detailed browsing labels", "description": "Show specific pages like Home, Search, Subscriptions instead of generic Browsing", "default": True},
+        ],
     },
     {
         "id": "reddit", "name": "Reddit", "logo": "reddit.svg",
@@ -69,7 +108,9 @@ ACTIVITIES = [
         "desc": "Syncr shows the Reddit post or subreddit you are on, or a simple browsing "
                 "status, on your Discord profile. Works on www and old Reddit.",
         "shows": ["Post title", "Subreddit", "Author, score, comments", "Or a browsing status"],
-        "shipped": "1.0.9", "scraper": "remote",
+        "shipped": "1.0.9", "scraper": "remote", "version": "1.0.0",
+        "min_engine_version": "2.0.0", "activity_type": "BROWSING",
+        "settings": [],
     },
     {
         "id": "proton-mail", "name": "Proton Mail", "logo": "proton-mail.svg",
@@ -79,7 +120,9 @@ ACTIVITIES = [
         "desc": "Syncr shows a generic checking-mail status for Proton Mail. No subjects, no "
                 "senders, no message bodies. Privacy is the whole point.",
         "shows": ["Generic mail status only", "No subjects", "No senders", "No personal data"],
-        "shipped": "1.0.11", "scraper": "remote",
+        "shipped": "1.0.11", "scraper": "remote", "version": "1.0.0",
+        "min_engine_version": "2.0.0", "activity_type": "BROWSING",
+        "settings": [],
     },
     {
         "id": "netflix", "name": "Netflix", "logo": "netflix.png",
@@ -89,7 +132,9 @@ ACTIVITIES = [
         "desc": "Syncr shows what you are watching on Netflix, with season and episode, artwork, "
                 "pause state, and a progress bar, on your Discord profile.",
         "shows": ["Title", "Season and episode", "Artwork", "Pause state and progress"],
-        "shipped": "1.0.12", "scraper": "remote",
+        "shipped": "1.0.12", "scraper": "remote", "version": "1.0.0",
+        "min_engine_version": "2.0.0", "activity_type": "WATCHING",
+        "settings": [],
     },
 ]
 
@@ -333,6 +378,75 @@ def score_related(a, candidate):
     return score
 
 
+def render_settings_section(settings):
+    """Render the per-activity settings section from metadata.json settings array."""
+    if not settings:
+        return ""
+
+    html = ['  <!-- Activity settings -->', '  <section class="section container act-settings-section">',
+            '    <div class="lead lead-left">',
+            '      <span class="tag">Configurable</span>',
+            '      <h2>Settings</h2>',
+            '      <p class="act-settings-note">These are the default settings. Change them any time in the Syncr extension popup.</p>',
+            '    </div>',
+            '    <div class="act-settings-grid">']
+
+    current_group = []
+    current_header = None
+
+    def flush_group(header, items):
+        if not items:
+            return []
+        out = ['      <div class="act-settings-group">']
+        if header:
+            out.append('        <h4 class="act-settings-group-label">{}</h4>'.format(esc(header)))
+        out.append('        <div class="act-settings-items">')
+        for s in items:
+            default_str = ""
+            if s.get("type") == "toggle":
+                default_str = '<span class="setting-default setting-default--{}">{}</span>'.format(
+                    "on" if s["default"] else "off",
+                    "On by default" if s["default"] else "Off by default"
+                )
+            elif s.get("type") == "select" and s.get("options"):
+                def_label = next((o["label"] for o in s["options"] if o["value"] == s.get("default")), str(s.get("default", "")))
+                default_str = '<span class="setting-default setting-default--select">Default: {}</span>'.format(esc(def_label))
+
+            opts_html = ""
+            if s.get("options"):
+                opts_html = '<div class="setting-opts">' + "".join(
+                    '<span class="setting-opt{}">{}</span>'.format(
+                        ' setting-opt--active' if o["value"] == s.get("default") else "",
+                        esc(o["label"])
+                    ) for o in s["options"]
+                ) + "</div>"
+
+            out.append('          <div class="setting-row setting-row--{type}">'.format(type=s.get("type", "toggle")))
+            out.append('            <div class="setting-info">')
+            out.append('              <span class="setting-label">{}</span>'.format(esc(s["label"])))
+            if s.get("description"):
+                out.append('              <span class="setting-desc">{}</span>'.format(esc(s["description"])))
+            out.append('            </div>')
+            out.append('            <div class="setting-right">{}{}</div>'.format(default_str, opts_html))
+            out.append('          </div>')
+        out.append('        </div>')
+        out.append('      </div>')
+        return out
+
+    for s in settings:
+        if s.get("type") == "header":
+            html.extend(flush_group(current_header, current_group))
+            current_header = s["label"]
+            current_group = []
+        else:
+            current_group.append(s)
+    html.extend(flush_group(current_header, current_group))
+
+    html.append('    </div>')
+    html.append('  </section>')
+    return "\n".join(html)
+
+
 def render_activity(page):
     a = page["activity"]
     body = read_partial("_activity.html")
@@ -348,14 +462,25 @@ def render_activity(page):
         '<span><span class="rel-name">{name}</span><span class="rel-cat">{cat}</span></span></a>'.format(
             id=x["id"], logo=x["logo"], name=esc(x["name"]), cat=esc(x["category"]))
         for x in others)
+    settings_section = render_settings_section(a.get("settings", []))
+    activity_type_label = {
+        "WATCHING": "Watching",
+        "LISTENING TO": "Listening",
+        "PLAYING": "Playing",
+        "BROWSING": "Browsing",
+    }.get(a.get("activity_type", ""), a.get("activity_type", "Watching"))
     repl = {
         "{{ID}}": a["id"], "{{NAME}}": esc(a["name"]), "{{LOGO}}": a["logo"],
         "{{BADGE}}": esc(a["badge"]), "{{BADGE_CLASS}}": a["badge_class"],
         "{{CATEGORY}}": esc(a["category"]), "{{VERB}}": esc(a["verb"]),
         "{{SITE}}": esc(a["site"]), "{{BUTTON}}": esc(a["button"]),
         "{{TAGLINE}}": esc(a["tagline"]), "{{DESC}}": esc(a["desc"]),
-        "{{SHIPPED}}": esc(a["shipped"]), "{{SCRAPER}}": esc(a["scraper"]),
+        "{{SHIPPED}}": esc(a.get("shipped", "")), "{{SCRAPER}}": esc(a.get("scraper", "remote")),
+        "{{VERSION}}": esc(a.get("version", "1.0.0")),
+        "{{MIN_ENGINE}}": esc(a.get("min_engine_version", "2.0.0")),
+        "{{ACTIVITY_TYPE}}": esc(activity_type_label),
         "{{SHOWS}}": shows, "{{RELATED}}": rel,
+        "{{SETTINGS_SECTION}}": settings_section,
     }
     for k, v in repl.items():
         body = body.replace(k, v)

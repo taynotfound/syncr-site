@@ -96,9 +96,32 @@
         <h1>Reddit</h1>
         <p class="act-hero-tag">What you are reading on Reddit.</p>
         <p class="act-hero-desc">Syncr shows the Reddit post or subreddit you are on, or a simple browsing status, on your Discord profile. Works on www and old Reddit.</p>
+
+        <!-- CTA row: Get Syncr + Enable toggle -->
         <div class="act-hero-cta">
-          <a class="btn btn-primary" href="/download.html">Get Syncr</a>
+          <a class="btn btn-primary" href="/download.html" id="act-get-syncr">Get Syncr</a>
           <a class="btn btn-ghost" href="https://reddit.com" target="_blank" rel="noopener">Open reddit.com</a>
+
+          <!-- Extension-connected UI (hidden until SDK detects extension) -->
+          <div class="act-enable-wrap" id="act-enable-wrap" hidden>
+            <button class="btn act-enable-btn" id="act-enable-btn" type="button" aria-pressed="false">
+              <span class="act-enable-icon" aria-hidden="true">
+                <!-- off icon -->
+                <svg class="icon-off" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><line x1="10" y1="6" x2="10" y2="10"/><line x1="10" y1="13" x2="10" y2="13.5"/></svg>
+                <!-- on icon -->
+                <svg class="icon-on" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10l3.5 3.5L15 7"/></svg>
+              </span>
+              <span class="act-enable-label">Enable on Discord</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Meta strip: version · engine · scraper -->
+        <div class="act-meta-strip">
+          <span class="act-meta-pill">v1.0.0</span>
+          <span class="act-meta-pill act-meta-pill--engine">Engine ≥ 2.0.0</span>
+          <span class="act-meta-pill act-meta-pill--scraper">remote scraper</span>
+          <span class="act-meta-pill act-meta-pill--type">Browsing</span>
         </div>
       </div>
 
@@ -130,7 +153,7 @@
     </div>
   </section>
 
-  <!-- What it shows -->
+  <!-- What it shows + What it reads -->
   <section class="section container">
     <div class="act-cols">
       <div class="act-col">
@@ -160,6 +183,8 @@
     </div>
   </section>
 
+
+
   <!-- Related -->
   <section class="section-sm container">
     <div class="lead lead-left">
@@ -176,6 +201,53 @@
       <a class="btn btn-ghost" href="/activities/">&larr; All activities</a>
     </div>
   </section>
+
+  <!-- Web Bridge SDK -->
+  <script src="/js/dsyncr-web-sdk.js"></script>
+  <script>
+  (function () {
+    var ACTIVITY_ID = 'reddit';
+    var wrap   = document.getElementById('act-enable-wrap');
+    var btn    = document.getElementById('act-enable-btn');
+    var label  = btn && btn.querySelector('.act-enable-label');
+    var getSyncr = document.getElementById('act-get-syncr');
+
+    function applyState(enabled, known) {
+      btn.setAttribute('aria-pressed', String(enabled));
+      btn.classList.toggle('act-enable-btn--on', enabled);
+      btn.classList.toggle('act-enable-btn--off', !enabled);
+      btn.disabled = !known;
+      label.textContent = enabled ? 'Enabled on Discord' : 'Enable on Discord';
+    }
+
+    async function refresh() {
+      try {
+        var detail = await SyncrWeb.getActivity(ACTIVITY_ID);
+        applyState(detail.enabled, detail.known);
+      } catch (e) {}
+    }
+
+    btn && btn.addEventListener('click', async function () {
+      var next = btn.getAttribute('aria-pressed') !== 'true';
+      try {
+        await SyncrWeb.setActivityEnabled(ACTIVITY_ID, next);
+        applyState(next, true);
+      } catch (e) {}
+    });
+
+    SyncrWeb.whenReady().then(function (res) {
+      if (!res.installed) return;
+      // Hide "Get Syncr" CTA, show enable toggle
+      getSyncr && getSyncr.setAttribute('hidden', '');
+      wrap && wrap.removeAttribute('hidden');
+      // Subscribe to external changes (popup, other tabs)
+      SyncrWeb.onActivitiesChanged(function (detail) {
+        if (!detail.activityId || detail.activityId === ACTIVITY_ID) refresh();
+      });
+      refresh();
+    });
+  })();
+  </script>
 
 <!-- Footer -->
   <footer class="footer">
