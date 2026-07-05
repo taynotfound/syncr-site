@@ -41,7 +41,18 @@
 
   <!-- Perf hints -->
   <link rel="dns-prefetch" href="https://api.github.com" />
-  <link rel="stylesheet" href="{{DEPTH}}styles.css" />
+  <link rel="stylesheet" href="{{DEPTH}}styles.css?v={{BUILD}}" />
+
+  <!-- Web-bridge gates, inlined so a stale cached stylesheet can never leak the
+       wrong UI. The extension sets data-syncr-extension="true" on <html> before
+       first paint, so the right view is chosen with zero flash. Container-level
+       toggles only — inner buttons keep their natural display. -->
+  <style>
+    .syncr-installed-gate { display: none !important; }
+    html[data-syncr-extension="true"] .get-syncr-gate { display: none !important; }
+    html[data-syncr-extension="true"] #syncrDashboard { display: block !important; }
+    html[data-syncr-extension="true"].syncr-show-marketing #marketing-content { display: block !important; }
+  </style>
 
   <script type="application/ld+json">{{JSONLD}}</script>
 </head>

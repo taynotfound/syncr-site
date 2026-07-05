@@ -36,6 +36,10 @@ SITE = {
     "locale":    "en_US",
 }
 TODAY = datetime.date.today().isoformat()
+# Cache-bust stamp for versioned asset URLs (styles.css?v=...). Changes every
+# build so a fresh deploy can never be shadowed by a stale CSS cache — the whole
+# reason installed users kept seeing the "Get Syncr" marketing after updates.
+BUILD = datetime.datetime.now().strftime("%Y%m%d%H%M")
 
 # ----------------------------------------------------------------------------
 # Activity data (real, pulled from the Syncr repo metadata).
@@ -325,6 +329,7 @@ def head_html(page):
         "{{TWITTER_SITE}}": tw,
         "{{JSONLD}}": json_ld(page),
         "{{DEPTH}}": "../" if "/" in page["out"] else "",
+        "{{BUILD}}": BUILD,
     }
     for k, v in repl.items():
         tmpl = tmpl.replace(k, v)

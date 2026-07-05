@@ -426,98 +426,261 @@
   }
 
   /* ----------------------------------------------------------
-     Web bridge: installed-user dashboard (home page only).
-     Visibility is handled by CSS [data-syncr-extension="true"].
-     This block only populates content — no show/hide logic here.
+     Web bridge: installed-user control panel (home page only).
+     index.html BECOMES the user's Syncr dashboard when the
+     extension is present. Dashboard-vs-marketing visibility is
+     handled by CSS (html[data-syncr-extension]); this code fills
+     content and wires the live controls. Verbose [Syncr] logging
+     is on so any breakage is visible in the console.
      ---------------------------------------------------------- */
-  if (typeof SyncrWeb !== 'undefined') {
+  var SYNCR_DEBUG = true;
+  function slog() {
+    if (!SYNCR_DEBUG || typeof console === 'undefined') return;
+    try { console.log.apply(console, ['%c[Syncr]', 'color:#5662f6;font-weight:bold'].concat([].slice.call(arguments))); } catch (e) {}
+  }
+  function swarn() {
+    if (typeof console === 'undefined') return;
+    try { console.warn.apply(console, ['[Syncr]'].concat([].slice.call(arguments))); } catch (e) {}
+  }
+
+  (function initSyncrBridge() {
     var dash = $('#syncrDashboard');
-    if (dash) {
-      var LATEST_API = 'https://api.github.com/repos/Clawb1t/Syncr/releases/latest';
+    var hasSDK = typeof SyncrWeb !== 'undefined';
+    slog('bridge init | SDK loaded:', hasSDK, '| dashboard el:', !!dash,
+         '| data-syncr-extension:', document.documentElement.getAttribute('data-syncr-extension'));
 
-      function semverGt(a, b) {
-        var pa = (a || '').replace(/^v/, '').split('.').map(Number);
-        var pb = (b || '').replace(/^v/, '').split('.').map(Number);
-        for (var i = 0; i < 3; i++) {
-          if ((pa[i] || 0) > (pb[i] || 0)) return true;
-          if ((pa[i] || 0) < (pb[i] || 0)) return false;
-        }
-        return false;
+    if (!dash) { slog('no #syncrDashboard here — not the home page, skipping.'); return; }
+    if (!hasSDK) {
+      swarn('SDK (window.SyncrWeb) missing. Ensure /js/dsyncr-web-sdk.js loads BEFORE app.js. Dashboard cannot run.');
+      return;
+    }
+
+    var RAW_ACT = 'https://raw.githubusercontent.com/Clawb1t/Syncr/main/extension/activities/';
+    var LATEST_API = 'https://api.github.com/repos/Clawb1t/Syncr/releases/latest';
+
+    var els = {
+      version:  $('#dashVersion'),
+      verDot:   $('#dashVerDot'),
+      verBadge: $('#dashVerBadge'),
+      update:   $('#dashUpdateBadge'),
+      hostDot:  $('#dashHostDot'),
+      host:     $('#dashHost'),
+      onCount:  $('#dashOnCount'),
+      countDot: $('#dashCountDot'),
+      grid:     $('#dashGrid'),
+      search:   $('#dashSearch'),
+      whatIs:   $('#dashWhatIs'),
+      navBadge: $('#navUserBadge')
+    };
+    slog('resolved elements:', Object.keys(els).filter(function (k) { return !els[k]; }).length
+      ? 'MISSING -> ' + Object.keys(els).filter(function (k) { return !els[k]; }).join(', ')
+      : 'all present');
+
+    var state = { activities: [], filter: 'all', query: '' };
+
+    function semverGt(a, b) {
+      var pa = String(a || '').replace(/^v/, '').split('.').map(Number);
+      var pb = String(b || '').replace(/^v/, '').split('.').map(Number);
+      for (var i = 0; i < 3; i++) {
+        if ((pa[i] || 0) > (pb[i] || 0)) return true;
+        if ((pa[i] || 0) < (pb[i] || 0)) return false;
       }
+      return false;
+    }
 
-      SyncrWeb.whenReady().then(function (res) {
-        if (!res.installed) return;
+    function logoFor(id) { return RAW_ACT + encodeURIComponent(id) + '/logo.png'; }
 
-        /* installed version */
-        var sdVer = $('#sdInstalledVersion');
-        if (sdVer) sdVer.textContent = res.version ? ('v' + res.version) : 'Unknown';
+    var toastTimer;
+    function toast(msg) {
+      var t = $('#syncrToast');
+      if (!t) { t = document.createElement('div'); t.id = 'syncrToast'; t.className = 'syncr-toast'; document.body.appendChild(t); }
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { t.classList.remove('show'); }, 3800);
+      slog('toast:', msg);
+    }
 
-        /* nav badge */
-        var navBadge = $('#navUserBadge');
-        if (navBadge) navBadge.textContent = res.version ? ('v' + res.version) : 'Syncr';
+    function updateCounts() {
+      var on = state.activities.filter(function (a) { return a.enabled; }).length;
+      if (els.onCount)  els.onCount.textContent = on;
+      if (els.countDot) els.countDot.classList.toggle('dstat-dot--ok', on > 0);
+    }
 
-        /* update check */
-        fetch(LATEST_API, { headers: { Accept: 'application/vnd.github+json' } })
-          .then(function (r) { return r.ok ? r.json() : null; })
-          .then(function (d) {
-            if (!d || !d.tag_name) return;
-            var upToDate  = $('#sdUpToDate');
-            var updateRow = $('#sdUpdateStatus');
-            var updateBadge = $('#sdUpdateBadge');
-            if (semverGt(d.tag_name, res.version || '0')) {
-              if (updateBadge) updateBadge.textContent = d.tag_name + ' available';
-              if (updateRow)  { updateRow.style.display = ''; updateRow.hidden = false; }
-              if (upToDate)   upToDate.hidden = true;
-            } else {
-              if (upToDate)   { upToDate.hidden = false; }
-              if (updateRow)  updateRow.hidden = true;
-            }
-          })
-          .catch(function () {});
+    function cardHTML(a) {
+      var name = esc(a.name || a.id);
+      var on = !!a.enabled;
+      return '<div class="dact' + (on ? ' dact--on' : '') + '" data-id="' + esc(a.id) + '">' +
+        '<img class="dact-logo" src="' + esc(logoFor(a.id)) + '" alt="" loading="lazy" ' +
+          'onerror="this.style.visibility=&quot;hidden&quot;" />' +
+        '<div class="dact-body">' +
+          '<span class="dact-name"><a href="/activities/activity.html?id=' + esc(a.id) + '">' + name + '</a>' +
+            (a.isTest ? '<span class="dact-test">Test</span>' : '') + '</span>' +
+          '<span class="dact-cat">' + (on ? 'Sharing to Discord' : 'Off') + '</span>' +
+        '</div>' +
+        '<label class="syncr-toggle-wrap" title="' + (on ? 'Disable' : 'Enable') + ' ' + name + '">' +
+          '<input type="checkbox" class="syncr-toggle-input"' + (on ? ' checked' : '') + ' data-id="' + esc(a.id) + '" ' +
+            'aria-label="' + (on ? 'Disable' : 'Enable') + ' ' + name + '" />' +
+          '<span class="syncr-toggle-track"><span class="syncr-toggle-thumb"></span></span>' +
+        '</label>' +
+      '</div>';
+    }
 
-        /* status */
-        SyncrWeb.getStatus().then(function (s) {
-          var sdDot  = $('#sdStatusDot');
-          var sdText = $('#sdStatusText');
-          var sdShare = $('#sdSharingStatus');
-          if (sdDot)  sdDot.classList.add('sd-status-dot--ok');
-          if (sdText) sdText.textContent = 'Running';
-          if (sdShare && s) {
-            /* log the real shape so we can use the correct field */
-            console.log('[Syncr dashboard] getStatus response:', JSON.stringify(s));
-            var keys = Object.keys(s);
-            var on = keys.some(function(k) {
-              var v = s[k];
-              return (typeof v === 'boolean') && v && /enabl|shar|activ|global/i.test(k);
-            });
-            sdShare.textContent = on ? 'Sharing on' : 'Sharing off';
-          }
-        }).catch(function () {
-          var sdText = $('#sdStatusText');
-          if (sdText) sdText.textContent = 'Running';
-        });
-
-        /* enabled activities only */
-        var sdList = $('#sdActList');
-        if (sdList) {
-          SyncrWeb.getActivities().then(function (acts) {
-            var enabled = (acts || []).filter(function (a) { return !!a.enabled; });
-            if (!enabled.length) {
-              sdList.innerHTML = '<span class="sd-act-empty">None enabled — <a href="/activities/">browse activities</a></span>';
-              return;
-            }
-            sdList.innerHTML = enabled.map(function (a) {
-              return '<a class="sd-act-row" href="/activities/activity.html?id=' + esc(a.id) + '">' +
-                '<span class="sd-act-name">' + esc(a.name || a.id) + '</span>' +
-                '<span class="sd-act-state sd-act-state--on">On</span>' +
-                '</a>';
-            }).join('');
-          }).catch(function () {
-            sdList.innerHTML = '<span class="sd-act-empty">Could not load activities</span>';
-          });
+    function renderGrid() {
+      if (!els.grid) return;
+      var q = state.query.trim().toLowerCase();
+      var list = state.activities.filter(function (a) {
+        if (state.filter === 'on'  && !a.enabled) return false;
+        if (state.filter === 'off' &&  a.enabled) return false;
+        if (q) {
+          var hay = (String(a.name || '') + ' ' + String(a.id || '')).toLowerCase();
+          if (hay.indexOf(q) === -1) return false;
         }
+        return true;
+      });
+      slog('renderGrid:', list.length, 'of', state.activities.length, '| filter:', state.filter, '| query:', JSON.stringify(q));
+      if (!state.activities.length) {
+        els.grid.innerHTML = '<div class="dash-empty">The extension reported no activities. Try reloading the page.</div>';
+        return;
+      }
+      if (!list.length) {
+        els.grid.innerHTML = '<div class="dash-empty">Nothing matches. Clear the search or switch the filter.</div>';
+        return;
+      }
+      list.sort(function (a, b) {
+        var d = (b.enabled ? 1 : 0) - (a.enabled ? 1 : 0);
+        if (d) return d;
+        return String(a.name || a.id).localeCompare(String(b.name || b.id));
+      });
+      els.grid.innerHTML = list.map(cardHTML).join('');
+      $$('.syncr-toggle-input', els.grid).forEach(function (inp) {
+        inp.addEventListener('change', onToggle);
       });
     }
-  }
+
+    function onToggle(e) {
+      var inp = e.target;
+      var id = inp.getAttribute('data-id');
+      var want = inp.checked;
+      var card = inp.closest ? inp.closest('.dact') : null;
+      slog('toggle requested:', id, '->', want ? 'ENABLE' : 'DISABLE');
+      inp.disabled = true;
+      SyncrWeb.setActivityEnabled(id, want).then(function (res) {
+        slog('setActivityEnabled OK:', JSON.stringify(res));
+        var actual = res && typeof res.enabled === 'boolean' ? res.enabled : want;
+        var a = state.activities.filter(function (x) { return x.id === id; })[0];
+        if (a) a.enabled = actual;
+        inp.checked = actual;
+        inp.disabled = false;
+        if (card) {
+          card.classList.toggle('dact--on', actual);
+          var cat = card.querySelector('.dact-cat');
+          if (cat) cat.textContent = actual ? 'Sharing to Discord' : 'Off';
+        }
+        updateCounts();
+        toast((a && (a.name || a.id) ? (a.name || a.id) : id) + (actual ? ' is now sharing' : ' turned off'));
+      }).catch(function (err) {
+        swarn('setActivityEnabled FAILED for', id, '-', err && err.message ? err.message : err);
+        inp.checked = !want;
+        inp.disabled = false;
+        toast('Could not update ' + id + '. Is Discord (the host) connected?');
+      });
+    }
+
+    function renderHost(connected) {
+      if (els.host) els.host.textContent = connected ? 'Connected' : 'Not connected';
+      if (els.hostDot) {
+        els.hostDot.classList.toggle('dstat-dot--ok', connected);
+        els.hostDot.classList.toggle('dstat-dot--warn', !connected);
+      }
+      slog('hostConnected:', connected);
+    }
+
+    function checkUpdate(current) {
+      if (!current) { slog('no installed version — skipping update check'); return; }
+      slog('checking latest release vs installed v' + current);
+      fetch(LATEST_API, { headers: { Accept: 'application/vnd.github+json' } })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) {
+          if (!d || !d.tag_name) { slog('no release data'); return; }
+          slog('latest release:', d.tag_name, '| installed:', current);
+          if (semverGt(d.tag_name, current)) {
+            if (els.update) { els.update.textContent = 'Update to ' + d.tag_name; els.update.hidden = false; }
+            if (els.verBadge) els.verBadge.hidden = true;
+            if (els.verDot) { els.verDot.classList.remove('dstat-dot--ok'); els.verDot.classList.add('dstat-dot--warn'); }
+          } else {
+            if (els.verBadge) els.verBadge.hidden = false;
+            if (els.update) els.update.hidden = true;
+          }
+        })
+        .catch(function (err) { swarn('update check failed:', err && err.message ? err.message : err); });
+    }
+
+    function loadStatus() {
+      slog('calling getStatus()...');
+      return SyncrWeb.getStatus().then(function (s) {
+        slog('getStatus response:', JSON.stringify(s));
+        var v = (s && s.version) || SyncrWeb.getVersion();
+        if (els.version)  els.version.textContent = v ? ('v' + v) : 'Unknown';
+        if (els.navBadge) els.navBadge.textContent = v ? ('v' + v) : 'Syncr';
+        renderHost(!!(s && s.hostConnected));
+        state.activities = (s && s.activities ? s.activities : []).slice();
+        slog('activities loaded:', state.activities.length,
+             '| enabled:', state.activities.filter(function (a) { return a.enabled; }).length,
+             '| testMode:', !!(s && s.testModeEnabled));
+        updateCounts();
+        renderGrid();
+        checkUpdate(v);
+        return s;
+      });
+    }
+
+    /* wire controls */
+    if (els.search) {
+      els.search.addEventListener('input', function () { state.query = els.search.value || ''; renderGrid(); });
+    }
+    $$('.dfilter').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        $$('.dfilter').forEach(function (b) { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+        btn.classList.add('active'); btn.setAttribute('aria-selected', 'true');
+        state.filter = btn.getAttribute('data-filter') || 'all';
+        slog('filter ->', state.filter);
+        renderGrid();
+      });
+    });
+    if (els.whatIs) {
+      els.whatIs.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.documentElement.classList.add('syncr-show-marketing');
+        var m = $('#marketing-content');
+        if (m) m.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        slog('revealed marketing content beneath dashboard');
+      });
+    }
+
+    /* live updates from the popup or other tabs */
+    SyncrWeb.onActivitiesChanged(function (detail) {
+      slog('activities-changed event:', JSON.stringify(detail), '- reloading status');
+      loadStatus().catch(function (err) { swarn('reload after change failed:', err && err.message ? err.message : err); });
+    });
+
+    /* boot */
+    SyncrWeb.whenReady().then(function (res) {
+      slog('whenReady:', JSON.stringify(res));
+      if (!res.installed) {
+        swarn('whenReady reports NOT installed. Dashboard stays hidden (CSS gate). If you DO have Syncr, the content script did not annotate <html> in time.');
+        return;
+      }
+      if (document.documentElement.getAttribute('data-syncr-extension') !== 'true') {
+        slog('SDK says installed but <html data-syncr-extension> was missing — setting it so CSS reveals the dashboard.');
+        document.documentElement.setAttribute('data-syncr-extension', 'true');
+      }
+      loadStatus().catch(function (err) {
+        swarn('initial getStatus failed:', err && err.message ? err.message : err);
+        if (els.grid) els.grid.innerHTML = '<div class="dash-empty">Could not reach the extension. Reload the page to retry.</div>';
+        renderHost(false);
+      });
+    }).catch(function (err) { swarn('whenReady failed:', err && err.message ? err.message : err); });
+  })();
 
 })();
