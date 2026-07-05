@@ -91,11 +91,14 @@
         <p class="act-hero-tag" id="actTagline"></p>
         <p class="act-hero-desc" id="actDesc"></p>
         <div class="act-hero-cta">
-          <a class="btn btn-primary" id="actGetSyncr" href="/download.html">Get Syncr</a>
-          <button class="btn act-enable-btn act-enable-btn--off" id="actEnableBtn" type="button" aria-pressed="false" hidden>
-            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path class="icon-on" d="M7 10l2 2 4-4"/><path class="icon-off" d="M7 7l6 6M13 7l-6 6"/></svg>
-            <span id="actEnableLabel">Enable on Discord</span>
-          </button>
+          <a class="btn btn-primary get-syncr-gate" id="actGetSyncr" href="/download.html">Get Syncr</a>
+          <label class="syncr-toggle-wrap syncr-installed-gate" id="actEnableWrap" hidden>
+            <input type="checkbox" class="syncr-toggle-input" id="actEnableToggle" role="switch" aria-label="Enable this activity on Discord" />
+            <span class="syncr-toggle-track">
+              <span class="syncr-toggle-thumb"></span>
+            </span>
+            <span class="syncr-toggle-label" id="actEnableLabel">Enable on Discord</span>
+          </label>
           <a class="btn btn-ghost" id="actSiteBtn" href="#" target="_blank" rel="noopener">Visit site</a>
         </div>
         <!-- Meta strip: version / engine / type -->
@@ -463,14 +466,13 @@
       }
 
       // Web bridge: enable/disable toggle
-      var getBtn  = document.getElementById('actGetSyncr');
-      var enBtn   = document.getElementById('actEnableBtn');
-      var enLabel = document.getElementById('actEnableLabel');
+      var getBtn    = document.getElementById('actGetSyncr');
+      var enWrap    = document.getElementById('actEnableWrap');
+      var enToggle  = document.getElementById('actEnableToggle');
+      var enLabel   = document.getElementById('actEnableLabel');
 
       function applyEnableState(enabled) {
-        enBtn.setAttribute('aria-pressed', String(enabled));
-        enBtn.classList.toggle('act-enable-btn--on', enabled);
-        enBtn.classList.toggle('act-enable-btn--off', !enabled);
+        enToggle.checked = enabled;
         enLabel.textContent = enabled ? 'Enabled on Discord' : 'Enable on Discord';
       }
 
@@ -480,20 +482,23 @@
         }).catch(function() {});
       }
 
-      enBtn.addEventListener('click', function() {
-        var next = enBtn.getAttribute('aria-pressed') !== 'true';
-        SyncrWeb.setActivityEnabled(act.id, next).then(function() {
-          applyEnableState(next);
-        }).catch(function() {});
+      enToggle.addEventListener('change', function() {
+        SyncrWeb.setActivityEnabled(act.id, enToggle.checked).then(function() {
+          enLabel.textContent = enToggle.checked ? 'Enabled on Discord' : 'Enable on Discord';
+        }).catch(function() {
+          enToggle.checked = !enToggle.checked; // revert on fail
+        });
       });
 
       if (typeof SyncrWeb !== 'undefined') {
         SyncrWeb.whenReady().then(function(res) {
           if (!res.installed) return;
-          getBtn.hidden = true;
-          enBtn.hidden = false;
+          // Hide all "Get Syncr" gates
+          document.querySelectorAll('.get-syncr-gate').forEach(function(el) { el.hidden = true; });
+          document.querySelectorAll('.syncr-installed-gate').forEach(function(el) { el.hidden = false; });
+          enWrap.hidden = false;
           refreshEnableState();
-          SyncrWeb.onActivitiesChanged(function(detail) {
+          SyncrWeb.onActivitiesChanged && SyncrWeb.onActivitiesChanged(function(detail) {
             if (!detail.activityId || detail.activityId === act.id) refreshEnableState();
           });
         });

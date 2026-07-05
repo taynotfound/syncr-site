@@ -425,4 +425,103 @@
       .catch(function () { /* leave default text */ });
   }
 
+  /* ----------------------------------------------------------
+     Web bridge: installed-user experience.
+     Runs on every page. Hides .get-syncr-gate, shows
+     .syncr-installed-gate, and populates #syncrDashboard
+     on the home page if present.
+     ---------------------------------------------------------- */
+  if (typeof SyncrWeb !== 'undefined') {
+    var LATEST_API = 'https://api.github.com/repos/Clawb1t/Syncr/releases/latest';
+
+    function semverGt(a, b) {
+      // returns true if a > b  (strips leading 'v')
+      var pa = (a || '').replace(/^v/, '').split('.').map(Number);
+      var pb = (b || '').replace(/^v/, '').split('.').map(Number);
+      for (var i = 0; i < 3; i++) {
+        if ((pa[i] || 0) > (pb[i] || 0)) return true;
+        if ((pa[i] || 0) < (pb[i] || 0)) return false;
+      }
+      return false;
+    }
+
+    SyncrWeb.whenReady().then(function (res) {
+      if (!res.installed) return;
+
+      /* 1. Hide all "Get Syncr" elements sitewide */
+      document.querySelectorAll('.get-syncr-gate').forEach(function (el) { el.hidden = true; });
+      document.querySelectorAll('.syncr-installed-gate').forEach(function (el) { el.hidden = false; });
+
+      /* 2. Nav badge version */
+      var navBadge = $('#navUserBadge');
+      if (navBadge && res.version) {
+        navBadge.querySelector('span').textContent = '';
+        navBadge.textContent = 'v' + res.version;
+        navBadge.insertAdjacentHTML('afterbegin', '<span class="syncr-installed-dot"></span>');
+      }
+
+      /* 3. Dashboard (home page only) */
+      var dash = $('#syncrDashboard');
+      if (!dash) return;
+      dash.hidden = false;
+
+      /* installed version */
+      var sdVer = $('#sdInstalledVersion');
+      if (sdVer) sdVer.textContent = res.version ? ('v' + res.version) : 'Unknown';
+
+      /* status */
+      var sdDot  = $('#sdStatusDot');
+      var sdText = $('#sdStatusText');
+      var sdShare = $('#sdSharingStatus');
+      if (sdDot) sdDot.classList.add('sd-status-dot--ok');
+      if (sdText) sdText.textContent = 'Running';
+      if (sdShare) {
+        SyncrWeb.getStatus && SyncrWeb.getStatus().then(function (s) {
+          sdShare.textContent = s && s.sharingEnabled ? 'Sharing is enabled' : 'Sharing is off';
+        }).catch(function () {});
+      }
+
+      /* latest release check */
+      fetch(LATEST_API, { headers: { Accept: 'application/vnd.github+json' } })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) {
+          if (!d || !d.tag_name) return;
+          var latest = d.tag_name.replace(/^v/, '');
+          var installed = (res.version || '').replace(/^v/, '');
+          var upToDate  = $('#sdUpToDate');
+          var updateRow = $('#sdUpdateStatus');
+          var updateBadge = $('#sdUpdateBadge');
+          var updateLink  = $('#sdUpdateLink');
+          if (semverGt(latest, installed)) {
+            if (updateBadge) updateBadge.textContent = 'v' + latest + ' available';
+            if (updateRow)  updateRow.hidden = false;
+          } else {
+            if (upToDate) upToDate.hidden = false;
+          }
+        })
+        .catch(function () {});
+
+      /* activity list */
+      var sdList = $('#sdActList');
+      if (sdList && SyncrWeb.getActivities) {
+        SyncrWeb.getActivities().then(function (acts) {
+          if (!acts || !acts.length) {
+            sdList.innerHTML = '<span class="sd-act-empty">No activities enabled yet</span>';
+            return;
+          }
+          sdList.innerHTML = acts.map(function (a) {
+            var on = !!a.enabled;
+            return '<a class="sd-act-row" href="/activities/activity.html?id=' + esc(a.id) + '">' +
+              '<span class="sd-act-name">' + esc(a.name || a.id) + '</span>' +
+              '<span class="sd-act-state ' + (on ? 'sd-act-state--on' : 'sd-act-state--off') + '">' +
+              (on ? 'On' : 'Off') + '</span>' +
+              '</a>';
+          }).join('');
+        }).catch(function () {
+          sdList.innerHTML = '<span class="sd-act-empty">Could not load activities</span>';
+        });
+      }
+    });
+  }
+
 })();
