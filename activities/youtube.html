@@ -337,7 +337,21 @@
     var label  = btn && btn.querySelector('.act-enable-label');
     var getSyncr = document.getElementById('act-get-syncr');
 
+    var log = function(msg, data) {
+      var prefix = '[Syncr bridge]';
+      if (data !== undefined) console.log(prefix, msg, data);
+      else console.log(prefix, msg);
+    };
+
+    log('Script init. Activity ID:', ACTIVITY_ID);
+    log('SyncrWeb available?', typeof SyncrWeb !== 'undefined');
+    log('Current origin:', window.location.origin);
+    log('html[data-syncr-extension]:', document.documentElement.getAttribute('data-syncr-extension'));
+    log('html[data-syncr-extension-version]:', document.documentElement.getAttribute('data-syncr-extension-version'));
+    log('wrap el:', !!wrap, '  btn el:', !!btn, '  label el:', !!label);
+
     function applyState(enabled, known) {
+      log('applyState →', { enabled: enabled, known: known });
       btn.setAttribute('aria-pressed', String(enabled));
       btn.classList.toggle('act-enable-btn--on', enabled);
       btn.classList.toggle('act-enable-btn--off', !enabled);
@@ -346,30 +360,45 @@
     }
 
     async function refresh() {
+      log('refresh() called');
       try {
         var detail = await SyncrWeb.getActivity(ACTIVITY_ID);
+        log('getActivity response:', detail);
         applyState(detail.enabled, detail.known);
-      } catch (e) {}
+      } catch (e) {
+        console.error('[Syncr bridge] getActivity failed:', e);
+      }
     }
 
     btn && btn.addEventListener('click', async function () {
       var next = btn.getAttribute('aria-pressed') !== 'true';
+      log('Button clicked, toggling to:', next);
       try {
-        await SyncrWeb.setActivityEnabled(ACTIVITY_ID, next);
+        var result = await SyncrWeb.setActivityEnabled(ACTIVITY_ID, next);
+        log('setActivityEnabled response:', result);
         applyState(next, true);
-      } catch (e) {}
+      } catch (e) {
+        console.error('[Syncr bridge] setActivityEnabled failed:', e);
+      }
     });
 
+    log('Calling SyncrWeb.whenReady()...');
     SyncrWeb.whenReady().then(function (res) {
-      if (!res.installed) return;
-      // Hide "Get Syncr" CTA, show enable toggle
+      log('whenReady resolved:', res);
+      if (!res.installed) {
+        log('Extension NOT installed — keeping Get Syncr button visible');
+        return;
+      }
+      log('Extension installed! version=' + res.version + ' — showing enable toggle');
       getSyncr && getSyncr.setAttribute('hidden', '');
       wrap && wrap.removeAttribute('hidden');
-      // Subscribe to external changes (popup, other tabs)
       SyncrWeb.onActivitiesChanged(function (detail) {
+        log('activities-changed event received:', detail);
         if (!detail.activityId || detail.activityId === ACTIVITY_ID) refresh();
       });
       refresh();
+    }).catch(function(e) {
+      console.error('[Syncr bridge] whenReady failed:', e);
     });
   })();
   </script>
