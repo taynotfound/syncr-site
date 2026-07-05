@@ -83,12 +83,13 @@
         <fieldset class="builder-card">
           <legend>Discord app</legend>
           <div class="builder-row">
-            <label for="bClientId">Application ID</label>
-            <input id="bClientId" name="clientId" type="text" required maxlength="20" pattern="[0-9]{17,20}" placeholder="e.g. 1234567890123456789" autocomplete="off" inputmode="numeric" />
+            <label for="bClientId">Application ID <span class="builder-optional">(optional)</span></label>
+            <input id="bClientId" name="clientId" type="text" maxlength="20" pattern="[0-9]{17,20}" placeholder="1522350158740979843 (Syncr default)" autocomplete="off" inputmode="numeric" />
             <span class="builder-hint">
-              Create an app at
+              Leave blank to use Syncr's shared default app. For a custom name and
+              your own art assets, create your own at
               <a href="https://discord.com/developers/applications" target="_blank" rel="noopener">discord.com/developers/applications</a>
-              and paste the Application ID here.
+              and paste its Application ID here.
             </span>
           </div>
           <div class="builder-row">
@@ -183,7 +184,6 @@
           <div class="builder-info">
             <h3>How Test Mode works</h3>
             <ol>
-              <li>Create a Discord app at <a href="https://discord.com/developers/applications" target="_blank" rel="noopener">discord.com/developers</a> and copy the Application ID.</li>
               <li>Click <strong>Test in Syncr</strong> to open the extension's Test Mode.</li>
               <li>Drop the downloaded folder in, or the .zip.</li>
               <li>Open your site &mdash; the activity fires exactly like a shipped one.</li>
@@ -193,6 +193,12 @@
               <code>presence.js</code>, and your logo if provided. These match the
               exact format Syncr's real activities use — the same layout as
               <code>native-host/activities/&lt;id&gt;/</code>.
+            </p>
+            <p class="builder-info-note">
+              No Discord app? No problem — leave the Application ID blank and
+              your activity uses Syncr's shared default. Bring your own from
+              <a href="https://discord.com/developers/applications" target="_blank" rel="noopener">discord.com/developers</a>
+              later for a custom name and art assets.
             </p>
           </div>
         </div>
@@ -262,6 +268,11 @@
         return { pattern: `*://*.${host}/*`, host };
       } catch { return { pattern: '', host: '' }; }
     }
+    // Syncr's shared default Discord Application. Used when the author
+    // doesn't provide their own — activity works out of the box, but the
+    // Discord status line reads "Syncr" instead of the activity name.
+    const DEFAULT_CLIENT_ID = '1522350158740979843';
+
     function readForm() {
       const rules = $$('#bRules .builder-rule').map((row) => ({
         path: row.querySelector('.rule-path').value.trim(),
@@ -269,6 +280,7 @@
       })).filter((r) => r.context);
       const url = $('#bUrl').value.trim();
       const parsed = urlToPattern(url);
+      const rawClientId = $('#bClientId').value.trim();
       return {
         id: slugify($('#bId').value || $('#bName').value),
         name: $('#bName').value.trim(),
@@ -276,7 +288,8 @@
         category: $('#bCategory').value,
         activityType: $('#bType').value,
         buttonLabel: $('#bButton').value.trim(),
-        clientId: $('#bClientId').value.trim(),
+        clientId: rawClientId || DEFAULT_CLIENT_ID,
+        clientIdIsDefault: !rawClientId,
         logoKey: $('#bLogoKey').value.trim(),
         urlPattern: parsed.pattern,
         host: parsed.host,
@@ -360,6 +373,10 @@
         ? jsStr(a.logoKey)
         : jsStr(a.id.replace(/-/g, '_') + '_logo');
 
+      const clientIdNote = a.clientIdIsDefault
+        ? "\n  // Using Syncr's shared default Discord app. Replace with your own\n  // Application ID from discord.com/developers/applications for a\n  // custom name and art assets."
+        : '';
+
       return `/**
  * Syncr Activity: ${a.name}
  *
@@ -372,7 +389,7 @@
 
 module.exports = {
   id:         ${jsStr(a.id)},
-  name:       ${jsStr(a.name)},
+  name:       ${jsStr(a.name)},${clientIdNote}
   clientId:   ${jsStr(a.clientId)},
   urlPattern: ${jsStr(a.urlPattern)},
 
@@ -440,8 +457,9 @@ module.exports = {
       else if (!/^[a-z0-9-]+$/.test(a.id)) errors.push('ID may only contain lowercase letters, numbers, and hyphens.');
       if (!a.description) errors.push('Add a short description.');
       if (!a.host) errors.push('Enter a valid URL.');
-      if (!a.clientId) errors.push('Add your Discord Application ID (create one at discord.com/developers).');
-      else if (!/^[0-9]{17,20}$/.test(a.clientId)) errors.push('Discord Application ID should be a 17–20 digit number.');
+      if (!a.clientIdIsDefault && !/^[0-9]{17,20}$/.test(a.clientId)) {
+        errors.push('Discord Application ID should be a 17–20 digit number.');
+      }
       if (a.logoKey && a.logoKey.includes('://') && !a.logoKey.startsWith('https://')) {
         errors.push('Logo URL must start with https://.');
       }
