@@ -1260,6 +1260,10 @@ html[data-syncr-extension="true"].syncr-show-marketing #marketing-content { disp
   background: var(--elevated);
 }
 .builder-row .builder-hint { font-size: .8rem; color: var(--t3); margin-top: .1rem; }
+.builder-row .builder-hint a { color: var(--indigo-hi, #9fa4ff); text-decoration: none; border-bottom: 1px solid rgba(159,164,255,.25); transition: border-color .18s var(--ease); }
+.builder-row .builder-hint a:hover { border-bottom-color: var(--indigo-hi, #9fa4ff); }
+.builder-row .builder-hint code { background: var(--surface-2); color: var(--t1); padding: 1px 5px; border-radius: 4px; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .78rem; }
+.builder-optional { color: var(--t3); font-weight: 400; font-size: .82em; }
 .builder-row--split {
   display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;
 }

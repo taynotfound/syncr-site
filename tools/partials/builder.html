@@ -79,6 +79,28 @@
           </div>
         </fieldset>
 
+        <!-- Discord app -->
+        <fieldset class="builder-card">
+          <legend>Discord app</legend>
+          <div class="builder-row">
+            <label for="bClientId">Application ID</label>
+            <input id="bClientId" name="clientId" type="text" required maxlength="20" pattern="[0-9]{17,20}" placeholder="e.g. 1234567890123456789" autocomplete="off" inputmode="numeric" />
+            <span class="builder-hint">
+              Create an app at
+              <a href="https://discord.com/developers/applications" target="_blank" rel="noopener">discord.com/developers/applications</a>
+              and paste the Application ID here.
+            </span>
+          </div>
+          <div class="builder-row">
+            <label for="bLogoKey">Large image key or URL <span class="builder-optional">(optional)</span></label>
+            <input id="bLogoKey" name="logoKey" type="text" maxlength="256" placeholder="my_app_logo or https://…" autocomplete="off" />
+            <span class="builder-hint">
+              Either an asset key uploaded under Rich Presence → Art Assets, or a full <code>https://</code> URL.
+              Leave blank to use the activity name as a placeholder.
+            </span>
+          </div>
+        </fieldset>
+
         <!-- Page rules -->
         <fieldset class="builder-card">
           <legend>What shows on each page</legend>
@@ -161,13 +183,16 @@
           <div class="builder-info">
             <h3>How Test Mode works</h3>
             <ol>
+              <li>Create a Discord app at <a href="https://discord.com/developers/applications" target="_blank" rel="noopener">discord.com/developers</a> and copy the Application ID.</li>
               <li>Click <strong>Test in Syncr</strong> to open the extension's Test Mode.</li>
               <li>Drop the downloaded folder in, or the .zip.</li>
               <li>Open your site &mdash; the activity fires exactly like a shipped one.</li>
             </ol>
             <p class="builder-info-note">
-              Files exported: <code>metadata.json</code>, <code>scraper.json</code>, and your logo if provided.
-              These match the exact format Syncr's real activities use.
+              Files exported: <code>metadata.json</code>, <code>scraper.json</code>,
+              <code>presence.js</code>, and your logo if provided. These match the
+              exact format Syncr's real activities use — the same layout as
+              <code>native-host/activities/&lt;id&gt;/</code>.
             </p>
           </div>
         </div>
@@ -251,6 +276,8 @@
         category: $('#bCategory').value,
         activityType: $('#bType').value,
         buttonLabel: $('#bButton').value.trim(),
+        clientId: $('#bClientId').value.trim(),
+        logoKey: $('#bLogoKey').value.trim(),
         urlPattern: parsed.pattern,
         host: parsed.host,
         rules,
@@ -303,6 +330,72 @@
       return JSON.stringify(scraper, null, 2) + '\n';
     }
 
+    // presence.js — CommonJS module for the Syncr native host.
+    // Mirrors native-host/activities/_template/presence.js contract:
+    // { id, name, clientId, urlPattern, formatPresence(data, syncr) }.
+    // The scraper.json above emits { mode:'browsing', context, pageUrl },
+    // so formatPresence maps that to a Discord activity via the SDK.
+    const TYPE_TO_BUILDER = {
+      'WATCHING':     "watching",
+      'LISTENING TO': "listening",
+      'PLAYING':      "playing",
+      'BROWSING':     "playing", // Discord has no "Browsing" — use Playing as neutral
+    };
+    const TYPE_TO_SDK_CONST = {
+      'WATCHING':     'Watching',
+      'LISTENING TO': 'Listening',
+      'PLAYING':      'Playing',
+      'BROWSING':     'Playing',
+    };
+    function jsStr(s) {
+      // Safe JS string literal — escape backslash, quote, newlines.
+      return "'" + String(s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n') + "'";
+    }
+    function buildPresence(a) {
+      const builderMethod = TYPE_TO_BUILDER[a.activityType] || 'playing';
+      const sdkType = TYPE_TO_SDK_CONST[a.activityType] || 'Playing';
+      const buttonLabel = a.buttonLabel || 'Open ' + a.name;
+      // If logoKey looks like a URL, pass through; if empty, fall back to a slugged key.
+      const logoLiteral = a.logoKey
+        ? jsStr(a.logoKey)
+        : jsStr(a.id.replace(/-/g, '_') + '_logo');
+
+      return `/**
+ * Syncr Activity: ${a.name}
+ *
+ * Generated with the Syncr Activity Builder (https://dsyncr.com/builder.html).
+ * Ships in native-host/activities/${a.id}/presence.js.
+ *
+ * The scraper emits { mode, context, pageUrl }. This module maps that shape
+ * into a Discord Rich Presence via the syncr SDK.
+ */
+
+module.exports = {
+  id:         ${jsStr(a.id)},
+  name:       ${jsStr(a.name)},
+  clientId:   ${jsStr(a.clientId)},
+  urlPattern: ${jsStr(a.urlPattern)},
+
+  formatPresence({ mode, context, pageUrl }, syncr) {
+    const label = context || ${jsStr('Visiting ' + a.name)};
+
+    const builder = syncr.presence()
+      .${builderMethod}(${jsStr(a.name)})
+      .details(label)
+      .state(${jsStr(a.name)})
+      .largeImage(${logoLiteral}, ${jsStr(a.name)});
+
+    const openUrl = pageUrl && pageUrl.startsWith('https://')
+      ? pageUrl
+      : ${jsStr('https://' + a.host + '/')};
+    builder.button(${jsStr(buttonLabel)}, openUrl);
+
+    return builder.build();
+  },
+};
+`;
+    }
+
     // ---- Preview -----------------------------------------------------------
     const VERB_LABEL = { 'WATCHING':'Watching','LISTENING TO':'Listening to','PLAYING':'Playing','BROWSING':'Browsing' };
     function rebuildPreview() {
@@ -347,6 +440,11 @@
       else if (!/^[a-z0-9-]+$/.test(a.id)) errors.push('ID may only contain lowercase letters, numbers, and hyphens.');
       if (!a.description) errors.push('Add a short description.');
       if (!a.host) errors.push('Enter a valid URL.');
+      if (!a.clientId) errors.push('Add your Discord Application ID (create one at discord.com/developers).');
+      else if (!/^[0-9]{17,20}$/.test(a.clientId)) errors.push('Discord Application ID should be a 17–20 digit number.');
+      if (a.logoKey && a.logoKey.includes('://') && !a.logoKey.startsWith('https://')) {
+        errors.push('Logo URL must start with https://.');
+      }
       if (!a.rules.length) errors.push('Add at least one page rule with a "shows as" label.');
       return { activity: a, errors };
     }
@@ -358,6 +456,7 @@
       const folder = zip.folder(a.id);
       folder.file('metadata.json', buildMetadata(a, logoName));
       folder.file('scraper.json', buildScraper(a));
+      folder.file('presence.js', buildPresence(a));
       if (logoBlob) folder.file(logoName, logoBlob);
       const blob = await zip.generateAsync({ type: 'blob' });
       const url = URL.createObjectURL(blob);
