@@ -43,7 +43,7 @@
 
   <!-- Perf hints -->
   <link rel="dns-prefetch" href="https://api.github.com" />
-  <link rel="stylesheet" href="../styles.css?v=202607050221" />
+  <link rel="stylesheet" href="../styles.css?v=202607050230" />
 
   <!-- Web-bridge gates, inlined so a stale cached stylesheet can never leak the
        wrong UI. The extension sets data-syncr-extension="true" on <html> before
@@ -51,6 +51,7 @@
        toggles only — inner buttons keep their natural display. -->
   <style>
     .syncr-installed-gate { display: none !important; }
+    html[data-syncr-extension="true"] .syncr-installed-gate { display: inline-flex !important; }
     html[data-syncr-extension="true"] .get-syncr-gate { display: none !important; }
     html[data-syncr-extension="true"] #syncrDashboard { display: block !important; }
     html[data-syncr-extension="true"].syncr-show-marketing #marketing-content { display: block !important; }

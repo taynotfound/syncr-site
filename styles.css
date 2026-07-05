@@ -1145,6 +1145,7 @@ p  { color: var(--t2); }
    resurrect marketing for installed users. Container-level toggles
    only — never touch inner button/link display.                    */
 .syncr-installed-gate { display: none !important; }
+html[data-syncr-extension="true"] .syncr-installed-gate { display: inline-flex !important; }
 html[data-syncr-extension="true"] .get-syncr-gate { display: none !important; }
 html[data-syncr-extension="true"] #syncrDashboard { display: block !important; }
 /* "What is Syncr?" reveals the marketing content beneath the dashboard */
