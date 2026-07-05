@@ -179,13 +179,8 @@ PAGES = [
     },
 ]
 for a in ACTIVITIES:
-    PAGES.append({
-        "out": "activities/{}.html".format(a["id"]), "partial": "_activity.html",
-        "url": "/activities/{}.html".format(a["id"]),
-        "title": "{} on Discord with Syncr, Firefox Rich Presence".format(a["name"]),
-        "desc": a["desc"], "prio": "0.7", "freq": "monthly",
-        "nav": "activities", "kind": "WebPage", "activity": a,
-    })
+    pass  # Dynamic pages served via activity.html?id=<slug> — no static per-activity HTML needed
+
 
 
 def esc(s):
