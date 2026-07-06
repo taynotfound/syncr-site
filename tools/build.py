@@ -237,7 +237,6 @@ def nav_html(active):
     items = [
         ("home", "/", "Home"),
         ("activities", "/activities/", "Activities"),
-        ("builder", "/builder.html", "Builder"),
         ("download", "/download.html", "Download"),
         ("changelog", "/changelog.html", "Changelog"),
         ("faq", "/faq.html", "FAQ"),

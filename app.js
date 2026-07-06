@@ -264,7 +264,7 @@
     var emptyEl  = $('#actsEmpty');
     var curCat = 'all', curQ = '';
 
-    var RAW = 'https://raw.githubusercontent.com/Clawb1t/Syncr/main/extension/activities/';
+    var RAW = 'https://raw.githubusercontent.com/DSyncr/activities/main/extension/activities/';
     var BADGE_MAP = { 'LISTENING TO': 'listen', 'LISTENING': 'listen', 'WATCHING': 'watch', 'BROWSING': 'watch' };
     var BADGE_LABEL = { 'LISTENING TO': 'Listening', 'LISTENING': 'Listening', 'WATCHING': 'Watching', 'BROWSING': 'Browsing' };
     var NEW_COUNT = 5; /* last N activities in registry get a "New" badge */
@@ -422,7 +422,7 @@
   }
 
   /* -- Live activity count (proof strip + activities page) -- */
-  var RAW_REG = 'https://raw.githubusercontent.com/Clawb1t/Syncr/main/extension/activities/';
+  var RAW_REG = 'https://raw.githubusercontent.com/DSyncr/activities/main/extension/activities/';
   var actCountEls = document.querySelectorAll('#actCount');
   if (actCountEls.length) {
     fetch(RAW_REG + 'registry.json')
@@ -465,7 +465,7 @@
       return;
     }
 
-    var RAW_ACT = 'https://raw.githubusercontent.com/Clawb1t/Syncr/main/extension/activities/';
+    var RAW_ACT = 'https://raw.githubusercontent.com/DSyncr/activities/main/extension/activities/';
     var LATEST_API = 'https://api.github.com/repos/Clawb1t/Syncr/releases/latest';
 
     var els = {
